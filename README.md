@@ -10,9 +10,8 @@ Repositorio centralizado con el material interactivo y guías de estudio para la
 
 ## Acceso al Material Interactivo
 
-Las guías de ayudantía están diseñadas como páginas web interactivas para que puedas estudiar directamente desde el navegador, revisar diagramas de Gantt y verificar soluciones paso a paso:
+Las guías de ayudantía están diseñadas como páginas web interactivas para que puedas estudiar directamente desde el navegador, revisar diagramas de Gantt y verificar soluciones paso a paso.
 
-**[Ver Sitio Web de Ayudantías 🌐](https://GonzaMichea.github.io/Ayudantias-Sistemas-Operativos/)**
 
 ---
 
