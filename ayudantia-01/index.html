@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayudantía 1 - Sistemas Operativos</title>
+    <!-- Tailwind CSS para los estilos sin necesidad de instalar nada -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .gantt-bar:hover {
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans pb-12 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-900 to-blue-700 text-white pt-12 pb-8 px-4 shadow-lg">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-blue-200 font-semibold mb-2 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Universidad Técnica Federico Santa María
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Sistemas Operativos</h1>
+            <p class="text-xl text-blue-100 flex items-center gap-2 mt-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+                Ayudantía 1: Planificación de Tareas y Multiprogramación
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 mt-8">
+        
+        <!-- Materia / Introducción -->
+        <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-8">
+            <div class="flex items-center gap-2 mt-2 mb-4 pb-2 border-b-2 border-blue-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                <h2 class="text-2xl font-bold text-gray-800">Materia y Conceptos</h2>
+            </div>
+            
+            <ul class="space-y-3 text-gray-700 mb-6">
+                <li class="flex gap-2"><div class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 flex-shrink-0"></div><p><strong>Un programa</strong> es la expresión de un algoritmo con ayuda de un lenguaje de programación.</p></li>
+                <li class="flex gap-2"><div class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 flex-shrink-0"></div><p><strong>Una tarea</strong> es la unión de un programa con los datos a los cuales se aplica.</p></li>
+                <li class="flex gap-2"><div class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 flex-shrink-0"></div><p><strong>Un proceso</strong> es la ejecución de una tarea. Se caracteriza por la tarea y su contexto de ejecución, es decir, el valor del Program Counter (registro PC), los valores de los otros registros del procesador, etc...</p></li>
+            </ul>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-6">
+                <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                    <h4 class="font-bold text-gray-800 mb-2">Mono-Programación</h4>
+                    <p class="text-sm text-gray-600">Hay solamente un proceso al instante t en memoria. Cuando se somete una tarea, el sistema la carga y ejecuta el proceso correspondiente hasta el final, pasando luego a la siguiente tarea.</p>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                    <h4 class="font-bold text-gray-800 mb-2">Multiprogramación</h4>
+                    <p class="text-sm text-gray-600">Se puede tener más de un proceso al instante t en memoria. Los procesos que están listos se ejecutan consecutivamente (conmutación de procesos). Puede usarse en Batch Processing o en Tiempo Compartido.</p>
+                </div>
+            </div>
+
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg my-4 text-gray-700 shadow-sm">
+                <p class="mb-2"><strong>Tipos de Conmutación:</strong></p>
+                <ul class="list-disc pl-5 space-y-1 text-sm">
+                    <li>En <strong>Batch Processing con E/S</strong>, solo hay conmutación si el proceso activo debe efectuar una E/S.</li>
+                    <li>En <strong>Tiempo Compartido</strong>, hay conmutación si el proceso activo espera un evento o si se termina su <em>quantum</em> de tiempo.</li>
+                </ul>
+                <p class="mt-2 text-sm text-gray-500"><em>Nota: El Quantum es elegido por el sistema operativo durante el Boot (del orden de 10 a 100ms).</em></p>
+            </div>
+
+            <p class="text-gray-700 mt-4">
+                Una <strong>unidad de intercambio (DMA)</strong> sirve para efectuar transferencias entre la memoria principal y un periférico sin usar el procesador. Recibe una orden, transfiere los datos y avisa mediante una interrupción. Durante la transferencia, el procesador puede hacer otros cálculos.
+            </p>
+        </section>
+
+        <!-- SECCIÓN 1 -->
+        <div class="flex items-center gap-2 mt-8 mb-4 pb-2 border-b-2 border-blue-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <h2 class="text-2xl font-bold text-gray-800">1. Planificación de Tareas</h2>
+        </div>
+
+        <!-- Pregunta 1.1 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden my-6 border border-gray-100">
+            <div class="p-5 bg-gray-50 border-b border-gray-100">
+                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full mb-2">Pregunta 1.1</span>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Diagrama de Estados: Batch Simple</h3>
+                <p class="text-gray-700">Represente en forma de diagrama de estados (nodos = estados de una tarea, arcos = acciones o eventos) la ejecución de una tarea en <strong>modo batch simple</strong>.</p>
+            </div>
+            <div class="p-4 bg-white flex justify-end">
+                <button onclick="toggleAnswer('ans1-1', this)" class="bg-blue-600 text-white hover:bg-blue-700 shadow-sm px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> Mostrar Respuesta
+                </button>
+            </div>
+            <div id="ans1-1" class="hidden p-6 bg-green-50 border-t border-green-100 animate-fadeIn">
+                <h4 class="flex items-center gap-2 text-green-800 font-bold mb-3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Solución Propuesta
+                </h4>
+                <div class="text-gray-700">
+                    <p>En el modo Batch Simple, una tarea se ejecuta ininterrumpidamente hasta que termina, incluso si realiza operaciones de E/S (el procesador queda ocioso esperando).</p>
+                    <div class="flex flex-col items-center gap-4 my-6 p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+                        <div class="px-6 py-3 rounded-full font-bold shadow-sm bg-gray-500 text-white">NUEVA</div>
+                        <div class="text-gray-400 font-bold">↓</div>
+                        <div class="px-6 py-3 rounded-full font-bold shadow-sm bg-yellow-500 text-white">LISTA (READY)</div>
+                        <div class="text-gray-400 font-bold">↓</div>
+                        <div class="px-6 py-3 rounded-full font-bold shadow-sm bg-blue-500 text-white">EN EJECUCIÓN (RUNNING)</div>
+                        <div class="text-gray-400 font-bold">↓</div>
+                        <div class="px-6 py-3 rounded-full font-bold shadow-sm bg-green-500 text-white">TERMINADA</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pregunta 1.2 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden my-6 border border-gray-100">
+            <div class="p-5 bg-gray-50 border-b border-gray-100">
+                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full mb-2">Pregunta 1.2</span>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Diagrama de Estados: Batch con Reciclaje</h3>
+                <p class="text-gray-700">Represente en forma de diagrama de estados la ejecución de una tarea en <strong>modo batch con reciclaje</strong> (donde el scheduler elige una nueva tarea cuando la actual hace una E/S).</p>
+            </div>
+            <div class="p-4 bg-white flex justify-end">
+                <button onclick="toggleAnswer('ans1-2', this)" class="bg-blue-600 text-white hover:bg-blue-700 shadow-sm px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> Mostrar Respuesta
+                </button>
+            </div>
+            <div id="ans1-2" class="hidden p-6 bg-green-50 border-t border-green-100 animate-fadeIn">
+                <h4 class="flex items-center gap-2 text-green-800 font-bold mb-3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Solución Propuesta
+                </h4>
+                <div class="text-gray-700">
+                    <p>En este modo, si la tarea realiza una E/S, cede el procesador y pasa a estado Bloqueado, permitiendo que otra tarea use la CPU.</p>
+                    <div class="flex justify-center my-6">
+                        <div class="relative p-6 border-2 border-dashed border-green-300 rounded-xl bg-white w-full max-w-lg">
+                           <div class="flex flex-col items-center gap-4 text-center">
+                             <div class="px-4 py-2 bg-gray-500 text-white rounded-full font-bold">NUEVA</div>
+                             <span class="text-sm font-bold text-gray-400">↓ (Admitida)</span>
+                             <div class="px-4 py-2 bg-yellow-500 text-white rounded-full font-bold">LISTA</div>
+                             <span class="text-sm font-bold text-gray-400">↓ (Scheduler elige)</span>
+                             <div class="px-4 py-2 bg-blue-500 text-white rounded-full font-bold relative z-10 w-48">EN EJECUCIÓN</div>
+                             
+                             <div class="flex justify-between w-full px-8 mt-2 mb-2 relative">
+                                <!-- Flecha izquierda -->
+                                <div class="flex flex-col items-center">
+                                    <span class="text-xs font-bold text-red-500">↙ Hace E/S</span>
+                                    <div class="px-4 py-2 mt-1 bg-red-500 text-white rounded-full font-bold">BLOQUEADA</div>
+                                    <span class="text-xs font-bold text-green-500 mt-1">↖ Termina E/S</span>
+                                    <span class="text-xs font-bold text-gray-400">(Vuelve a Lista)</span>
+                                </div>
+                                <!-- Flecha centro-derecha -->
+                                <div class="flex flex-col items-center justify-center">
+                                    <span class="text-sm font-bold text-gray-400 mb-1">↓ Termina tarea</span>
+                                    <div class="px-4 py-2 bg-green-500 text-white rounded-full font-bold">TERMINADA</div>
+                                </div>
+                             </div>
+                           </div>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pregunta 1.3 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden my-6 border border-gray-100">
+            <div class="p-5 bg-gray-50 border-b border-gray-100">
+                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full mb-2">Pregunta 1.3</span>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Diagrama de Estados: Tiempo Compartido</h3>
+                <p class="text-gray-700">Represente en forma de diagrama de estados la ejecución de una tarea en <strong>modo tiempo compartido (Time Sharing)</strong>.</p>
+            </div>
+            <div class="p-4 bg-white flex justify-end">
+                <button onclick="toggleAnswer('ans1-3', this)" class="bg-blue-600 text-white hover:bg-blue-700 shadow-sm px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> Mostrar Respuesta
+                </button>
+            </div>
+            <div id="ans1-3" class="hidden p-6 bg-green-50 border-t border-green-100 animate-fadeIn">
+                <h4 class="flex items-center gap-2 text-green-800 font-bold mb-3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Solución Propuesta
+                </h4>
+                <div class="text-gray-700">
+                    <p>Similar al Batch con reciclaje, pero se añade un arco de <strong>"Fin de Quantum"</strong> (interrupción por reloj) que devuelve la tarea de Ejecución a Lista directamente.</p>
+                    <div class="flex justify-center my-6">
+                        <div class="relative p-6 border-2 border-dashed border-blue-300 rounded-xl bg-white w-full max-w-lg">
+                           <div class="flex flex-col items-center gap-4 text-center">
+                             <div class="px-4 py-2 bg-yellow-500 text-white rounded-full font-bold w-48">LISTA</div>
+                             
+                             <div class="flex gap-16 justify-center w-full">
+                                <span class="text-sm font-bold text-blue-500">↓ Asigna CPU</span>
+                                <span class="text-sm font-bold text-orange-500">↑ Fin Quantum</span>
+                             </div>
+
+                             <div class="px-4 py-2 bg-blue-500 text-white rounded-full font-bold relative z-10 w-48">EN EJECUCIÓN</div>
+                             
+                             <div class="flex justify-between w-full px-8 mt-4 relative">
+                                <div class="flex flex-col items-center">
+                                    <span class="text-xs font-bold text-red-500">↓ Hace E/S</span>
+                                    <div class="px-4 py-2 mt-1 bg-red-500 text-white rounded-full font-bold">BLOQUEADA</div>
+                                    <span class="text-xs font-bold text-green-500 mt-2">↑ Fin E/S (A Lista)</span>
+                                </div>
+                                <div class="flex flex-col items-center justify-center border-l-2 border-gray-200 pl-8">
+                                    <span class="text-sm font-bold text-gray-400 mb-1">↓ Termina</span>
+                                    <div class="px-4 py-2 bg-green-500 text-white rounded-full font-bold">TERMINADA</div>
+                                </div>
+                             </div>
+                           </div>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2 -->
+        <div class="flex items-center gap-2 mt-12 mb-4 pb-2 border-b-2 border-blue-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+            <h2 class="text-2xl font-bold text-gray-800">2. Tasa de Ocupación del Procesador</h2>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-sm mb-6 border border-gray-200">
+            <p class="font-semibold text-gray-800 mb-2">Datos del problema:</p>
+            <ul class="list-disc pl-5 text-sm text-gray-700 space-y-1">
+              <li><strong>T1:</strong> dura 200ms, única E/S al t=110ms. (Llega t=0)</li>
+              <li><strong>T2:</strong> dura 50ms, única E/S al t=5ms. (Llega t=0)</li>
+              <li><strong>T3:</strong> dura 120ms sin E/S. (Llega t=140ms)</li>
+              <li>Cada E/S dura 10ms. Quantum q = 100ms para Time Sharing.</li>
+            </ul>
+        </div>
+
+        <!-- Pregunta 2.1 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden my-6 border border-gray-100">
+            <div class="p-5 bg-gray-50 border-b border-gray-100">
+                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full mb-2">Pregunta 2.1</span>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Batch con Reciclaje</h3>
+                <p class="text-gray-700">Represente en una carta Gantt la ejecución de las tres tareas en <strong>modo Batch con reciclaje</strong>. Calcule el tiempo total de ejecución T, y la tasa de ocupación del procesador Tp.</p>
+            </div>
+            <div class="p-4 bg-white flex justify-end">
+                <button onclick="toggleAnswer('ans2-1', this)" class="bg-blue-600 text-white hover:bg-blue-700 shadow-sm px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> Mostrar Respuesta
+                </button>
+            </div>
+            <div id="ans2-1" class="hidden p-6 bg-green-50 border-t border-green-100 animate-fadeIn">
+                <h4 class="flex items-center gap-2 text-green-800 font-bold mb-3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Solución Propuesta
+                </h4>
+                <div class="text-gray-700">
+                    <p class="mb-4">Como es Batch, el scheduler elige la primera tarea en llegar. Si se bloquea, elige la siguiente. No hay interrupción por quantum.</p>
+                    
+                    <!-- Gantt Hardcoded para HTML -->
+                    <div class="my-6 p-4 bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
+                        <div class="flex w-full min-w-[600px] h-12 bg-gray-100 rounded-md overflow-hidden relative">
+                            <div class="h-full flex items-center justify-center text-xs font-bold text-white border-r border-white/30 truncate px-1 gantt-bar" style="width: 29.33%; background-color: #3b82f6;" title="T1: 0ms - 110ms">T1</div>
+                            <div class="h-full flex items-center justify-center text-xs font-bold text-white border-r border-white/30 truncate px-1 gantt-bar" style="width: 1.33%; background-color: #f59e0b;" title="T2: 110ms - 115ms">T2</div>
+                            <div class="h-full flex items-center justify-center text-xs font-bold text-gray-600 border-r border-white/30 truncate px-1 gantt-bar" style="width: 1.33%; background-color: #d1d5db;" title="IDLE: 115ms - 120ms">IDLE</div>
+                            <div class="h-full flex items-center justify-center text-xs font-bold text-white border-r border-white/30 truncate px-1 gantt-bar" style="width: 24.00%; background-color: #3b82f6;" title="T1: 120ms - 210ms">T1</div>
+                            <div class="h-full flex items-center justify-center text-xs font-bold text-white border-r border-white/30 truncate px-1 gantt-bar" style="width: 12.00%; background-color: #f59e0b;" title="T2: 210ms - 255ms">T2</div>
+                            <div class="h-full flex items-center justify-center text-xs font-bold text-white border-r border-white/30 truncate px-1 gantt-bar" style="width: 32.00%; background-color: #10b981;" title="T3: 255ms - 375ms">T3</div>
+                        </div>
+                        <div class="flex justify-between w-full min-w-[600px] mt-2 text-xs text-gray-500 font-mono">
+                            <span>0ms</span>
+                            <span>375ms</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded mt-4 text-sm font-mono">
+                        <p><strong>Cálculos:</strong></p>
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            <li>T1: Empieza t=0. Hace E/S en t=110 (termina su E/S en 120).</li>
+                            <li>T2: Retoma la CPU en t=110. Hace E/S en t=115 (termina su E/S en 125).</li>
+                            <li>Entre 115 y 120, ambas están bloqueadas en E/S → <strong>IDLE (5ms)</strong>.</li>
+                            <li>T1 retoma en 120, termina en 210.</li>
+                            <li>T2 retoma en 210, termina en 255.</li>
+                            <li>T3 (llegó en 140) espera pacientemente, ejecuta de 255 a 375.</li>
+                        </ul>
+                        <p class="mt-3 text-blue-800 font-bold">Tiempo Total (T) = 375ms</p>
+                        <p class="text-blue-800 font-bold">Tiempo Ocupado = 375 - 5 (IDLE) = 370ms</p>
+                        <p class="text-blue-800 font-bold">Tp = 370 / 375 = 0.9866 (98.66%)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pregunta 2.2 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden my-6 border border-gray-100">
+            <div class="p-5 bg-gray-50 border-b border-gray-100">
+                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full mb-2">Pregunta 2.2</span>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Tiempo Compartido (Time Sharing)</h3>
+                <p class="text-gray-700">Represente en una carta Gantt la ejecución de las tres tareas en <strong>Tiempo Compartido</strong> (q=100ms). Calcule T y Tp.</p>
+            </div>
+            <div class="p-4 bg-white flex justify-end">
+                <button onclick="toggleAnswer('ans2-2', this)" class="bg-blue-600 text-white hover:bg-blue-700 shadow-sm px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> Mostrar Respuesta
+                </button>
+            </div>
+            <div id="ans2-2" class="hidden p-6 bg-green-50 border-t border-green-100 animate-fadeIn">
+                <h4 class="flex items-center gap-2 text-green-800 font-bold mb-3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Solución Propuesta
+                </h4>
+                <div class="text-gray-700">
+                    <p class="mb-4">Las tareas son interrumpidas forzosamente si alcanzan los 100ms continuos de ejecución (Fin de Quantum).</p>
+                    
+                    <div class="my-6 p-4 bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
+                        <div class="flex w-full min-w-[600px] h-12 bg-gray-100 rounded-md overflow-hidden relative">
+                            <div class="h-full flex items-center justify-center text-xs font-bold text-white border-r border-white/30 truncate px-1 gantt-bar" style="width: 27.02%; background-color: #3b82f6;" title="T1: 0ms - 100ms">T1</div>
+                            <div class="h-full flex items-center justify-center text-xs font-bold text-white border-r border-white/30 truncate px-1 gantt-bar" style="width: 1.35%; background-color: #f59e0b;" title="T2: 100ms - 105ms">T2</div>
+                            <div class="h-full flex items-center justify-center text-xs font-bold text-white border-r border-white/30 truncate px-1 gantt-bar" style="width: 2.70%; background-color: #3b82f6;" title="T1: 105ms - 115ms">T1</div>
+                            <div class="h-full flex items-center justify-center text-xs font-bold text-white border-r border-white/30 truncate px-1 gantt-bar" style="width: 12.16%; background-color: #f59e0b;" title="T2: 115ms - 160ms">T2</div>
+                            <div class="h-full flex items-center justify-center text-xs font-bold text-white border-r border-white/30 truncate px-1 gantt-bar" style="width: 24.32%; background-color: #3b82f6;" title="T1: 160ms - 250ms">T1</div>
+                            <div class="h-full flex items-center justify-center text-xs font-bold text-white border-r border-white/30 truncate px-1 gantt-bar" style="width: 27.02%; background-color: #10b981;" title="T3: 250ms - 350ms">T3</div>
+                            <div class="h-full flex items-center justify-center text-xs font-bold text-white border-r border-white/30 truncate px-1 gantt-bar" style="width: 5.40%; background-color: #10b981;" title="T3: 350ms - 370ms">T3</div>
+                        </div>
+                        <div class="flex justify-between w-full min-w-[600px] mt-2 text-xs text-gray-500 font-mono">
+                            <span>0ms</span>
+                            <span>370ms</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded mt-4 text-sm font-mono">
+                        <p><strong>Cálculos Detallados:</strong></p>
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            <li>0-100: T1 usa 100ms. Interrupción por Quantum. Quedan 100ms.</li>
+                            <li>100-105: T2 usa 5ms y hace E/S (hasta 115).</li>
+                            <li>105-115: T1 usa 10ms (llega a sus 110ms) y hace E/S (hasta 125).</li>
+                            <li>En t=115, T2 termina E/S y está lista. Como T1 se acaba de bloquear, ¡No hay IDLE!</li>
+                            <li>115-160: T2 termina sus 45ms. (T1 termina E/S en 125 y espera lista).</li>
+                            <li>160-250: T1 termina sus 90ms.</li>
+                            <li>250-350: T3 usa 100ms. Interrupción por Quantum.</li>
+                            <li>350-370: T3 termina sus 20ms restantes.</li>
+                        </ul>
+                        <p class="mt-3 text-blue-800 font-bold">Tiempo Total (T) = 370ms</p>
+                        <p class="text-blue-800 font-bold">Tp = 370 / 370 = 1.0 (100%)</p>
+                        <p class="text-gray-500 italic mt-1">El TC logró evitar el tiempo ocioso al entrelazar mejor los bloqueos de E/S.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-sm my-6 border border-gray-200">
+            <p class="font-semibold text-gray-800 mb-2">Nuevos datos para las siguientes preguntas:</p>
+            <p class="text-sm text-gray-700">
+              Dos tareas T1 y T2 idénticas (t=0) realizan N=4 veces: <br>
+              <strong>Lectura Disco (L=8ms) → Cálculo CPU (C=7ms) → Escritura Disco (E=5ms).</strong>
+            </p>
+        </div>
+
+        <!-- Preguntas 2.3, 2.4, 2.5 -->
+        <div class="grid grid-cols-1 gap-6 mb-8">
+            <!-- 2.3 -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                <div class="p-5 bg-gray-50 border-b border-gray-100">
+                    <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full mb-2">Pregunta 2.3</span>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Mono-programación (1 Tarea)</h3>
+                    <p class="text-gray-700 text-sm">Una única tarea (T1) se somete en t=0. Represente la Gantt. Calcule el tiempo total de ejecución T, Tp (tasa CPU) y Tu (tasa disco).</p>
+                </div>
+                <div class="p-3 bg-white flex justify-end">
+                    <button onclick="toggleAnswer('ans2-3', this)" class="bg-blue-600 text-white hover:bg-blue-700 shadow-sm px-4 py-2 rounded-lg text-sm font-medium transition-colors">Mostrar Respuesta</button>
+                </div>
+                <div id="ans2-3" class="hidden p-5 bg-green-50 border-t border-green-100 text-sm">
+                    <p>Ciclo: L (8) + C (7) + E (5) = 20ms. Como N=4, el tiempo total es 4 * 20ms = 80ms.</p>
+                    <div class="bg-gray-50 p-3 rounded mt-3 font-mono">
+                        <p><strong>Cálculos:</strong></p>
+                        <p>T (Total) = 80ms</p>
+                        <p>Tiempo CPU ocupada = 4 * C = 4 * 7ms = 28ms.</p>
+                        <p>Tiempo Disco ocupado = 4 * (L + E) = 4 * (8 + 5) = 52ms.</p>
+                        <p class="mt-2 text-blue-800 font-bold">Tp = 28 / 80 = 0.35 (35%)</p>
+                        <p class="text-blue-800 font-bold">Tu = 52 / 80 = 0.65 (65%)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.4 -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                <div class="p-5 bg-gray-50 border-b border-gray-100">
+                    <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full mb-2">Pregunta 2.4</span>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Mono-programación (2 Tareas)</h3>
+                    <p class="text-gray-700 text-sm">¿Qué se puede deducir de T, Tp y Tu cuando las tareas T1 y T2 se ejecutan en <strong>mono-programación</strong>?</p>
+                </div>
+                <div class="p-3 bg-white flex justify-end">
+                    <button onclick="toggleAnswer('ans2-4', this)" class="bg-blue-600 text-white hover:bg-blue-700 shadow-sm px-4 py-2 rounded-lg text-sm font-medium transition-colors">Mostrar Respuesta</button>
+                </div>
+                <div id="ans2-4" class="hidden p-5 bg-green-50 border-t border-green-100 text-sm">
+                    <p>En mono-programación, T2 debe esperar completamente a que T1 termine sus 4 ciclos antes de poder comenzar.</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-2 text-gray-700">
+                      <li><strong>Tiempo Total (T):</strong> Se duplica exactamente. T = 80ms + 80ms = 160ms.</li>
+                      <li><strong>Tasas de ocupación (Tp y Tu):</strong> Se mantienen exactamente iguales (35% y 65% respectivamente).</li>
+                      <li><strong>Conclusión:</strong> El hardware está profundamente subutilizado. Mientras la CPU calcula, el disco no hace nada; mientras el disco lee/escribe, la CPU está ociosa. No hay solapamiento de operaciones.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 2.5 -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                <div class="p-5 bg-gray-50 border-b border-gray-100">
+                    <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full mb-2">Pregunta 2.5</span>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Batch Multiprogramación (T1 y T2)</h3>
+                    <p class="text-gray-700 text-sm">Gantt para T1 y T2 en <strong>Multiprogramación Batch</strong> (C &lt; L y C &gt; E). Calcule T, Tp, Tu y compare.</p>
+                </div>
+                <div class="p-3 bg-white flex justify-end">
+                    <button onclick="toggleAnswer('ans2-5', this)" class="bg-blue-600 text-white hover:bg-blue-700 shadow-sm px-4 py-2 rounded-lg text-sm font-medium transition-colors">Mostrar Respuesta</button>
+                </div>
+                <div id="ans2-5" class="hidden p-5 bg-green-50 border-t border-green-100 text-sm">
+                    <p class="mb-2">Aquí el disco y la CPU pueden trabajar al mismo tiempo. T2 puede usar la CPU mientras T1 usa el disco, y viceversa.</p>
+                    <div class="overflow-x-auto bg-white p-2 border rounded">
+                      <table class="min-w-full text-xs text-center border-collapse">
+                        <thead>
+                          <tr class="bg-gray-100">
+                            <th class="border p-1">Tiempo</th>
+                            <th class="border p-1">0-8</th>
+                            <th class="border p-1">8-15</th>
+                            <th class="border p-1">15-20</th>
+                            <th class="border p-1">20-23</th>
+                            <th class="border p-1">23-30</th>
+                            <th class="border p-1">30-35</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="border p-1 font-bold">CPU</td>
+                            <td class="border p-1 text-gray-400">IDLE</td>
+                            <td class="border p-1 bg-blue-200">T1 (C:7)</td>
+                            <td class="border p-1 bg-blue-200">T1 (IDLE)</td>
+                            <td class="border p-1 bg-orange-200">T2 (C:3)</td>
+                            <td class="border p-1 bg-orange-200">T2 (C:4)</td>
+                            <td class="border p-1 text-gray-400">...</td>
+                          </tr>
+                          <tr>
+                            <td class="border p-1 font-bold">Disco</td>
+                            <td class="border p-1 bg-green-200">T1 (L:8)</td>
+                            <td class="border p-1 bg-green-200">T2 (L:7)</td>
+                            <td class="border p-1 bg-green-200">T2 (L:1) / T1(E:4)</td>
+                            <td class="border p-1 bg-green-200">T1 (E:1)</td>
+                            <td class="border p-1 bg-green-200">T1 (L:7)</td>
+                            <td class="border p-1 text-gray-400">...</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+      
+                    <div class="bg-gray-50 p-4 rounded mt-4 text-sm font-mono space-y-2">
+                      <p>Al traslapar (pipeline) las operaciones, el tiempo total se reduce drásticamente en comparación a los 160ms de mono-programación.</p>
+                      <p class="mt-2 text-blue-800 font-bold">T (aprox) ≈ 88ms</p>
+                      <p class="text-blue-800 font-bold">Tp = (28 + 28) / 88 = 56 / 88 = 63.6%</p>
+                      <p class="text-blue-800 font-bold">Tu = (52 + 52) / 88 = 104 / 88 = 100% (Saturado)</p>
+                      <p class="text-gray-600 italic mt-2">Comparación: Tp saltó de 35% a 63%, y Tu de 65% a 100%. El sistema es mucho más eficiente.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 3 -->
+        <div class="flex items-center gap-2 mt-12 mb-4 pb-2 border-b-2 border-blue-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <h2 class="text-2xl font-bold text-gray-800">3. Tiempo de Respuesta en Modo Batch</h2>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-sm mb-6 border border-gray-200">
+            <p class="font-semibold text-gray-800 mb-2">Parámetros del Sistema:</p>
+            <ul class="list-disc pl-5 text-sm text-gray-700 space-y-1">
+              <li><strong>n</strong> usuarios ejecutando comandos de edición.</li>
+              <li>Cada comando consume <strong>c</strong> segundos de procesador.</li>
+              <li><strong>r</strong> es el tiempo de respuesta (desde solicitud hasta respuesta).</li>
+              <li><strong>t</strong> es el tiempo de reflexión/tipeo antes de someter nuevo comando.</li>
+            </ul>
+            <p class="text-xs text-gray-500 mt-3 italic">*Nota: Asumiremos los valores de t=2s y c=0.1s para que el ejercicio tenga sentido físico.</p>
+        </div>
+
+        <!-- Pregunta 3.1 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden my-6 border border-gray-100">
+            <div class="p-5 bg-gray-50 border-b border-gray-100">
+                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full mb-2">Pregunta 3.1</span>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Cálculo en Régimen Permanente</h3>
+                <p class="text-gray-700">Todos los usuarios comienzan a trabajar al mismo tiempo. Exprese el tiempo de respuesta en función de los otros parámetros en régimen permanente. Calcule <strong>r</strong> para <strong>n=10, t=2s y c=0.1s</strong> y luego para <strong>n=30, t=2s y c=0.1s</strong>.</p>
+            </div>
+            <div class="p-4 bg-white flex justify-end">
+                <button onclick="toggleAnswer('ans3-1', this)" class="bg-blue-600 text-white hover:bg-blue-700 shadow-sm px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">Mostrar Respuesta</button>
+            </div>
+            <div id="ans3-1" class="hidden p-6 bg-green-50 border-t border-green-100 animate-fadeIn">
+                <div class="text-gray-700 text-sm">
+                    <p class="mb-2">En régimen permanente, el ciclo total de un usuario es <code>r + t</code>. El sistema puede procesar <code>1/c</code> trabajos por segundo, y hay <code>n</code> usuarios enviando trabajos.</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-2">
+                      <li><strong>Caso No Saturado (n*c ≤ t):</strong> El sistema es capaz de procesar a todos antes de que vuelvan a pensar. No hay cola. <br> Fórmula: <span class="font-bold text-blue-700">r = c</span></li>
+                      <li><strong>Caso Saturado (n*c > t):</strong> El procesador está al 100%. El tiempo de ciclo de un usuario se vuelve igual al tiempo necesario para procesar a todos (n*c). Por tanto: r + t = n*c. <br> Fórmula: <span class="font-bold text-blue-700">r = n*c - t</span></li>
+                    </ul>
+      
+                    <div class="bg-gray-50 p-4 rounded mt-4 font-mono space-y-3">
+                      <div>
+                        <p class="font-bold border-b pb-1 mb-1">Cálculo 1: n=10, t=2s, c=0.1s</p>
+                        <p>Evaluamos saturación: n * c = 10 * 0.1s = 1s.</p>
+                        <p>Como 1s &lt; 2s (t), el sistema NO está saturado.</p>
+                        <p class="text-blue-800 font-bold mt-1">r = c = 0.1s</p>
+                      </div>
+                      <div>
+                        <p class="font-bold border-b pb-1 mb-1 mt-2">Cálculo 2: n=30, t=2s, c=0.1s</p>
+                        <p>Evaluamos saturación: n * c = 30 * 0.1s = 3s.</p>
+                        <p>Como 3s &gt; 2s (t), el sistema SÍ está saturado.</p>
+                        <p class="text-blue-800 font-bold mt-1">r = n*c - t = 3s - 2s = 1s</p>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pregunta 3.2 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden my-6 border border-gray-100">
+            <div class="p-5 bg-gray-50 border-b border-gray-100">
+                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full mb-2">Pregunta 3.2</span>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Trabajo Interactivo en Batch</h3>
+                <p class="text-gray-700">¿Es razonable pensar en un trabajo interactivo en modo Batch?</p>
+            </div>
+            <div class="p-4 bg-white flex justify-end">
+                <button onclick="toggleAnswer('ans3-2', this)" class="bg-blue-600 text-white hover:bg-blue-700 shadow-sm px-4 py-2 rounded-lg font-medium transition-colors">Mostrar Respuesta</button>
+            </div>
+            <div id="ans3-2" class="hidden p-6 bg-green-50 border-t border-green-100 animate-fadeIn">
+                <p class="font-bold text-red-600 mb-2">No, no es razonable.</p>
+                <p class="text-gray-700 text-sm">
+                  En modo Batch (Procesamiento por Lotes), una tarea se ejecuta ininterrumpidamente hasta terminar. Si un usuario envía un comando largo o un trabajo pesado (por ejemplo, un cálculo matemático de 5 minutos), el procesador no lo soltará. 
+                </p>
+                <p class="text-gray-700 text-sm mt-2">
+                  Todos los demás usuarios "interactivos" (como los que editan texto) quedarán congelados durante esos 5 minutos sin poder tipear una sola letra. Un sistema interactivo exige <strong>Tiempos de Respuesta (r) bajos y predecibles</strong>, lo cual Batch no puede garantizar si se mezclan con trabajos largos.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 4 -->
+        <div class="flex items-center gap-2 mt-12 mb-4 pb-2 border-b-2 border-blue-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+            <h2 class="text-2xl font-bold text-gray-800">4. Tiempo de Respuesta en Tiempo Compartido</h2>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-sm mb-6 border border-gray-200">
+            <p class="font-semibold text-gray-800 mb-2">Nuevos Parámetros:</p>
+            <ul class="list-disc pl-5 text-sm text-gray-700 space-y-1">
+              <li>No hay overhead por conmutación. <strong>T = t = 0</strong> (No hay tiempo de reflexión, los usuarios envían procesos continuamente).</li>
+              <li><strong>n</strong> usuarios realizando edición (consumen <strong>c</strong>).</li>
+              <li><strong>N</strong> usuarios efectuando compilaciones (consumen <strong>C</strong>).</li>
+              <li><strong>c</strong> y <strong>C</strong> son múltiplos del quantum <strong>q</strong>.</li>
+            </ul>
+        </div>
+
+        <!-- Pregunta 4.1 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden my-6 border border-gray-100">
+            <div class="p-5 bg-gray-50 border-b border-gray-100">
+                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full mb-2">Pregunta 4.1</span>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Cálculo en Régimen Permanente</h3>
+                <p class="text-gray-700">Expresar el tiempo de respuesta <strong>r</strong> (para edición) y <strong>R</strong> (para compilación), en función de los otros parámetros. Calcule r y R para <strong>n=10, c=0.1s, N=5 y C=3s</strong>.</p>
+            </div>
+            <div class="p-4 bg-white flex justify-end">
+                <button onclick="toggleAnswer('ans4-1', this)" class="bg-blue-600 text-white hover:bg-blue-700 shadow-sm px-4 py-2 rounded-lg font-medium transition-colors">Mostrar Respuesta</button>
+            </div>
+            <div id="ans4-1" class="hidden p-6 bg-green-50 border-t border-green-100 animate-fadeIn text-sm">
+                <p class="mb-2">Como t=0, siempre hay <strong>(n + N)</strong> tareas en la cola de listos en todo momento.</p>
+                <p class="mb-4">El algoritmo Round Robin (Tiempo Compartido) le da un "turno" a cada una de las (n+N) tareas. Por lo tanto, para acumular 1 segundo de CPU, una tarea tiene que esperar a que pasen todos los demás.</p>
+  
+                <div class="bg-blue-50 p-3 rounded text-blue-900 mb-4">
+                  <strong>Fórmula general (con t=0):</strong><br>
+                  Tiempo de Respuesta = (Tiempo requerido de CPU) × (Número total de usuarios compitiendo)<br>
+                  <code class="bg-white px-2 py-1 rounded mt-2 inline-block">r = c * (n + N)</code><br>
+                  <code class="bg-white px-2 py-1 rounded mt-1 inline-block">R = C * (n + N)</code>
+                </div>
+  
+                <div class="bg-gray-50 p-4 rounded mt-4 font-mono space-y-3">
+                  <div>
+                    <p class="font-bold border-b pb-1 mb-1">Cálculo de Tiempos</p>
+                    <p>Usuarios totales en competencia = n + N = 10 + 5 = 15.</p>
+                    <p class="mt-2"><strong>Editores (r):</strong></p>
+                    <p class="text-blue-800 font-bold">r = c * (n + N) = 0.1s * 15 = 1.5s</p>
+                    <p class="mt-2"><strong>Compiladores (R):</strong></p>
+                    <p class="text-blue-800 font-bold">R = C * (n + N) = 3s * 15 = 45s</p>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pregunta 4.2 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden my-6 border border-gray-100">
+            <div class="p-5 bg-gray-50 border-b border-gray-100">
+                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full mb-2">Pregunta 4.2</span>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Conclusión</h3>
+                <p class="text-gray-700">Concluir sobre el Tiempo Compartido comparado al Batch Processing.</p>
+            </div>
+            <div class="p-4 bg-white flex justify-end">
+                <button onclick="toggleAnswer('ans4-2', this)" class="bg-blue-600 text-white hover:bg-blue-700 shadow-sm px-4 py-2 rounded-lg font-medium transition-colors">Mostrar Respuesta</button>
+            </div>
+            <div id="ans4-2" class="hidden p-6 bg-green-50 border-t border-green-100 animate-fadeIn">
+                <p class="text-gray-700 text-sm mb-3">
+                    <strong>El Tiempo Compartido (Time Sharing) es infinitamente superior para cargas de trabajo mixtas e interactivas.</strong>
+                </p>
+                <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                    <li>
+                      <strong>Equidad y Evita la Inanición:</strong> En Batch, un trabajo de compilación (3s) bloquearía a los editores durante 3 segundos enteros. Si hubieran 5 compiladores seguidos, el editor esperaría 15 segundos antes de reaccionar.
+                    </li>
+                    <li>
+                      <strong>Respuesta Interactiva:</strong> En Tiempo Compartido, el sistema divide el tiempo en quantums. Aunque hay procesos pesados compilando de fondo, el editor recibe porciones de CPU constantemente, logrando un tiempo de respuesta de <strong>1.5s</strong>, haciendo que el sistema siga sintiéndose "vivo" y respondiente para el usuario.
+                    </li>
+                    <li>
+                      <strong>Degradación Justa:</strong> Las tareas cortas terminan rápido (1.5s), mientras que las pesadas toman su tiempo en el fondo (45s), pero ninguna bloquea totalmente a la otra.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Lógica JavaScript para botones -->
+    <script>
+        function toggleAnswer(answerId, buttonElement) {
+            const answerDiv = document.getElementById(answerId);
+            
+            if (answerDiv.classList.contains('hidden')) {
+                // Mostrar respuesta
+                answerDiv.classList.remove('hidden');
+                
+                // Cambiar botón a estado "Ocultar"
+                buttonElement.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline mr-2"><path d="m2 2 20 20"></path><path d="M6.71 6.71A10.61 10.61 0 0 0 2 12a10.54 10.54 0 0 0 11.29 8.05"></path><path d="M11 17a5 5 0 0 1-5-5"></path><path d="M14 14a5 5 0 0 1-5-5"></path><path d="M17.3 17.3A10.56 10.56 0 0 0 22 12a10.58 10.58 0 0 0-11-7.05"></path></svg> Ocultar Respuesta`;
+                buttonElement.classList.replace('bg-blue-600', 'bg-gray-200');
+                buttonElement.classList.replace('hover:bg-blue-700', 'hover:bg-gray-300');
+                buttonElement.classList.replace('text-white', 'text-gray-800');
+            } else {
+                // Ocultar respuesta
+                answerDiv.classList.add('hidden');
+                
+                // Cambiar botón a estado "Mostrar"
+                buttonElement.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline mr-2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> Mostrar Respuesta`;
+                buttonElement.classList.replace('bg-gray-200', 'bg-blue-600');
+                buttonElement.classList.replace('hover:bg-gray-300', 'hover:bg-blue-700');
+                buttonElement.classList.replace('text-gray-800', 'text-white');
+            }
+        }
+    </script>
+</body>
+</html>
