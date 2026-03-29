@@ -17,7 +17,7 @@ Las guías de ayudantía están diseñadas como páginas web interactivas para q
 
 ## Cronograma de Ayudantías
 
-| Semana | Tema Principal | Contenido Clave | Material Web |
+| N°| Tema Principal | Contenido Clave | Material Web |
 | :---: | :--- | :--- | :---: |
 | **01** | **Planificación y Multiprogramación** | Conceptos de Tarea/Proceso, Mono-programación vs Multiprogramación, Batch, Time Sharing y Diagramas de Gantt. | [Ver Guía 1](https://GonzaMichea.github.io/Ayudantias-Sistemas-Operativos/ayudantia-01/) |
 | **02** | *(Próximamente)* | - | - |
