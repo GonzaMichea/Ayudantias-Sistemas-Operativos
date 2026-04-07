@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayudantía Completa - Sistemas Operativos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --usm-navy: #002b5c;
+            --usm-burgundy: #8c1d40;
+            --usm-gold: #c9a34a;
+            --usm-ink: #0f1f33;
+            --usm-paper: #f6f7fb;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--usm-paper);
+            background-image:
+                radial-gradient(circle at 8% 12%, rgba(201, 163, 74, 0.22) 0%, transparent 28%),
+                radial-gradient(circle at 92% 84%, rgba(140, 29, 64, 0.15) 0%, transparent 32%),
+                linear-gradient(135deg, #f8fafc 0%, #edf2fb 55%, #f8fafc 100%);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Sora', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .topbar {
+            background: linear-gradient(90deg, rgba(0, 43, 92, 0.95), rgba(140, 29, 64, 0.92));
+            box-shadow: 0 10px 30px rgba(15, 31, 51, 0.25);
+            border-bottom: 2px solid rgba(201, 163, 74, 0.65);
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-title {
+            color: #ffffff;
+            font-weight: 800;
+        }
+
+        .nav-link {
+            color: #f1f5f9;
+            padding: 0.45rem 0.85rem;
+            border-radius: 9999px;
+            transition: all 0.25s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(201, 163, 74, 0.55);
+        }
+
+        .hero-title {
+            font-size: clamp(2.3rem, 6vw, 4.2rem);
+            background: linear-gradient(135deg, var(--usm-navy), var(--usm-burgundy));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-subtitle {
+            color: #334155;
+            font-weight: 500;
+        }
+
+        .section-title {
+            border-bottom-width: 3px;
+            color: var(--usm-ink);
+            border-color: rgba(0, 43, 92, 0.28);
+        }
+
+        .bg-white.p-8.rounded-xl.shadow-lg, .card-hover {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 43, 92, 0.09);
+            box-shadow: 0 16px 30px rgba(15, 31, 51, 0.1);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .bg-white.p-8.rounded-xl.shadow-lg:hover, .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 36px rgba(15, 31, 51, 0.16);
+        }
+
+        /* Utilidades de Color USM */
+        .text-usm-navy { color: var(--usm-navy); }
+        .text-usm-burgundy { color: var(--usm-burgundy); }
+        .text-usm-gold { color: var(--usm-gold); }
+        
+        .bg-usm-navy { background-color: var(--usm-navy); }
+        .hover\:bg-usm-navy-dark:hover { background-color: #001a3b; }
+        
+        .bg-usm-burgundy { background-color: var(--usm-burgundy); }
+        .bg-usm-gold { background-color: var(--usm-gold); }
+
+        .border-usm-navy { border-color: var(--usm-navy); }
+        .border-usm-burgundy { border-color: var(--usm-burgundy); }
+        .border-usm-gold { border-color: var(--usm-gold); }
+
+        .ring-usm-navy { --tw-ring-color: var(--usm-navy); }
+
+        .animate-fadeIn { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .gantt-bar {
+            transition: filter 0.2s, transform 0.2s;
+        }
+        .gantt-bar:hover { filter: brightness(1.15); transform: scaleY(1.05); }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <header class="topbar sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl brand-title">Ayudantía USM</h1>
+            <div class="space-x-2 sm:space-x-4">
+                <a href="#teoria" class="nav-link font-medium transition-colors text-xs sm:text-base">Teoría</a>
+                <a href="#practica" class="nav-link font-medium transition-colors text-xs sm:text-base">Práctica</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 max-w-5xl">
+        
+        <section id="intro" class="text-center mb-16">
+            <h2 class="hero-title font-bold mb-4">Sistemas Operativos</h2>
+            <p class="text-lg hero-subtitle max-w-3xl mx-auto flex items-center justify-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-usm-burgundy"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                Teoría y Ejercitación Práctica
+            </p>
+            <p class="mt-4 text-sm font-bold tracking-wide text-usm-gold">Edición visual institucional</p>
+        </section>
+
+        <section id="teoria" class="mb-20">
+            <h3 class="section-title text-3xl font-bold mb-8 pb-4">Parte 1: Resumen Teórico</h3>
+
+            <div class="space-y-10">
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
+                        <span class="text-usm-gold">1.</span> Conceptos Fundamentales
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-6 mb-6">
+                        <div class="bg-slate-50 p-5 rounded-lg border-l-4 border-slate-300">
+                            <h4 class="font-bold text-usm-navy mb-2">Programa</h4>
+                            <p class="text-sm text-slate-600">Expresión estática de un algoritmo en un lenguaje de programación. Es simplemente código almacenado en disco.</p>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-lg border-l-4 border-usm-gold">
+                            <h4 class="font-bold text-usm-navy mb-2">Tarea</h4>
+                            <p class="text-sm text-slate-600">Unión de un programa con los datos a los cuales se va a aplicar.</p>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-lg border-l-4 border-usm-burgundy shadow-sm">
+                            <h4 class="font-bold text-usm-burgundy mb-2">Proceso</h4>
+                            <p class="text-sm text-slate-600">La <strong>ejecución</strong> de una tarea. Posee un contexto (estado de registros, Program Counter, memoria asignada, etc.).</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-slate-700 leading-relaxed bg-slate-50 p-4 rounded border border-slate-100">
+                        El <strong>Sistema Operativo (SO)</strong> actúa como intermediario entre el hardware y las aplicaciones. Busca un compromiso entre los requerimientos del usuario (terminar rápido) y el uso óptimo y equitativo de los recursos del sistema.
+                    </p>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
+                        <span class="text-usm-gold">2.</span> Scheduling (Planificación de Tareas)
+                    </h3>
+                    <p class="text-slate-700 mb-6">
+                        El algoritmo de Scheduling define el <strong>orden de ejecución</strong> de las tareas que están en estado "LISTA" esperando usar el procesador.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="border border-slate-200 rounded-lg p-5">
+                            <h4 class="font-bold text-usm-navy mb-2 flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-usm-gold inline-block"></span>
+                                Sin Interrupción (Non-Preemptive)
+                            </h4>
+                            <p class="text-sm text-slate-600 mb-3 border-b border-slate-100 pb-2">La tarea no suelta el procesador hasta terminar o hacer E/S.</p>
+                            <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
+                                <li><strong>FCFS (First Come First Served):</strong> Orden de llegada. Fácil de implementar, pero tareas largas bloquean a las cortas.</li>
+                                <li><strong>SJN (Shortest Job Next):</strong> Prioriza la tarea más corta. Minimiza tiempo de espera, pero arriesga <em>inanición (starvation)</em> para tareas largas.</li>
+                            </ul>
+                        </div>
+
+                        <div class="border border-slate-200 rounded-lg p-5">
+                            <h4 class="font-bold text-usm-burgundy mb-2 flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-usm-burgundy inline-block"></span>
+                                Con Interrupción (Preemptive)
+                            </h4>
+                            <p class="text-sm text-slate-600 mb-3 border-b border-slate-100 pb-2">La tarea puede ser expulsada del procesador por otra más prioritaria.</p>
+                            <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
+                                <li><strong>SRTF (Shortest Remaining Time First):</strong> Versión expropiativa de SJN. Interrumpe si llega una tarea de menor tiempo restante.</li>
+                                <li><strong>Round Robin (RR):</strong> Asigna un <em>Quantum</em> de tiempo. Si no termina, sale y vuelve a la cola. Es el más equitativo.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
+                        <span class="text-usm-gold">3.</span> Gestión del Tiempo
+                    </h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-slate-50 p-5 rounded-xl border-t-4 border-usm-burgundy">
+                            <h4 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-usm-burgundy"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                Interrupciones vs Excepciones
+                            </h4>
+                            <ul class="space-y-3 text-sm text-slate-700">
+                                <li><strong>Interrupción:</strong> Evento <em>asíncrono</em> de hardware/software (ej. Teclado, Reloj). Requiere atención inmediata, salva el contexto y ejecuta la rutina.</li>
+                                <li><strong>Excepción:</strong> Evento <em>sincrónico</em> anormal originado por el código mismo (ej. División por cero, Fallo de segmento).</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-slate-50 p-5 rounded-xl border-t-4 border-usm-navy">
+                            <h4 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-usm-navy"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                Reloj y Temporizador
+                            </h4>
+                            <ul class="space-y-3 text-sm text-slate-700">
+                                <li><strong>Registro Reloj:</strong> Incrementa con cada pulso del cuarzo. Mantiene la hora universal.</li>
+                                <li><strong>Temporizador (RTEMPO):</strong> Inicializa en <code>RTMAX</code>, decrementa con cada pulso. Al llegar a 0 genera la <strong>Interrupción del Reloj (IRQ 0)</strong>.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 text-slate-100 p-8 rounded-xl shadow-inner border-l-4 border-usm-gold">
+                        <h4 class="font-bold text-white text-lg mb-3">La Interrupción del Reloj y el TICK</h4>
+                        <p class="text-sm mb-5 text-slate-300">El tiempo transcurrido entre dos interrupciones del reloj se llama <strong>TICK</strong>. Cada vez que ocurre (ej. cada 10ms), el procesador detiene el proceso actual y el SO hace lo siguiente:</p>
+                        <ol class="list-decimal pl-5 text-sm space-y-3">
+                            <li><strong class="text-usm-gold">Actualizar la hora universal</strong> (<code>Hora = Hora + TICK - |RTempo|</code>).</li>
+                            <li><strong class="text-usm-gold">Revisar Timers List</strong> para despertar tareas dormidas.</li>
+                            <li><strong class="text-usm-gold">Contabilidad de CPU</strong> y cálculo de prioridades dinámicas.</li>
+                            <li><strong class="text-usm-gold">Gestión del Quantum</strong>: Forzar cambio de contexto si la tarea agotó su tiempo (Scheduling).</li>
+                        </ol>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="practica" class="mb-20">
+            <h3 class="section-title text-3xl font-bold mb-8 pb-4">Parte 2: Ejercitación Práctica</h3>
+            <p class="text-slate-600 mb-8 max-w-3xl">Resuelve los siguientes ejercicios basados en los modelos vistos en clases. Haz clic en el botón de resolución para verificar tu desarrollo paso a paso.</p>
+
+            <div class="space-y-8">
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
+                    <div class="p-6 md:p-8">
+                        <span class="inline-block bg-slate-100 text-usm-navy border border-usm-navy text-xs font-bold px-3 py-1 rounded-full mb-4">Ejercicio 1: Scheduling</span>
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">FCFS vs Shortest Job Next (SJN)</h3>
+                        <p class="text-slate-700 text-sm mb-6">Considere las siguientes 4 tareas que llegan al sistema en los instantes indicados y requieren el tiempo de procesador mostrado (sin hacer E/S):</p>
+                        
+                        <table class="w-full max-w-md text-sm text-left border-collapse border border-slate-200 bg-white mb-6 shadow-sm">
+                            <thead class="bg-slate-50 text-usm-navy">
+                                <tr>
+                                    <th class="border border-slate-200 px-4 py-3 font-bold">Tarea</th>
+                                    <th class="border border-slate-200 px-4 py-3 font-bold">Llegada</th>
+                                    <th class="border border-slate-200 px-4 py-3 font-bold">Duración</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="border border-slate-200 px-4 py-2 font-bold text-usm-navy">A</td><td class="border border-slate-200 px-4 py-2">t = 0 ms</td><td class="border border-slate-200 px-4 py-2">8 ms</td></tr>
+                                <tr><td class="border border-slate-200 px-4 py-2 font-bold text-usm-burgundy">B</td><td class="border border-slate-200 px-4 py-2">t = 1 ms</td><td class="border border-slate-200 px-4 py-2">4 ms</td></tr>
+                                <tr><td class="border border-slate-200 px-4 py-2 font-bold text-usm-gold">C</td><td class="border border-slate-200 px-4 py-2">t = 2 ms</td><td class="border border-slate-200 px-4 py-2">2 ms</td></tr>
+                                <tr><td class="border border-slate-200 px-4 py-2 font-bold text-slate-600">D</td><td class="border border-slate-200 px-4 py-2">t = 3 ms</td><td class="border border-slate-200 px-4 py-2">1 ms</td></tr>
+                            </tbody>
+                        </table>
+                        <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1">Pregunta: Dibuje la carta Gantt y calcule el tiempo promedio de espera de las tareas usando FCFS y luego usando SJN (Versión Non-Preemptive).</p>
+                    </div>
+
+                    <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end">
+                        <button onclick="toggleAnswer('ans1', this)" class="bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> 
+                            <span>Mostrar Resolución</span>
+                        </button>
+                    </div>
+
+                    <div id="ans1" class="hidden p-6 md:p-8 bg-white border-t border-slate-200 animate-fadeIn">
+                        
+                        <h4 class="font-bold text-usm-navy mb-4 border-b border-slate-200 pb-2">1. FCFS (First Come First Served)</h4>
+                        <p class="text-sm text-slate-700 mb-4">En FCFS se ejecutan estrictamente en orden de llegada al sistema.</p>
+                        
+                        <div class="w-full h-10 flex text-xs font-bold text-white text-center rounded-md overflow-hidden shadow mb-2">
+                            <div style="width: 53.33%" class="bg-usm-navy gantt-bar flex flex-col justify-center border-r border-white/20" title="A: 0-8">A (8)</div>
+                            <div style="width: 26.66%" class="bg-usm-burgundy gantt-bar flex flex-col justify-center border-r border-white/20" title="B: 8-12">B (4)</div>
+                            <div style="width: 13.33%" class="bg-usm-gold gantt-bar flex flex-col justify-center border-r border-white/20" title="C: 12-14">C (2)</div>
+                            <div style="width: 6.66%" class="bg-slate-700 gantt-bar flex flex-col justify-center" title="D: 14-15">D (1)</div>
+                        </div>
+                        <div class="flex justify-between text-xs text-slate-500 mb-6 font-mono font-semibold"><span>0</span><span>8</span><span>12</span><span>14</span><span>15</span></div>
+                        
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-sm font-mono text-slate-700 mb-10">
+                            <p class="font-bold text-slate-800 mb-2">Tiempos de Espera (Inicio - Llegada):</p>
+                            <ul class="list-none space-y-1 mb-3">
+                                <li>A: &nbsp;0 - 0 = &nbsp;0 ms</li>
+                                <li>B: &nbsp;8 - 1 = &nbsp;7 ms</li>
+                                <li>C: 12 - 2 = 10 ms</li>
+                                <li>D: 14 - 3 = 11 ms</li>
+                            </ul>
+                            <div class="border-t border-slate-300 pt-2 font-bold text-usm-burgundy">
+                                Promedio FCFS = (0 + 7 + 10 + 11) / 4 = 28 / 4 = 7 ms
+                            </div>
+                        </div>
+
+                        <h4 class="font-bold text-usm-navy mb-4 border-b border-slate-200 pb-2">2. SJN (Shortest Job Next)</h4>
+                        <p class="text-sm text-slate-700 mb-4">En t=0 solo está 'A', así que empieza A y <strong>no se le interrumpe</strong>. Termina en t=8. En ese momento, están listas B(4), C(2) y D(1). Se elige la de menor duración: D, luego C, luego B.</p>
+                        
+                        <div class="w-full h-10 flex text-xs font-bold text-white text-center rounded-md overflow-hidden shadow mb-2">
+                            <div style="width: 53.33%" class="bg-usm-navy gantt-bar flex flex-col justify-center border-r border-white/20" title="A: 0-8">A (8)</div>
+                            <div style="width: 6.66%" class="bg-slate-700 gantt-bar flex flex-col justify-center border-r border-white/20" title="D: 8-9">D(1)</div>
+                            <div style="width: 13.33%" class="bg-usm-gold gantt-bar flex flex-col justify-center border-r border-white/20" title="C: 9-11">C (2)</div>
+                            <div style="width: 26.66%" class="bg-usm-burgundy gantt-bar flex flex-col justify-center" title="B: 11-15">B (4)</div>
+                        </div>
+                        <div class="flex justify-between text-xs text-slate-500 mb-6 font-mono font-semibold"><span>0</span><span>8</span><span>9</span><span>11</span><span>15</span></div>
+                        
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-sm font-mono text-slate-700">
+                            <p class="font-bold text-slate-800 mb-2">Tiempos de Espera (Inicio - Llegada):</p>
+                            <ul class="list-none space-y-1 mb-3">
+                                <li>A: &nbsp;0 - 0 = &nbsp;0 ms</li>
+                                <li>D: &nbsp;8 - 3 = &nbsp;5 ms</li>
+                                <li>C: &nbsp;9 - 2 = &nbsp;7 ms</li>
+                                <li>B: 11 - 1 = 10 ms</li>
+                            </ul>
+                            <div class="border-t border-slate-300 pt-2 font-bold text-usm-burgundy">
+                                Promedio SJN = (0 + 5 + 7 + 10) / 4 = 22 / 4 = 5.5 ms
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
+                    <div class="p-6 md:p-8">
+                        <span class="inline-block bg-slate-100 text-usm-navy border border-usm-navy text-xs font-bold px-3 py-1 rounded-full mb-4">Ejercicio 2: Timer y Hardware</span>
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Cálculo de RTMAX (Registro Temporizador)</h3>
+                        <p class="text-slate-700 text-sm mb-3">Considere un procesador que dispone de un registro temporizador (<code>RTEMPO</code>). Este registro está asociado a un cuarzo de hardware y se decrementa en 1 con cada pulso del reloj interno. Cuando llega a 0, se genera la interrupción periódica del SO.</p>
+                        <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1">Pregunta: Si el cuarzo tiene una frecuencia de <strong>2 GHz</strong>, y el SO necesita que el TICK ocurra exactamente cada <strong>5 ms</strong>, ¿con qué valor inicial (RTMAX) debe el SO cargar el registro?</p>
+                    </div>
+                    
+                    <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end">
+                        <button onclick="toggleAnswer('ans2', this)" class="bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> 
+                            <span>Mostrar Resolución</span>
+                        </button>
+                    </div>
+
+                    <div id="ans2" class="hidden p-6 md:p-8 bg-white border-t border-slate-200 animate-fadeIn">
+                        <div class="text-slate-700 text-sm space-y-6">
+                            <div>
+                                <h4 class="font-bold text-slate-800 mb-2">1. Conversión de Unidades</h4>
+                                <ul class="list-disc pl-5 space-y-1">
+                                    <li>Frecuencia = 2 GHz = <strong>2 × 10<sup>9</sup></strong> pulsos por segundo.</li>
+                                    <li>TICK deseado = 5 ms = <strong>5 × 10<sup>-3</sup></strong> segundos.</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-bold text-slate-800 mb-2">2. Ecuación Base</h4>
+                                <p class="mb-3">El registro procesa 2.000.000.000 de pulsos por segundo. Para calcular los pulsos en una fracción de segundo, multiplicamos:</p>
+                                <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 font-mono text-center shadow-inner">
+                                    <p class="text-slate-500 mb-2">RTMAX = Frecuencia × TICK</p>
+                                    <p class="mb-2">RTMAX = (2 × 10<sup>9</sup> pulsos/s) × (5 × 10<sup>-3</sup> s)</p>
+                                    <p class="text-lg">RTMAX = 10 × 10<sup>6</sup></p>
+                                    <p class="text-2xl font-bold text-usm-burgundy mt-2">RTMAX = 10.000.000</p>
+                                </div>
+                            </div>
+
+                            <div class="border-l-4 border-usm-gold pl-4 py-2 bg-slate-50">
+                                <p class="font-bold text-slate-800 mb-1">Respuesta Final:</p>
+                                <p>El Sistema Operativo debe inicializar <code>RTEMPO</code> en <strong>10.000.000</strong>. Tras diez millones de ciclos, el contador llegará a cero e interrumpirá al procesador.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
+                    <div class="p-6 md:p-8">
+                        <span class="inline-block bg-slate-100 text-usm-navy border border-usm-navy text-xs font-bold px-3 py-1 rounded-full mb-4">Ejercicio 3: Overhead</span>
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Costo de la Gestión del SO</h3>
+                        <p class="text-slate-700 text-sm mb-4">Para dimensionar el rendimiento, necesitamos calcular qué porcentaje de tiempo pierde la CPU ejecutando rutinas administrativas (overhead) en un intervalo de un Quantum completo (N = 10 TICKS).</p>
+                        
+                        <div class="bg-slate-50 p-4 rounded border border-slate-200 mb-5">
+                            <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
+                                <li>En <strong>cada TICK</strong>, actualizar la hora y la lista de plazos toma <span class="font-bold text-usm-burgundy">Δt₁ = 100 µs</span>.</li>
+                                <li>Cada <strong>K = 5 TICKS</strong>, actualizar prioridades y contabilidad toma <span class="font-bold text-usm-burgundy">Δt₂ = 150 µs</span> extra.</li>
+                                <li>Al finalizar el Quantum (<strong>N = 10 TICKS</strong>), el cambio de contexto toma <span class="font-bold text-usm-burgundy">Δt₃ = 500 µs</span> extra.</li>
+                            </ul>
+                        </div>
+                        
+                        <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1">Pregunta: Si el TICK mide <strong>10 ms</strong>, calcule <code>p</code> (proporción de overhead total en un Quantum).</p>
+                    </div>
+
+                    <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end">
+                        <button onclick="toggleAnswer('ans3', this)" class="bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> 
+                            <span>Mostrar Resolución</span>
+                        </button>
+                    </div>
+
+                    <div id="ans3" class="hidden p-6 md:p-8 bg-white border-t border-slate-200 animate-fadeIn">
+                        <div class="text-slate-700 text-sm space-y-5">
+                            <p><strong>1. Frecuencia de los eventos en 1 Quantum (10 TICKS):</strong></p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>Rutina 1 ocurre en todos los ticks: <strong>10 veces</strong>.</li>
+                                <li>Rutina 2 ocurre cada 5 ticks: 10/5 = <strong>2 veces</strong>. <em>(Nota: Usaremos la fórmula con las incidencias reales, es decir 2).</em></li>
+                                <li>Cambio de contexto ocurre al final: <strong>1 vez</strong>.</li>
+                            </ul>
+
+                            <p class="mt-4"><strong>2. Cálculo del costo matemático:</strong></p>
+                            <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 font-mono text-center shadow-inner overflow-x-auto">
+                                <p class="text-xs text-slate-500 mb-4 border-b border-slate-200 pb-2">Fórmula: p = (N × Δt₁ + [N/K] × Δt₂ + 1 × Δt₃) / (N × TICK)</p>
+                                <p class="mb-2">p = ( 10 × 100 µs + 2 × 150 µs + 500 µs ) / ( 10 × 10 ms )</p>
+                                <p class="mb-2">p = ( 1000 µs + 300 µs + 500 µs ) / 100 ms</p>
+                                <p class="mb-2">p = 1800 µs / 100.000 µs</p>
+                                <p class="text-2xl font-bold text-usm-burgundy mt-3">p = 0.018 = 1.8%</p>
+                            </div>
+                            <p class="text-xs text-slate-400 text-center italic">* Nota: Si en tu curso K se define como un multiplicador fijo y no un divisor de intervalo, ajusta (N/K) por K directamente.</p>
+
+                            <div class="border-l-4 border-usm-gold pl-4 py-2 bg-slate-50 mt-4">
+                                <p class="font-bold text-slate-800 mb-1">Conclusión:</p>
+                                <p>El procesador dedica un <strong>1.8%</strong> de su tiempo a hacer labores administrativas (overhead). El 98.2% restante está disponible para los procesos de usuario. Si se redujera demasiado el tamaño del TICK o del Quantum, el porcentaje de overhead se dispararía, afectando el rendimiento.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-10" style="background: linear-gradient(120deg, #0f1f33 0%, #002b5c 55%, #8c1d40 100%); color: #e2e8f0; border-top: 2px solid rgba(201,163,74,0.6);">
+        <div class="container mx-auto px-6 py-8 text-center text-sm font-medium">
+            <p>&copy; 2026 Ayudantía - Sistemas Operativos. Material de estudio.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleAnswer(id, btn) {
+            const el = document.getElementById(id);
+            const isHidden = el.classList.contains('hidden');
+            const iconShow = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+            const iconHide = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m2 2 20 20"></path><path d="M6.71 6.71A10.61 10.61 0 0 0 2 12a10.54 10.54 0 0 0 11.29 8.05"></path><path d="M11 17a5 5 0 0 1-5-5"></path><path d="M14 14a5 5 0 0 1-5-5"></path><path d="M17.3 17.3A10.56 10.56 0 0 0 22 12a10.58 10.58 0 0 0-11-7.05"></path></svg>`;
+            
+            if (isHidden) {
+                el.classList.remove('hidden');
+                btn.innerHTML = iconHide + ` <span>Ocultar Resolución</span>`;
+                btn.classList.replace('bg-usm-navy', 'bg-slate-200');
+                btn.classList.replace('hover:bg-usm-navy-dark', 'hover:bg-slate-300');
+                btn.classList.replace('text-white', 'text-slate-700');
+            } else {
+                el.classList.add('hidden');
+                btn.innerHTML = iconShow + ` <span>Mostrar Resolución</span>`;
+                btn.classList.replace('bg-slate-200', 'bg-usm-navy');
+                btn.classList.replace('hover:bg-slate-300', 'hover:bg-usm-navy-dark');
+                btn.classList.replace('text-slate-700', 'text-white');
+            }
+        }
+    </script>
+</body>
+</html>
