@@ -104,8 +104,6 @@
         .border-usm-burgundy { border-color: var(--usm-burgundy); }
         .border-usm-gold { border-color: var(--usm-gold); }
 
-        .ring-usm-navy { --tw-ring-color: var(--usm-navy); }
-
         .animate-fadeIn { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
@@ -114,8 +112,26 @@
         
         .gantt-bar {
             transition: filter 0.2s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 4px;
         }
         .gantt-bar:hover { filter: brightness(1.15); transform: scaleY(1.05); }
+
+        .accordion-icon { transition: transform 0.3s ease; }
+        
+        .math-inline {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f1f5f9;
+            padding: 0.1rem 0.3rem;
+            border-radius: 0.25rem;
+            font-weight: bold;
+            color: var(--usm-navy);
+        }
     </style>
 </head>
 <body class="text-slate-800">
@@ -125,6 +141,7 @@
             <h1 class="text-xl brand-title">Ayudantía USM</h1>
             <div class="space-x-2 sm:space-x-4">
                 <a href="#teoria" class="nav-link font-medium transition-colors text-xs sm:text-base">Teoría</a>
+                <a href="#certamenes" class="nav-link font-medium transition-colors text-xs sm:text-base">Certámenes</a>
                 <a href="#practica" class="nav-link font-medium transition-colors text-xs sm:text-base">Práctica</a>
             </div>
         </nav>
@@ -136,16 +153,19 @@
             <h2 class="hero-title font-bold mb-4">Sistemas Operativos</h2>
             <p class="text-lg hero-subtitle max-w-3xl mx-auto flex items-center justify-center gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-usm-burgundy"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                Teoría y Ejercitación Práctica
+                Guía de Estudio: Scheduling y Gestión del Tiempo
             </p>
-            <p class="mt-4 text-sm font-bold tracking-wide text-usm-gold">Edición visual institucional</p>
         </section>
 
+        <!-- ========================================== -->
+        <!-- PARTE 1: TEORÍA DETALLADA                  -->
+        <!-- ========================================== -->
         <section id="teoria" class="mb-20">
             <h3 class="section-title text-3xl font-bold mb-8 pb-4">Parte 1: Resumen Teórico</h3>
 
             <div class="space-y-10">
                 
+                <!-- 1. Conceptos Fundamentales -->
                 <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
                     <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
                         <span class="text-usm-gold">1.</span> Conceptos Fundamentales
@@ -153,282 +173,427 @@
                     <div class="grid md:grid-cols-3 gap-6 mb-6">
                         <div class="bg-slate-50 p-5 rounded-lg border-l-4 border-slate-300">
                             <h4 class="font-bold text-usm-navy mb-2">Programa</h4>
-                            <p class="text-sm text-slate-600">Expresión estática de un algoritmo en un lenguaje de programación. Es simplemente código almacenado en disco.</p>
+                            <p class="text-sm text-slate-600">Expresión estática de un algoritmo en un lenguaje de programación. Es simplemente código pasivo almacenado en disco.</p>
                         </div>
                         <div class="bg-slate-50 p-5 rounded-lg border-l-4 border-usm-gold">
                             <h4 class="font-bold text-usm-navy mb-2">Tarea</h4>
-                            <p class="text-sm text-slate-600">Unión de un programa con los datos a los cuales se va a aplicar.</p>
+                            <p class="text-sm text-slate-600">La unión de un programa con los datos iniciales a los cuales se va a aplicar. Aún no se está ejecutando.</p>
                         </div>
                         <div class="bg-slate-50 p-5 rounded-lg border-l-4 border-usm-burgundy shadow-sm">
                             <h4 class="font-bold text-usm-burgundy mb-2">Proceso</h4>
-                            <p class="text-sm text-slate-600">La <strong>ejecución</strong> de una tarea. Posee un contexto (estado de registros, Program Counter, memoria asignada, etc.).</p>
+                            <p class="text-sm text-slate-600">La <strong>ejecución viva</strong> de una tarea. Posee un contexto real (estado de registros de CPU, Program Counter, memoria RAM asignada).</p>
                         </div>
                     </div>
                     
-                    <p class="text-slate-700 leading-relaxed bg-slate-50 p-4 rounded border border-slate-100">
-                        El <strong>Sistema Operativo (SO)</strong> actúa como intermediario entre el hardware y las aplicaciones. Busca un compromiso entre los requerimientos del usuario (terminar rápido) y el uso óptimo y equitativo de los recursos del sistema.
-                    </p>
+                    <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
+                        <h4 class="font-bold text-usm-navy mb-2">El rol del Sistema Operativo en el Scheduling</h4>
+                        <p class="text-sm text-slate-700 leading-relaxed mb-3">
+                            El SO actúa como árbitro de los recursos (CPU, Memoria, E/S). Su objetivo principal al planificar (Scheduling) es encontrar un equilibrio entre:
+                        </p>
+                        <ul class="list-disc pl-5 text-sm text-slate-700 space-y-1">
+                            <li><strong>Satisfacer al usuario:</strong> Tiempos de espera y de respuesta cortos.</li>
+                            <li><strong>Eficiencia del sistema (Throughput):</strong> Maximizar el número de tareas terminadas por segundo y minimizar el tiempo ocioso (Idle) del procesador.</li>
+                        </ul>
+                    </div>
                 </div>
 
+                <!-- 2. Scheduling -->
                 <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
                     <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
-                        <span class="text-usm-gold">2.</span> Scheduling (Planificación de Tareas)
+                        <span class="text-usm-gold">2.</span> Algoritmos de Scheduling (Planificación)
                     </h3>
-                    <p class="text-slate-700 mb-6">
-                        El algoritmo de Scheduling define el <strong>orden de ejecución</strong> de las tareas que están en estado "LISTA" esperando usar el procesador.
+                    
+                    <p class="text-sm text-slate-700 mb-6">
+                        El <strong>Modelo de Planificación</strong> dicta la filosofía (Ej: Batch Processing vs Tiempo Compartido), mientras que el <strong>Algoritmo de Scheduling</strong> es el mecanismo matemático/lógico que decide <em>quién</em> entra a la CPU cuando esta se libera.
                     </p>
 
-                    <div class="grid md:grid-cols-2 gap-6">
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <!-- Sin Interrupción -->
                         <div class="border border-slate-200 rounded-lg p-5">
                             <h4 class="font-bold text-usm-navy mb-2 flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-usm-gold inline-block"></span>
-                                Sin Interrupción (Non-Preemptive)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-usm-navy"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                                Sin Requisición (Non-Preemptive)
                             </h4>
-                            <p class="text-sm text-slate-600 mb-3 border-b border-slate-100 pb-2">La tarea no suelta el procesador hasta terminar o hacer E/S.</p>
-                            <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
-                                <li><strong>FCFS (First Come First Served):</strong> Orden de llegada. Fácil de implementar, pero tareas largas bloquean a las cortas.</li>
-                                <li><strong>SJN (Shortest Job Next):</strong> Prioriza la tarea más corta. Minimiza tiempo de espera, pero arriesga <em>inanición (starvation)</em> para tareas largas.</li>
+                            <p class="text-xs text-slate-500 mb-3 border-b border-slate-100 pb-2">Modelo Batch. La tarea toma la CPU y no la suelta hasta que termina o hace E/S.</p>
+                            <ul class="list-disc pl-5 text-sm text-slate-700 space-y-3">
+                                <li><strong>FCFS (First Come First Served):</strong> Orden de llegada. Muy fácil de programar, pero las tareas largas bloquean a las cortas causando frustración.</li>
+                                <li><strong>SJN (Shortest Job Next):</strong> Prioriza la tarea con <em>menor tiempo total</em> de ejecución. Minimiza drásticamente el tiempo de espera promedio, pero sufre de <strong>inanición (starvation)</strong>: si siempre llegan tareas cortas, una larga jamás se ejecutará.</li>
+                                <li><strong>HPRN (Highest Penalty Ratio Next):</strong> Mejora de SJN. Calcula una "tasa de penalización" <span class="math-inline">P = (Espera + Duración) / Duración</span>. Así, las tareas largas ganan prioridad a medida que envejecen esperando, evitando la inanición.</li>
                             </ul>
                         </div>
 
+                        <!-- Con Interrupción -->
                         <div class="border border-slate-200 rounded-lg p-5">
                             <h4 class="font-bold text-usm-burgundy mb-2 flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-usm-burgundy inline-block"></span>
-                                Con Interrupción (Preemptive)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-usm-burgundy"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                Con Requisición (Preemptive)
                             </h4>
-                            <p class="text-sm text-slate-600 mb-3 border-b border-slate-100 pb-2">La tarea puede ser expulsada del procesador por otra más prioritaria.</p>
-                            <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
-                                <li><strong>SRTF (Shortest Remaining Time First):</strong> Versión expropiativa de SJN. Interrumpe si llega una tarea de menor tiempo restante.</li>
-                                <li><strong>Round Robin (RR):</strong> Asigna un <em>Quantum</em> de tiempo. Si no termina, sale y vuelve a la cola. Es el más equitativo.</li>
+                            <p class="text-xs text-slate-500 mb-3 border-b border-slate-100 pb-2">La CPU puede ser arrebatada a la fuerza si llega una tarea más prioritaria.</p>
+                            <ul class="list-disc pl-5 text-sm text-slate-700 space-y-3">
+                                <li><strong>PSJN (Preemptive SJN):</strong> Si llega una tarea nueva y su duración total es menor que la tarea actual, la interrumpe. Problema: puede interrumpir tareas que ya estaban casi terminadas.</li>
+                                <li><strong>SRTF (Shortest Remaining Time First):</strong> Mucho más inteligente que PSJN. Solo interrumpe si la tarea entrante es más corta que <em>lo que le falta por terminar</em> a la tarea actual.</li>
+                                <li><strong>RR (Round Robin):</strong> Reparto por "Quantum" (q). Cada tarea recibe un trozo de tiempo. Es el más justo para usuarios interactivos, pero si <span class="math-inline">q</span> es muy pequeño, el costo de conmutar (overhead) arruina el rendimiento.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
+                <!-- 3. Gestión del Tiempo -->
                 <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
                     <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
-                        <span class="text-usm-gold">3.</span> Gestión del Tiempo
+                        <span class="text-usm-gold">3.</span> Gestión del Tiempo y Hardware Subyacente
                     </h3>
                     
                     <div class="grid md:grid-cols-2 gap-6 mb-8">
                         <div class="bg-slate-50 p-5 rounded-xl border-t-4 border-usm-burgundy">
-                            <h4 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-usm-burgundy"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                                Interrupciones vs Excepciones
-                            </h4>
-                            <ul class="space-y-3 text-sm text-slate-700">
-                                <li><strong>Interrupción:</strong> Evento <em>asíncrono</em> de hardware/software (ej. Teclado, Reloj). Requiere atención inmediata, salva el contexto y ejecuta la rutina.</li>
-                                <li><strong>Excepción:</strong> Evento <em>sincrónico</em> anormal originado por el código mismo (ej. División por cero, Fallo de segmento).</li>
+                            <h4 class="font-bold text-slate-800 mb-3">Eventos del Sistema</h4>
+                            <ul class="space-y-4 text-sm text-slate-700">
+                                <li>
+                                    <strong class="text-usm-burgundy block mb-1">Interrupción (Hardware)</strong>
+                                    Es un evento <em>asíncrono</em> generado por componentes externos (teclado, disco, reloj). No avisan cuándo ocurrirán. Detienen la CPU inmediatamente, salvan el contexto y saltan a la tabla de vectores de interrupción (INTR).
+                                </li>
+                                <li>
+                                    <strong class="text-usm-navy block mb-1">Excepción (Software)</strong>
+                                    Es un evento <em>síncrono</em> y anormal originado por el código mismo en tiempo de ejecución (ej. División por cero, Fallo de segmento de memoria).
+                                </li>
                             </ul>
                         </div>
 
-                        <div class="bg-slate-50 p-5 rounded-xl border-t-4 border-usm-navy">
-                            <h4 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-usm-navy"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                Reloj y Temporizador
-                            </h4>
-                            <ul class="space-y-3 text-sm text-slate-700">
-                                <li><strong>Registro Reloj:</strong> Incrementa con cada pulso del cuarzo. Mantiene la hora universal.</li>
-                                <li><strong>Temporizador (RTEMPO):</strong> Inicializa en <code>RTMAX</code>, decrementa con cada pulso. Al llegar a 0 genera la <strong>Interrupción del Reloj (IRQ 0)</strong>.</li>
+                        <div class="bg-slate-50 p-5 rounded-xl border-t-4 border-usm-gold">
+                            <h4 class="font-bold text-slate-800 mb-3">Reloj y Temporizador</h4>
+                            <p class="text-sm text-slate-700 mb-3">El sistema confía en un cristal de cuarzo físico (Hardware) que oscila a una frecuencia fija (Ej: 1GHz = 10<sup>9</sup> pulsos/segundo).</p>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li><strong>Registro Reloj:</strong> Se incrementa con cada pulso del cuarzo. Mantiene la <em>Hora Universal</em> (UTC / Epoch).</li>
+                                <li><strong>Temporizador (Watchdog / RTEMPO):</strong> Es un registro que cuenta en reversa. El SO lo inicializa en un valor llamado <span class="math-inline">RTMAX</span>. Se decrementa con cada pulso.</li>
+                                <li class="pt-2 border-t border-slate-200"><strong>El evento clave:</strong> Cuando RTEMPO llega a 0, dispara por hardware la <strong>Interrupción del Reloj (IRQ 0)</strong>.</li>
                             </ul>
                         </div>
                     </div>
 
-                    <div class="bg-slate-900 text-slate-100 p-8 rounded-xl shadow-inner border-l-4 border-usm-gold">
-                        <h4 class="font-bold text-white text-lg mb-3">La Interrupción del Reloj y el TICK</h4>
-                        <p class="text-sm mb-5 text-slate-300">El tiempo transcurrido entre dos interrupciones del reloj se llama <strong>TICK</strong>. Cada vez que ocurre (ej. cada 10ms), el procesador detiene el proceso actual y el SO hace lo siguiente:</p>
-                        <ol class="list-decimal pl-5 text-sm space-y-3">
-                            <li><strong class="text-usm-gold">Actualizar la hora universal</strong> (<code>Hora = Hora + TICK - |RTempo|</code>).</li>
-                            <li><strong class="text-usm-gold">Revisar Timers List</strong> para despertar tareas dormidas.</li>
-                            <li><strong class="text-usm-gold">Contabilidad de CPU</strong> y cálculo de prioridades dinámicas.</li>
-                            <li><strong class="text-usm-gold">Gestión del Quantum</strong>: Forzar cambio de contexto si la tarea agotó su tiempo (Scheduling).</li>
-                        </ol>
+                    <div class="bg-slate-900 text-slate-100 p-8 rounded-xl shadow-inner border-l-4 border-usm-gold relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 opacity-10">
+                            <svg width="150" height="150" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14" stroke="white" stroke-width="2" fill="none"></polyline></svg>
+                        </div>
+                        <h4 class="font-bold text-white text-xl mb-3 relative z-10">La Rutina de Interrupción y el TICK</h4>
+                        <p class="text-sm mb-5 text-slate-300 relative z-10">El tiempo transcurrido entre dos IRQ 0 consecutivas se llama <strong>TICK</strong> (ej. 1ms o 10ms). Cada vez que esto ocurre, el procesador deja lo que estaba haciendo y ejecuta una rutina crítica de gestión. El tiempo gastado en esta rutina se conoce como <strong>Overhead</strong>.</p>
+                        
+                        <div class="grid sm:grid-cols-2 gap-4 relative z-10">
+                            <div>
+                                <h5 class="text-usm-gold font-bold text-sm mb-2">¿Qué hace el SO en cada TICK?</h5>
+                                <ol class="list-decimal pl-5 text-sm space-y-2 text-slate-300">
+                                    <li>Actualizar la hora universal.</li>
+                                    <li>Revisar la <em>Timers List</em> (lista de plazos) para despertar tareas (ej. <code>sleep(5)</code>).</li>
+                                    <li>Actualizar la contabilidad de CPU de la tarea actual.</li>
+                                    <li>Decrementar el Quantum. Si llega a 0, forzar la salida de la tarea (Scheduling).</li>
+                                </ol>
+                            </div>
+                            <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                                <h5 class="text-white font-bold text-sm mb-2">Corrección de Hora</h5>
+                                <p class="text-xs text-slate-400 mb-2">La ejecución de la rutina de interrupción toma tiempo. Durante ese tiempo, RTEMPO pasa a valores negativos. Para que el reloj no se atrase severamente, se ajusta con:</p>
+                                <code class="block text-center text-usm-gold font-mono text-xs bg-slate-900 py-2 rounded">Hora = Hora + TICK - |RTempo|</code>
+                                <p class="text-xs text-slate-400 mt-2">Aun así, pequeñas instrucciones de HW no medibles atrasan el reloj. Por eso se usan protocolos como <strong>NTP (Network Time Protocol)</strong> que ajustan el reloj de a poco (Drifting) en vez de hacerlo saltar de golpe.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
             </div>
         </section>
 
-        <section id="practica" class="mb-20">
-            <h3 class="section-title text-3xl font-bold mb-8 pb-4">Parte 2: Ejercitación Práctica</h3>
-            <p class="text-slate-600 mb-8 max-w-3xl">Resuelve los siguientes ejercicios basados en los modelos vistos en clases. Haz clic en el botón de resolución para verificar tu desarrollo paso a paso.</p>
+        <!-- ========================================== -->
+        <!-- PARTE 2: PREGUNTAS TIPO CERTAMEN           -->
+        <!-- ========================================== -->
+        <section id="certamenes" class="mb-20">
+            <h3 class="section-title text-3xl font-bold mb-8 pb-4">Parte 2: Preguntas Teóricas (Tipo Certamen)</h3>
+            
+            <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                <p class="text-slate-600 mb-6 text-sm">Preguntas extraídas directamente de pautas de certámenes anteriores. Haz clic en cada pregunta para revelar la respuesta.</p>
 
-            <div class="space-y-8">
+                <div class="space-y-4">
+                    <!-- Q1 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden transition-all duration-300">
+                        <button onclick="toggleAccordion('cert1', this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 font-bold text-usm-navy flex justify-between items-center transition-colors">
+                            <span>1. ¿Cuál es la diferencia entre el Modelo de Planificación de Tareas y el Algoritmo de Scheduling?</span>
+                            <svg class="w-5 h-5 text-slate-400 accordion-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
+                        <div id="cert1" class="hidden px-6 py-5 bg-white border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
+                            <p>El <strong>modelo de planificación</strong> determina <em>la filosofía y forma de uso</em> del procesador (cuándo se pierde, durante cuánto tiempo una tarea lo tiene, si hay reciclaje o quantum). El <strong>algoritmo de scheduling</strong> es la matemática que elige <em>cuál es la tarea siguiente</em> cuando la tarea en ejecución actual pierde el procesador (porque terminó, hizo E/S, o se le acabó su quantum).</p>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden transition-all duration-300">
+                        <button onclick="toggleAccordion('cert2', this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 font-bold text-usm-navy flex justify-between items-center transition-colors">
+                            <span>2. ¿Por qué existe riesgo de inanición (starvation) en algoritmos como SJN?</span>
+                            <svg class="w-5 h-5 text-slate-400 accordion-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
+                        <div id="cert2" class="hidden px-6 py-5 bg-white border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
+                            <p>En Shortest Job Next (SJN), la prioridad siempre la tiene la tarea más corta. Si en un sistema existe un flujo constante y continuo de tareas cortas llegando a la cola "LISTA", las tareas largas siempre quedarán relegadas al final. Como consecuencia, las tareas largas jamás obtendrán la CPU y sufrirán de inanición indefinida. Para solucionar esto se creó el HPRN, que aumenta la prioridad según el tiempo de espera.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden transition-all duration-300">
+                        <button onclick="toggleAccordion('cert3', this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 font-bold text-usm-navy flex justify-between items-center transition-colors">
+                            <span>3. ¿Por qué la hora local del Sistema Operativo siempre tiende a atrasarse a pesar de las correcciones matemáticas?</span>
+                            <svg class="w-5 h-5 text-slate-400 accordion-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
+                        <div id="cert3" class="hidden px-6 py-5 bg-white border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
+                            <p>Aunque el SO corrige la hora sumando el tiempo que demoró la rutina de interrupción misma (usando el valor negativo con el que quedó el registro RTEMPO), existen instrucciones a muy bajo nivel (como rearmar/resetear el temporizador de vuelta a RTMAX y la instrucción <code>return</code> final que devuelve el control de la interrupción) cuyo tiempo de ejecución de Hardware <strong>no se puede medir ni sumar a la variable "Hora"</strong>. En cada TICK se pierden unos pocos nanosegundos invisibles al SO, lo que a largo plazo (días/semanas) atrasa el reloj.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden transition-all duration-300">
+                        <button onclick="toggleAccordion('cert4', this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 font-bold text-usm-navy flex justify-between items-center transition-colors">
+                            <span>4. ¿Por qué los sistemas de sincronización de reloj (NTP) no actualizan la hora "de un solo golpe" si detectan un desfase?</span>
+                            <svg class="w-5 h-5 text-slate-400 accordion-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
+                        <div id="cert4" class="hidden px-6 py-5 bg-white border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
+                            <p>Si el reloj local del computador saltara abruptamente hacia el futuro (por ejemplo, de las 23:59 directamente a las 00:05), <strong>los tiempos intermedios dejarían de existir para el Sistema Operativo</strong>. Esto causaría que cualquier tarea crítica, servicio o script programado para ejecutarse en ese lapso exacto (ej. un respaldo (cronjob) programado a las 00:00) jamás se ejecute. Por eso, el protocolo NTP usa una técnica de "Drifting", acelerando o ralentizando los TICKS sutilmente para alcanzar la hora real gradualmente sin perder ningún segundo.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden transition-all duration-300">
+                        <button onclick="toggleAccordion('cert5', this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 font-bold text-usm-navy flex justify-between items-center transition-colors">
+                            <span>5. ¿Qué consecuencia directa tiene para el sistema elegir un valor de TICK excesivamente pequeño o excesivamente grande?</span>
+                            <svg class="w-5 h-5 text-slate-400 accordion-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
+                        <div id="cert5" class="hidden px-6 py-5 bg-white border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li><strong>TICK Pequeño:</strong> Aumenta drásticamente la precisión del tiempo y hace el sistema más responsivo. <em>Desventaja:</em> Genera demasiadas interrupciones (IRQ0). El procesador gasta gran parte de su capacidad solo ejecutando las rutinas del SO en vez de procesar tareas de usuario. <strong>Sube el Overhead, baja el rendimiento útil.</strong></li>
+                                <li><strong>TICK Grande:</strong> Minimiza el número de interrupciones. El procesador dedica casi toda su potencia al trabajo útil (Bajo overhead). <em>Desventaja:</em> Se pierde resolución y precisión temporal. Un usuario interactivo sentirá el sistema trabado o lento para responder a eventos inmediatos.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PARTE 3: EJERCITACIÓN PRÁCTICA             -->
+        <!-- ========================================== -->
+        <section id="practica" class="mb-20">
+            <h3 class="section-title text-3xl font-bold mb-8 pb-4">Parte 3: Ejercitación Práctica Paso a Paso</h3>
+            <p class="text-slate-600 mb-8 max-w-3xl">Resuelve los siguientes ejercicios basados en las guías de ayudantía oficiales. Hemos incluido el análisis y resolución detallada de cada escenario.</p>
+
+            <div class="space-y-10">
                 
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
-                    <div class="p-6 md:p-8">
-                        <span class="inline-block bg-slate-100 text-usm-navy border border-usm-navy text-xs font-bold px-3 py-1 rounded-full mb-4">Ejercicio 1: Scheduling</span>
-                        <h3 class="text-xl font-bold text-slate-800 mb-3">FCFS vs Shortest Job Next (SJN)</h3>
-                        <p class="text-slate-700 text-sm mb-6">Considere las siguientes 4 tareas que llegan al sistema en los instantes indicados y requieren el tiempo de procesador mostrado (sin hacer E/S):</p>
-                        
-                        <table class="w-full max-w-md text-sm text-left border-collapse border border-slate-200 bg-white mb-6 shadow-sm">
+                <!-- Ejercicio 1: SJN vs PSJN (Mejorado de Ayudantía 2) -->
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <span class="inline-block bg-usm-gold text-white text-xs font-bold px-3 py-1 rounded-full mb-4 shadow-sm">Ejercicio 1: Ayudantía 2 (Scheduling Teórico)</span>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">3.1 Comparativa de Rendimiento: SJN vs PSJN</h3>
+                    <p class="text-slate-700 text-sm mb-4">Considere las siguientes 5 tareas (A, B, C, D, E) con sus respectivos tiempos de llegada y tiempos estimados de ejecución:</p>
+                    
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full text-sm text-left border-collapse border border-slate-200 bg-white shadow-sm">
                             <thead class="bg-slate-50 text-usm-navy">
                                 <tr>
                                     <th class="border border-slate-200 px-4 py-3 font-bold">Tarea</th>
-                                    <th class="border border-slate-200 px-4 py-3 font-bold">Llegada</th>
-                                    <th class="border border-slate-200 px-4 py-3 font-bold">Duración</th>
+                                    <th class="border border-slate-200 px-4 py-3 text-center">A</th>
+                                    <th class="border border-slate-200 px-4 py-3 text-center">B</th>
+                                    <th class="border border-slate-200 px-4 py-3 text-center">C</th>
+                                    <th class="border border-slate-200 px-4 py-3 text-center">E</th>
+                                    <th class="border border-slate-200 px-4 py-3 text-center">D</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td class="border border-slate-200 px-4 py-2 font-bold text-usm-navy">A</td><td class="border border-slate-200 px-4 py-2">t = 0 ms</td><td class="border border-slate-200 px-4 py-2">8 ms</td></tr>
-                                <tr><td class="border border-slate-200 px-4 py-2 font-bold text-usm-burgundy">B</td><td class="border border-slate-200 px-4 py-2">t = 1 ms</td><td class="border border-slate-200 px-4 py-2">4 ms</td></tr>
-                                <tr><td class="border border-slate-200 px-4 py-2 font-bold text-usm-gold">C</td><td class="border border-slate-200 px-4 py-2">t = 2 ms</td><td class="border border-slate-200 px-4 py-2">2 ms</td></tr>
-                                <tr><td class="border border-slate-200 px-4 py-2 font-bold text-slate-600">D</td><td class="border border-slate-200 px-4 py-2">t = 3 ms</td><td class="border border-slate-200 px-4 py-2">1 ms</td></tr>
+                                <tr><td class="border border-slate-200 px-4 py-2 font-bold text-slate-700">Llegada (t)</td><td class="border border-slate-200 px-4 py-2 text-center">0</td><td class="border border-slate-200 px-4 py-2 text-center">0</td><td class="border border-slate-200 px-4 py-2 text-center">3</td><td class="border border-slate-200 px-4 py-2 text-center">5</td><td class="border border-slate-200 px-4 py-2 text-center">8</td></tr>
+                                <tr><td class="border border-slate-200 px-4 py-2 font-bold text-slate-700">Duración Est.</td><td class="border border-slate-200 px-4 py-2 text-center">5</td><td class="border border-slate-200 px-4 py-2 text-center">4</td><td class="border border-slate-200 px-4 py-2 text-center">3</td><td class="border border-slate-200 px-4 py-2 text-center">3</td><td class="border border-slate-200 px-4 py-2 text-center">2</td></tr>
                             </tbody>
                         </table>
-                        <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1">Pregunta: Dibuje la carta Gantt y calcule el tiempo promedio de espera de las tareas usando FCFS y luego usando SJN (Versión Non-Preemptive).</p>
                     </div>
+                    
+                    <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1 mb-6">Pregunta: Dibuje la carta Gantt y calcule los <strong class="text-usm-burgundy">tiempos de respuesta</strong> y la <strong class="text-usm-burgundy">tasa de penalización</strong> (<span class="math-inline">Tp = T. Respuesta / T. Ejecución</span>) para los modelos SJN y PSJN.</p>
 
-                    <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end">
-                        <button onclick="toggleAnswer('ans1', this)" class="bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md">
+                    <div class="flex justify-end border-t border-slate-100 pt-4">
+                        <button onclick="toggleAnswer('prac1', this)" class="bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> 
                             <span>Mostrar Resolución</span>
                         </button>
                     </div>
 
-                    <div id="ans1" class="hidden p-6 md:p-8 bg-white border-t border-slate-200 animate-fadeIn">
+                    <div id="prac1" class="hidden mt-6 space-y-8 animate-fadeIn">
                         
-                        <h4 class="font-bold text-usm-navy mb-4 border-b border-slate-200 pb-2">1. FCFS (First Come First Served)</h4>
-                        <p class="text-sm text-slate-700 mb-4">En FCFS se ejecutan estrictamente en orden de llegada al sistema.</p>
-                        
-                        <div class="w-full h-10 flex text-xs font-bold text-white text-center rounded-md overflow-hidden shadow mb-2">
-                            <div style="width: 53.33%" class="bg-usm-navy gantt-bar flex flex-col justify-center border-r border-white/20" title="A: 0-8">A (8)</div>
-                            <div style="width: 26.66%" class="bg-usm-burgundy gantt-bar flex flex-col justify-center border-r border-white/20" title="B: 8-12">B (4)</div>
-                            <div style="width: 13.33%" class="bg-usm-gold gantt-bar flex flex-col justify-center border-r border-white/20" title="C: 12-14">C (2)</div>
-                            <div style="width: 6.66%" class="bg-slate-700 gantt-bar flex flex-col justify-center" title="D: 14-15">D (1)</div>
-                        </div>
-                        <div class="flex justify-between text-xs text-slate-500 mb-6 font-mono font-semibold"><span>0</span><span>8</span><span>12</span><span>14</span><span>15</span></div>
-                        
-                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-sm font-mono text-slate-700 mb-10">
-                            <p class="font-bold text-slate-800 mb-2">Tiempos de Espera (Inicio - Llegada):</p>
-                            <ul class="list-none space-y-1 mb-3">
-                                <li>A: &nbsp;0 - 0 = &nbsp;0 ms</li>
-                                <li>B: &nbsp;8 - 1 = &nbsp;7 ms</li>
-                                <li>C: 12 - 2 = 10 ms</li>
-                                <li>D: 14 - 3 = 11 ms</li>
-                            </ul>
-                            <div class="border-t border-slate-300 pt-2 font-bold text-usm-burgundy">
-                                Promedio FCFS = (0 + 7 + 10 + 11) / 4 = 28 / 4 = 7 ms
+                        <!-- SJN Analysis -->
+                        <div class="p-6 bg-slate-50 border border-slate-200 rounded-lg shadow-sm">
+                            <h4 class="font-bold text-usm-navy mb-4 border-b border-slate-200 pb-2">1. Modelo SJN (Batch - Sin Requisición)</h4>
+                            <p class="text-sm text-slate-700 mb-4">La política dicta: "El que entra no sale hasta terminar". En t=0, A(5) y B(4) llegan juntas. Como B es más corta, se ejecuta primero y monopoliza la CPU hasta t=4. En t=4 analizamos la cola: están esperando A(5) y la recién llegada C(3). Entra C. Y así sucesivamente priorizando el tamaño.</p>
+                            
+                            <div class="w-full h-10 flex text-xs font-bold text-white shadow-sm mb-2 overflow-hidden rounded border border-slate-300">
+                                <div style="width: 23.5%" class="bg-usm-burgundy gantt-bar border-r border-white/20" title="B: 0-4">B (4)</div>
+                                <div style="width: 17.6%" class="bg-usm-gold gantt-bar border-r border-white/20" title="C: 4-7">C (3)</div>
+                                <div style="width: 17.6%" class="bg-slate-500 gantt-bar border-r border-white/20" title="E: 7-10">E (3)</div>
+                                <div style="width: 11.7%" class="bg-slate-700 gantt-bar border-r border-white/20" title="D: 10-12">D (2)</div>
+                                <div style="width: 29.4%" class="bg-usm-navy gantt-bar" title="A: 12-17">A (5)</div>
+                            </div>
+                            <div class="flex justify-between text-xs text-slate-500 font-mono mb-6 font-semibold"><span>0</span><span>4</span><span>7</span><span>10</span><span>12</span><span>17</span></div>
+                            
+                            <div class="grid sm:grid-cols-2 gap-4 text-sm font-mono text-slate-700">
+                                <div class="bg-white p-4 rounded border border-slate-200">
+                                    <p class="font-bold text-slate-800 mb-2">T. Respuesta (<span class="math-inline">T<sub>fin</sub> - T<sub>llegada</sub></span>):</p>
+                                    <ul class="space-y-1">
+                                        <li>A: 17 - 0 = <strong>17ms</strong></li>
+                                        <li>B: 4 - 0 = <strong>4ms</strong></li>
+                                        <li>C: 7 - 3 = <strong>4ms</strong></li>
+                                        <li>D: 12 - 8 = <strong>4ms</strong></li>
+                                        <li>E: 10 - 5 = <strong>5ms</strong></li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-4 rounded border border-slate-200">
+                                    <p class="font-bold text-slate-800 mb-2">T. Penalización (<span class="math-inline">T<sub>resp</sub> / Duración</span>):</p>
+                                    <ul class="space-y-1">
+                                        <li>A: 17 / 5 = <strong>3.4</strong> (Alta penalidad)</li>
+                                        <li>B: 4 / 4 = <strong>1.0</strong> (Perfecto)</li>
+                                        <li>C: 4 / 3 ≈ <strong>1.33</strong></li>
+                                        <li>D: 4 / 2 = <strong>2.0</strong></li>
+                                        <li>E: 5 / 3 ≈ <strong>1.66</strong></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
 
-                        <h4 class="font-bold text-usm-navy mb-4 border-b border-slate-200 pb-2">2. SJN (Shortest Job Next)</h4>
-                        <p class="text-sm text-slate-700 mb-4">En t=0 solo está 'A', así que empieza A y <strong>no se le interrumpe</strong>. Termina en t=8. En ese momento, están listas B(4), C(2) y D(1). Se elige la de menor duración: D, luego C, luego B.</p>
-                        
-                        <div class="w-full h-10 flex text-xs font-bold text-white text-center rounded-md overflow-hidden shadow mb-2">
-                            <div style="width: 53.33%" class="bg-usm-navy gantt-bar flex flex-col justify-center border-r border-white/20" title="A: 0-8">A (8)</div>
-                            <div style="width: 6.66%" class="bg-slate-700 gantt-bar flex flex-col justify-center border-r border-white/20" title="D: 8-9">D(1)</div>
-                            <div style="width: 13.33%" class="bg-usm-gold gantt-bar flex flex-col justify-center border-r border-white/20" title="C: 9-11">C (2)</div>
-                            <div style="width: 26.66%" class="bg-usm-burgundy gantt-bar flex flex-col justify-center" title="B: 11-15">B (4)</div>
-                        </div>
-                        <div class="flex justify-between text-xs text-slate-500 mb-6 font-mono font-semibold"><span>0</span><span>8</span><span>9</span><span>11</span><span>15</span></div>
-                        
-                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-sm font-mono text-slate-700">
-                            <p class="font-bold text-slate-800 mb-2">Tiempos de Espera (Inicio - Llegada):</p>
-                            <ul class="list-none space-y-1 mb-3">
-                                <li>A: &nbsp;0 - 0 = &nbsp;0 ms</li>
-                                <li>D: &nbsp;8 - 3 = &nbsp;5 ms</li>
-                                <li>C: &nbsp;9 - 2 = &nbsp;7 ms</li>
-                                <li>B: 11 - 1 = 10 ms</li>
-                            </ul>
-                            <div class="border-t border-slate-300 pt-2 font-bold text-usm-burgundy">
-                                Promedio SJN = (0 + 5 + 7 + 10) / 4 = 22 / 4 = 5.5 ms
+                        <!-- PSJN Analysis -->
+                        <div class="p-6 bg-slate-50 border border-slate-200 rounded-lg shadow-sm">
+                            <h4 class="font-bold text-usm-navy mb-4 border-b border-slate-200 pb-2">2. Modelo PSJN (Con Requisición)</h4>
+                            <p class="text-sm text-slate-700 mb-4">La política dicta: "Si llega una tarea nueva MÁS CORTA que la actual, expropia la CPU". En t=0 entra B(4). En t=3 llega C(3); en este instante, a B solo le queda 1ms, por lo que 1 < 3. B NO es interrumpida. Termina B en t=4 y entra C. ¡Ocurre lo mismo en toda la traza! Casualmente este set de datos no provoca interrupciones a medio camino, comportándose idéntico a SJN.</p>
+                            
+                            <div class="w-full h-10 flex text-xs font-bold text-white shadow-sm mb-2 overflow-hidden rounded border border-slate-300">
+                                <div style="width: 23.5%" class="bg-usm-burgundy gantt-bar border-r border-white/20" title="B: 0-4">B (4)</div>
+                                <div style="width: 17.6%" class="bg-usm-gold gantt-bar border-r border-white/20" title="C: 4-7">C (3)</div>
+                                <div style="width: 17.6%" class="bg-slate-500 gantt-bar border-r border-white/20" title="E: 7-10">E (3)</div>
+                                <div style="width: 11.7%" class="bg-slate-700 gantt-bar border-r border-white/20" title="D: 10-12">D (2)</div>
+                                <div style="width: 29.4%" class="bg-usm-navy gantt-bar" title="A: 12-17">A (5)</div>
+                            </div>
+                            <div class="flex justify-between text-xs text-slate-500 font-mono mb-4 font-semibold"><span>0</span><span>4</span><span>7</span><span>10</span><span>12</span><span>17</span></div>
+                            <div class="bg-usm-gold/10 text-usm-navy p-3 rounded text-sm border border-usm-gold/30">
+                                <strong>💡 Nota Teórica:</strong> A pesar de que aquí la Gantt dio igual, en teoría PSJN es propenso a arruinar el progreso de tareas largas que ya iban por la mitad si el flujo de tareas cortas es constante.
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
-                    <div class="p-6 md:p-8">
-                        <span class="inline-block bg-slate-100 text-usm-navy border border-usm-navy text-xs font-bold px-3 py-1 rounded-full mb-4">Ejercicio 2: Timer y Hardware</span>
-                        <h3 class="text-xl font-bold text-slate-800 mb-3">Cálculo de RTMAX (Registro Temporizador)</h3>
-                        <p class="text-slate-700 text-sm mb-3">Considere un procesador que dispone de un registro temporizador (<code>RTEMPO</code>). Este registro está asociado a un cuarzo de hardware y se decrementa en 1 con cada pulso del reloj interno. Cuando llega a 0, se genera la interrupción periódica del SO.</p>
-                        <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1">Pregunta: Si el cuarzo tiene una frecuencia de <strong>2 GHz</strong>, y el SO necesita que el TICK ocurra exactamente cada <strong>5 ms</strong>, ¿con qué valor inicial (RTMAX) debe el SO cargar el registro?</p>
-                    </div>
+                <!-- Ejercicio NUEVO: Overhead y Quantum (Ayudantía 3) -->
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <span class="inline-block bg-usm-gold text-white text-xs font-bold px-3 py-1 rounded-full mb-4 shadow-sm">Ejercicio 2: Ayudantía 3 (Gestión de Quantum)</span>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">3.2 Gestión del Quantum y Costo de Conmutación (Overhead)</h3>
+                    <p class="text-slate-700 text-sm mb-4">Considere un sistema de Tiempo Compartido donde las tareas consumen la totalidad de su Quantum. Existe un costo o penalidad de hardware/software cada vez que el SO realiza un cambio de contexto (Task Switching), representado por <span class="math-inline">s = 1ms</span>.</p>
                     
-                    <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end">
-                        <button onclick="toggleAnswer('ans2', this)" class="bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md">
+                    <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1 mb-6">Pregunta: Si se configura un <strong class="text-usm-burgundy">Quantum (q) = 100ms</strong>, evalúe el impacto del overhead (tiempo total de vida vs tiempo útil) para una tarea <span class="math-inline">T<sub>1</sub> = 20ms</span> y otra tarea <span class="math-inline">T<sub>2</sub> = 500ms</span>.</p>
+                    
+                    <div class="flex justify-end border-t border-slate-100 pt-4">
+                        <button onclick="toggleAnswer('prac2', this)" class="bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> 
                             <span>Mostrar Resolución</span>
                         </button>
                     </div>
 
-                    <div id="ans2" class="hidden p-6 md:p-8 bg-white border-t border-slate-200 animate-fadeIn">
-                        <div class="text-slate-700 text-sm space-y-6">
-                            <div>
-                                <h4 class="font-bold text-slate-800 mb-2">1. Conversión de Unidades</h4>
-                                <ul class="list-disc pl-5 space-y-1">
-                                    <li>Frecuencia = 2 GHz = <strong>2 × 10<sup>9</sup></strong> pulsos por segundo.</li>
-                                    <li>TICK deseado = 5 ms = <strong>5 × 10<sup>-3</sup></strong> segundos.</li>
+                    <div id="prac2" class="hidden mt-6 p-6 bg-slate-50 border border-slate-200 rounded-lg animate-fadeIn">
+                        <p class="text-sm text-slate-700 mb-6">El "Overhead" es tiempo procesador que NO avanza el trabajo del usuario. Se calcula analizando cuántas conmutaciones sufre la tarea a lo largo de su vida.</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- T1 -->
+                            <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                                <h4 class="font-bold text-usm-navy mb-3 text-center border-b border-slate-100 pb-2">Análisis de <span class="math-inline">T<sub>1</sub> (20ms)</span></h4>
+                                <ul class="text-sm text-slate-700 space-y-2">
+                                    <li>Como 20ms < 100ms, la tarea termina en su primer quantum.</li>
+                                    <li>Genera <strong>1 sola conmutación</strong> (para salir).</li>
+                                    <li>Tiempo Total Vida: <code>20ms + 1ms = 21ms</code></li>
                                 </ul>
-                            </div>
-                            
-                            <div>
-                                <h4 class="font-bold text-slate-800 mb-2">2. Ecuación Base</h4>
-                                <p class="mb-3">El registro procesa 2.000.000.000 de pulsos por segundo. Para calcular los pulsos en una fracción de segundo, multiplicamos:</p>
-                                <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 font-mono text-center shadow-inner">
-                                    <p class="text-slate-500 mb-2">RTMAX = Frecuencia × TICK</p>
-                                    <p class="mb-2">RTMAX = (2 × 10<sup>9</sup> pulsos/s) × (5 × 10<sup>-3</sup> s)</p>
-                                    <p class="text-lg">RTMAX = 10 × 10<sup>6</sup></p>
-                                    <p class="text-2xl font-bold text-usm-burgundy mt-2">RTMAX = 10.000.000</p>
+                                <div class="mt-4 bg-slate-100 p-3 rounded text-center text-usm-burgundy font-bold font-mono text-sm">
+                                    Pérdida (Overhead) = 1ms / 21ms ≈ 4.76%
                                 </div>
                             </div>
 
-                            <div class="border-l-4 border-usm-gold pl-4 py-2 bg-slate-50">
-                                <p class="font-bold text-slate-800 mb-1">Respuesta Final:</p>
-                                <p>El Sistema Operativo debe inicializar <code>RTEMPO</code> en <strong>10.000.000</strong>. Tras diez millones de ciclos, el contador llegará a cero e interrumpirá al procesador.</p>
+                            <!-- T2 -->
+                            <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                                <h4 class="font-bold text-usm-navy mb-3 text-center border-b border-slate-100 pb-2">Análisis de <span class="math-inline">T<sub>2</sub> (500ms)</span></h4>
+                                <ul class="text-sm text-slate-700 space-y-2">
+                                    <li>Como consume 500ms, agotará el quantum de 100ms un total de <strong>5 veces</strong>.</li>
+                                    <li>Genera <strong>5 conmutaciones</strong> obligadas por el sistema.</li>
+                                    <li>Tiempo Total Vida: <code>500ms + (5 * 1ms) = 505ms</code></li>
+                                </ul>
+                                <div class="mt-4 bg-slate-100 p-3 rounded text-center text-usm-burgundy font-bold font-mono text-sm">
+                                    Pérdida (Overhead) = 5ms / 505ms ≈ 0.99%
+                                </div>
                             </div>
+                        </div>
+
+                        <div class="mt-6 bg-blue-50 border-l-4 border-blue-400 p-4 text-sm text-slate-800 rounded-r-md">
+                            <strong>Conclusión de Diseño:</strong> Si el Quantum <span class="math-inline">q</span> es muy pequeño, la relación <span class="math-inline">s/q</span> crece y el rendimiento se desploma por el exceso de conmutaciones. Si es muy grande, baja la pérdida (como en T2), pero aumenta el tiempo que deben esperar las tareas interactivas nuevas.
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
-                    <div class="p-6 md:p-8">
-                        <span class="inline-block bg-slate-100 text-usm-navy border border-usm-navy text-xs font-bold px-3 py-1 rounded-full mb-4">Ejercicio 3: Overhead</span>
-                        <h3 class="text-xl font-bold text-slate-800 mb-3">Costo de la Gestión del SO</h3>
-                        <p class="text-slate-700 text-sm mb-4">Para dimensionar el rendimiento, necesitamos calcular qué porcentaje de tiempo pierde la CPU ejecutando rutinas administrativas (overhead) en un intervalo de un Quantum completo (N = 10 TICKS).</p>
-                        
-                        <div class="bg-slate-50 p-4 rounded border border-slate-200 mb-5">
-                            <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
-                                <li>En <strong>cada TICK</strong>, actualizar la hora y la lista de plazos toma <span class="font-bold text-usm-burgundy">Δt₁ = 100 µs</span>.</li>
-                                <li>Cada <strong>K = 5 TICKS</strong>, actualizar prioridades y contabilidad toma <span class="font-bold text-usm-burgundy">Δt₂ = 150 µs</span> extra.</li>
-                                <li>Al finalizar el Quantum (<strong>N = 10 TICKS</strong>), el cambio de contexto toma <span class="font-bold text-usm-burgundy">Δt₃ = 500 µs</span> extra.</li>
-                            </ul>
-                        </div>
-                        
-                        <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1">Pregunta: Si el TICK mide <strong>10 ms</strong>, calcule <code>p</code> (proporción de overhead total en un Quantum).</p>
-                    </div>
-
-                    <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end">
-                        <button onclick="toggleAnswer('ans3', this)" class="bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md">
+                <!-- Ejercicio 3: Hardware (TICK y RTEMPO) -->
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <span class="inline-block bg-usm-gold text-white text-xs font-bold px-3 py-1 rounded-full mb-4 shadow-sm">Ejercicio 3: Ayudantía 3 (Arquitectura)</span>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">3.3 Frecuencia y Registro Temporizador (RTMAX)</h3>
+                    <p class="text-slate-700 text-sm mb-4">Un procesador de 64 bits dispone de un registro temporizador (RTEMPO) que funciona en complemento 2. Está asociado a un cristal de cuarzo de frecuencia <span class="math-inline">F = 1 GHz</span> y se decrementa en 1 en cada pulso de reloj. El sistema operativo quiere establecer un TICK exacto de <strong>10 milisegundos (10ms)</strong>.</p>
+                    <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1 mb-6">Pregunta: ¿Con qué valor inicial (<span class="math-inline">RTMAX</span>) debe configurar el SO al registro RTEMPO para asegurar la IRQ 0 en el tiempo preciso?</p>
+                    
+                    <div class="flex justify-end border-t border-slate-100 pt-4">
+                        <button onclick="toggleAnswer('prac3', this)" class="bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> 
                             <span>Mostrar Resolución</span>
                         </button>
                     </div>
 
-                    <div id="ans3" class="hidden p-6 md:p-8 bg-white border-t border-slate-200 animate-fadeIn">
-                        <div class="text-slate-700 text-sm space-y-5">
-                            <p><strong>1. Frecuencia de los eventos en 1 Quantum (10 TICKS):</strong></p>
-                            <ul class="list-disc pl-5 space-y-1">
-                                <li>Rutina 1 ocurre en todos los ticks: <strong>10 veces</strong>.</li>
-                                <li>Rutina 2 ocurre cada 5 ticks: 10/5 = <strong>2 veces</strong>. <em>(Nota: Usaremos la fórmula con las incidencias reales, es decir 2).</em></li>
-                                <li>Cambio de contexto ocurre al final: <strong>1 vez</strong>.</li>
-                            </ul>
+                    <div id="prac3" class="hidden mt-6 p-6 md:p-8 bg-slate-50 border border-slate-200 rounded-lg animate-fadeIn">
+                        <p class="text-sm text-slate-700 mb-6">Para resolver esto, debemos normalizar las unidades a la base matemática (segundos). <br>Un cuarzo de 1 GHz emite <strong>10<sup>9</sup> pulsos por segundo</strong>. Queremos que nuestro contador de cuenta regresiva llegue a cero en 10ms, que es <strong>10<sup>-2</sup> segundos</strong>.</p>
+                        
+                        <div class="bg-white p-6 rounded-xl border border-usm-gold shadow-sm text-center max-w-lg mx-auto">
+                            <p class="text-slate-500 text-sm font-mono mb-4 bg-slate-100 p-2 rounded">Fórmula: RTMAX = Frecuencia (Hz) &times; TICK deseado (s)</p>
+                            <p class="text-lg font-mono text-slate-800 mb-2">RTMAX = (10<sup>9</sup> Hz) &times; (10<sup>-2</sup> s)</p>
+                            <div class="h-px w-2/3 bg-slate-200 mx-auto my-4"></div>
+                            <p class="text-3xl font-bold text-usm-gold">RTMAX = 10<sup>7</sup> = 10.000.000</p>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-6 text-center">Es decir, el SO cargará el número diez millones en el HW. El hardware restará uno a la velocidad de mil millones de veces por segundo, llegando a 0 y disparando la interrupción exactamente 10 milisegundos después.</p>
+                    </div>
+                </div>
 
-                            <p class="mt-4"><strong>2. Cálculo del costo matemático:</strong></p>
-                            <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 font-mono text-center shadow-inner overflow-x-auto">
-                                <p class="text-xs text-slate-500 mb-4 border-b border-slate-200 pb-2">Fórmula: p = (N × Δt₁ + [N/K] × Δt₂ + 1 × Δt₃) / (N × TICK)</p>
-                                <p class="mb-2">p = ( 10 × 100 µs + 2 × 150 µs + 500 µs ) / ( 10 × 10 ms )</p>
-                                <p class="mb-2">p = ( 1000 µs + 300 µs + 500 µs ) / 100 ms</p>
-                                <p class="mb-2">p = 1800 µs / 100.000 µs</p>
-                                <p class="text-2xl font-bold text-usm-burgundy mt-3">p = 0.018 = 1.8%</p>
-                            </div>
-                            <p class="text-xs text-slate-400 text-center italic">* Nota: Si en tu curso K se define como un multiplicador fijo y no un divisor de intervalo, ajusta (N/K) por K directamente.</p>
+                <!-- Ejercicio 4: Costo Overhead de Gestión -->
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <span class="inline-block bg-usm-gold text-white text-xs font-bold px-3 py-1 rounded-full mb-4 shadow-sm">Ejercicio 4: Ayudantía 3 (Cálculo de Overhead)</span>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">3.4 Porcentaje Global de Overhead del Sistema</h3>
+                    <p class="text-slate-700 text-sm mb-4">Es vital medir qué porcentaje del tiempo la CPU gasta haciendo labores de administración (overhead) versus labores útiles de los usuarios. Consideremos la siguiente rutina del Sistema Operativo:</p>
+                    
+                    <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 mb-6 shadow-inner">
+                        <ul class="list-disc pl-5 text-sm text-slate-700 space-y-3 font-mono">
+                            <li><strong class="text-usm-navy font-sans">Cada TICK:</strong> Actualiza hora y timers. Demora <span class="math-inline">&Delta;t<sub>1</sub> = 100 &mu;s</span>.</li>
+                            <li><strong class="text-usm-navy font-sans">Cada K=5 TICKS:</strong> Actualiza prioridades. Demora <span class="math-inline">&Delta;t<sub>2</sub> = 150 &mu;s</span>.</li>
+                            <li><strong class="text-usm-navy font-sans">Cada N=10 TICKS:</strong> Quantum expira. Ocurre Scheduling y Context Switch. Demora <span class="math-inline">&Delta;t<sub>3</sub> = 500 &mu;s</span>.</li>
+                        </ul>
+                    </div>
+                    
+                    <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1 mb-6">Pregunta: Si el TICK base es de <strong>10ms</strong>, ¿Cuál es el porcentaje <span class="math-inline">p</span> de la CPU que se desperdicia en Overhead en un ciclo completo de 1 Quantum (N)?</p>
+                    
+                    <div class="flex justify-end border-t border-slate-100 pt-4">
+                        <button onclick="toggleAnswer('prac4', this)" class="bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> 
+                            <span>Mostrar Resolución</span>
+                        </button>
+                    </div>
 
-                            <div class="border-l-4 border-usm-gold pl-4 py-2 bg-slate-50 mt-4">
-                                <p class="font-bold text-slate-800 mb-1">Conclusión:</p>
-                                <p>El procesador dedica un <strong>1.8%</strong> de su tiempo a hacer labores administrativas (overhead). El 98.2% restante está disponible para los procesos de usuario. Si se redujera demasiado el tamaño del TICK o del Quantum, el porcentaje de overhead se dispararía, afectando el rendimiento.</p>
-                            </div>
+                    <div id="prac4" class="hidden mt-6 p-6 md:p-8 bg-slate-50 border border-slate-200 rounded-lg animate-fadeIn">
+                        <p class="text-sm text-slate-700 mb-6">El ciclo de estudio es sobre 1 Quantum (N = 10 TICKS). Durante estos 10 TICKS, los eventos de administración ocurren con diferente frecuencia. Debemos sumar todos esos tiempos perdidos y dividirlos por el tiempo real del reloj.</p>
+                        
+                        <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-sm text-sm text-slate-800 font-mono text-center mb-6">
+                            <p class="text-slate-500 mb-4 text-xs border-b border-slate-100 pb-2 uppercase tracking-wide">Fórmula del Overhead Total (OH)</p>
+                            <p class="mb-2">OH = (N &times; &Delta;t<sub>1</sub>) + ((N/K) &times; &Delta;t<sub>2</sub>) + (1 &times; &Delta;t<sub>3</sub>)</p>
+                            <p class="mb-4 text-slate-500">Explicación: N=10 veces ocurre &Delta;t1. N/K = 10/5 = 2 veces ocurre &Delta;t2. 1 sola vez ocurre el &Delta;t3 al final del quantum.</p>
+                            
+                            <p class="mb-1">OH = (10 &times; 100&mu;s) + (2 &times; 150&mu;s) + (500&mu;s)</p>
+                            <p class="mb-4">OH = 1000&mu;s + 300&mu;s + 500&mu;s = <strong class="text-usm-navy">1800 &mu;s</strong> (Tiempo Perdido)</p>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-sm text-sm text-slate-800 font-mono text-center">
+                            <p class="text-slate-500 mb-4 text-xs border-b border-slate-100 pb-2 uppercase tracking-wide">Cálculo del Porcentaje (p)</p>
+                            <p class="mb-4">Tiempo Total del Ciclo (TT) = N &times; TICK = 10 &times; 10ms = 100ms = <strong class="text-usm-navy">100.000 &mu;s</strong></p>
+                            <div class="h-px w-2/3 bg-slate-200 mx-auto my-4"></div>
+                            <p class="text-lg mb-2">p = OH / TT</p>
+                            <p class="text-3xl text-usm-burgundy font-bold">p = 1800 / 100000 = 0.018 = 1.8%</p>
                         </div>
                     </div>
                 </div>
@@ -439,11 +604,12 @@
 
     <footer class="mt-10" style="background: linear-gradient(120deg, #0f1f33 0%, #002b5c 55%, #8c1d40 100%); color: #e2e8f0; border-top: 2px solid rgba(201,163,74,0.6);">
         <div class="container mx-auto px-6 py-8 text-center text-sm font-medium">
-            <p>&copy; 2026 Ayudantía - Sistemas Operativos. Material de estudio.</p>
+            <p>&copy; 2026 Ayudantía USM - Sistemas Operativos. Material de estudio refactorizado.</p>
         </div>
     </footer>
 
     <script>
+        // Lógica para botones de ejercicios (Práctica)
         function toggleAnswer(id, btn) {
             const el = document.getElementById(id);
             const isHidden = el.classList.contains('hidden');
@@ -455,13 +621,32 @@
                 btn.innerHTML = iconHide + ` <span>Ocultar Resolución</span>`;
                 btn.classList.replace('bg-usm-navy', 'bg-slate-200');
                 btn.classList.replace('hover:bg-usm-navy-dark', 'hover:bg-slate-300');
-                btn.classList.replace('text-white', 'text-slate-700');
+                btn.classList.replace('text-white', 'text-usm-navy');
             } else {
                 el.classList.add('hidden');
                 btn.innerHTML = iconShow + ` <span>Mostrar Resolución</span>`;
                 btn.classList.replace('bg-slate-200', 'bg-usm-navy');
                 btn.classList.replace('hover:bg-slate-300', 'hover:bg-usm-navy-dark');
-                btn.classList.replace('text-slate-700', 'text-white');
+                btn.classList.replace('text-usm-navy', 'text-white');
+            }
+        }
+
+        // Lógica exclusiva para Acordeones (Certámenes)
+        function toggleAccordion(id, btn) {
+            const el = document.getElementById(id);
+            const isHidden = el.classList.contains('hidden');
+            const icon = btn.querySelector('svg.accordion-icon');
+            
+            if (isHidden) {
+                el.classList.remove('hidden');
+                btn.classList.add('bg-slate-100');
+                btn.classList.replace('text-usm-navy', 'text-usm-burgundy');
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            } else {
+                el.classList.add('hidden');
+                btn.classList.remove('bg-slate-100');
+                btn.classList.replace('text-usm-burgundy', 'text-usm-navy');
+                if (icon) icon.style.transform = 'rotate(0deg)';
             }
         }
     </script>
