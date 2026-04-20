@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayudantía SO - Gestión de Memoria Lineal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --usm-navy: #002b5c;
+            --usm-burgundy: #8c1d40;
+            --usm-gold: #c9a34a;
+            --usm-ink: #0f1f33;
+            --usm-paper: #f6f7fb;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--usm-paper);
+            background-image:
+                radial-gradient(circle at 8% 12%, rgba(201, 163, 74, 0.22) 0%, transparent 28%),
+                radial-gradient(circle at 92% 84%, rgba(140, 29, 64, 0.15) 0%, transparent 32%),
+                linear-gradient(135deg, #f8fafc 0%, #edf2fb 55%, #f8fafc 100%);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Sora', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .topbar {
+            background: linear-gradient(90deg, rgba(0, 43, 92, 0.95), rgba(140, 29, 64, 0.92));
+            box-shadow: 0 10px 30px rgba(15, 31, 51, 0.25);
+            border-bottom: 2px solid rgba(201, 163, 74, 0.65);
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-title {
+            color: #ffffff;
+            font-weight: 800;
+        }
+
+        .nav-link {
+            color: #f1f5f9;
+            padding: 0.45rem 0.85rem;
+            border-radius: 9999px;
+            transition: all 0.25s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(201, 163, 74, 0.55);
+        }
+
+        .hero-title {
+            font-size: clamp(2.3rem, 6vw, 4.2rem);
+            background: linear-gradient(135deg, var(--usm-navy), var(--usm-burgundy));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-subtitle {
+            color: #334155;
+            font-weight: 500;
+        }
+
+        .section-title {
+            border-bottom-width: 3px;
+            color: var(--usm-ink);
+            border-color: rgba(0, 43, 92, 0.28);
+        }
+
+        .bg-white.p-8.rounded-xl.shadow-lg, .card-hover {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 43, 92, 0.09);
+            box-shadow: 0 16px 30px rgba(15, 31, 51, 0.1);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .bg-white.p-8.rounded-xl.shadow-lg:hover, .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 36px rgba(15, 31, 51, 0.16);
+        }
+
+        /* Utilidades de Color USM */
+        .text-usm-navy { color: var(--usm-navy); }
+        .text-usm-burgundy { color: var(--usm-burgundy); }
+        .text-usm-gold { color: var(--usm-gold); }
+        
+        .bg-usm-navy { background-color: var(--usm-navy); }
+        .hover\:bg-usm-navy-dark:hover { background-color: #001a3b; }
+        
+        .bg-usm-burgundy { background-color: var(--usm-burgundy); }
+        .bg-usm-gold { background-color: var(--usm-gold); }
+
+        .border-usm-navy { border-color: var(--usm-navy); }
+        .border-usm-burgundy { border-color: var(--usm-burgundy); }
+        .border-usm-gold { border-color: var(--usm-gold); }
+
+        .animate-fadeIn { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .accordion-icon { transition: transform 0.3s ease; }
+
+        /* Estilos visuales para Memoria */
+        .memory-block {
+            transition: transform 0.2s;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .memory-block:hover {
+            transform: scale(1.02);
+            z-index: 10;
+        }
+        .bg-striped-free {
+            background-image: repeating-linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.5),
+                rgba(255, 255, 255, 0.5) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <header class="topbar sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl brand-title">Ayudantía</h1>
+            <div class="space-x-2 sm:space-x-4">
+                <a href="#teoria" class="nav-link font-medium transition-colors text-xs sm:text-base">Teoría</a>
+                <a href="#conceptos" class="nav-link font-medium transition-colors text-xs sm:text-base">Conceptos</a>
+                <a href="#practica" class="nav-link font-medium transition-colors text-xs sm:text-base">Práctica</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 max-w-5xl">
+        
+        <section id="intro" class="text-center mb-16">
+            <h2 class="hero-title font-bold mb-4">Sistemas Operativos</h2>
+            <p class="text-lg hero-subtitle max-w-3xl mx-auto flex items-center justify-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-usm-burgundy"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Gestión de Memoria Lineal
+            </p>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PARTE 1: TEORÍA DETALLADA                  -->
+        <!-- ========================================== -->
+        <section id="teoria" class="mb-20">
+            <h3 class="section-title text-3xl font-bold mb-8 pb-4">Parte 1: Resumen Teórico</h3>
+
+            <div class="space-y-10">
+
+                <!-- 0. Conceptos Básicos y MMU -->
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
+                        <span class="text-usm-gold">1.</span> Conceptos Básicos y la MMU
+                    </h3>
+                    
+                    <p class="text-slate-700 leading-relaxed mb-6">
+                        Antes de asignar memoria, debemos entender cómo los programas "ven" la memoria. Un proceso no usa direcciones reales de la RAM, usa direcciones simuladas.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-usm-navy mb-2">Direcciones Lógicas vs Físicas</h4>
+                            <p class="text-sm text-slate-600 mb-3">La <strong>Dirección Lógica (Virtual)</strong> es la que genera la CPU durante la ejecución del programa. La <strong>Dirección Física</strong> es la ubicación real en la memoria RAM (los chips físicos).</p>
+                        </div>
+                        <div class="bg-usm-paper p-5 rounded-lg border-l-4 border-usm-gold shadow-sm">
+                            <h4 class="font-bold text-usm-navy mb-2">Memory Management Unit (MMU)</h4>
+                            <p class="text-sm text-slate-600">Es el dispositivo de <strong>hardware</strong> que mapea (traduce) las direcciones lógicas a direcciones físicas en tiempo de ejecución de forma transparente para el proceso.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="p-5 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-usm-burgundy mb-2">Políticas de Gestión</h4>
+                            <ul class="text-sm text-slate-600 space-y-2 list-disc pl-4">
+                                <li><strong>Ubicación (Placement):</strong> Define <em>dónde</em> cargar un proceso en la RAM (ej. algoritmos First Fit, Best Fit).</li>
+                                <li><strong>Reemplazo (Replacement):</strong> Define a qué proceso sacar de la RAM hacia el disco cuando la memoria está saturada.</li>
+                            </ul>
+                        </div>
+                        <div class="p-5 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-slate-700 mb-2">Overlays (Superposiciones)</h4>
+                            <p class="text-sm text-slate-600">Técnica antigua que permitía ejecutar programas más grandes que la RAM. El <strong>programador</strong> dividía el código en módulos independientes que se iban sobreescribiendo en la memoria según se necesitaban. Hoy está obsoleto porque era muy complejo de programar.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1. Introducción a la Memoria Lineal -->
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
+                        <span class="text-usm-gold">2.</span> Modelo de Memoria Lineal (Contigua)
+                    </h3>
+                    
+                    <p class="text-slate-700 leading-relaxed mb-6">
+                        En la gestión de memoria lineal, la RAM se visualiza como una secuencia contigua. <strong>El requisito principal y más limitante de este modelo es que un proceso debe cargarse completamente en un solo espacio continuo de memoria</strong> para ejecutarse.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-4">
+                        <div class="bg-slate-50 p-5 rounded-lg border-l-4 border-usm-burgundy">
+                            <h4 class="font-bold text-usm-navy mb-2">Particiones Fijas</h4>
+                            <p class="text-sm text-slate-600 mb-2">La memoria se divide en bloques de tamaño predeterminado por el SO desde el inicio. Un proceso ocupa una partición entera, sin importar si le sobra espacio.</p>
+                            <p class="text-xs text-usm-burgundy font-bold mt-2">⚠️ Genera Fragmentación Interna.</p>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-lg border-l-4 border-usm-gold">
+                            <h4 class="font-bold text-usm-navy mb-2">Particiones Dinámicas</h4>
+                            <p class="text-sm text-slate-600 mb-2">A los procesos se les asigna exactamente la cantidad de memoria que piden. Los bloques se crean y destruyen dinámicamente.</p>
+                            <p class="text-xs text-usm-gold font-bold mt-2">⚠️ Genera Fragmentación Externa.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Tipos de Fragmentación -->
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
+                        <span class="text-usm-gold">3.</span> El Problema de la Fragmentación
+                    </h3>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="font-bold text-usm-burgundy mb-3 flex items-center gap-2">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                                Fragmentación Interna
+                            </h4>
+                            <p class="text-sm text-slate-600 mb-4">Ocurre cuando el bloque asignado es más grande que el proceso. El espacio sobrante <strong>dentro del bloque</strong> se desperdicia porque no se le puede asignar a nadie más.</p>
+                            <div class="h-8 w-full border border-slate-300 rounded flex overflow-hidden text-xs text-white font-bold text-center">
+                                <div class="bg-usm-navy w-1/2 flex items-center justify-center">Proceso (50KB)</div>
+                                <div class="bg-red-300 w-1/2 flex items-center justify-center text-red-900 bg-striped-free">Espacio desperdiciado (50KB)</div>
+                            </div>
+                            <p class="text-xs text-center text-slate-400 mt-1">Ej: Bloque fijo de 100KB</p>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-usm-navy mb-3 flex items-center gap-2">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                                Fragmentación Externa
+                            </h4>
+                            <p class="text-sm text-slate-600 mb-4">A medida que los procesos entran y salen de la RAM, van dejando <strong>huecos vacíos esparcidos</strong>. Hay memoria total suficiente, pero no está contigua, impidiendo cargar nuevos procesos.</p>
+                            <div class="h-8 w-full border border-slate-300 rounded flex overflow-hidden text-xs text-white font-bold text-center">
+                                <div class="bg-usm-navy w-1/3 flex items-center justify-center">P1 (30KB)</div>
+                                <div class="bg-slate-200 w-1/6 flex items-center justify-center text-slate-600 bg-striped-free">15KB</div>
+                                <div class="bg-usm-burgundy w-1/3 flex items-center justify-center">P2 (30KB)</div>
+                                <div class="bg-slate-200 w-1/6 flex items-center justify-center text-slate-600 bg-striped-free">15KB</div>
+                            </div>
+                            <p class="text-xs text-center text-slate-400 mt-1">Total libre: 30KB. ¡Pero un proceso de 20KB no cabe!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Algoritmos de Asignación y Soluciones -->
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
+                        <span class="text-usm-gold">4.</span> Asignación, Mitigación y Conclusión
+                    </h3>
+                    
+                    <div class="mb-8">
+                        <h4 class="font-bold text-slate-800 mb-3">Políticas de Ubicación (Algoritmos de Asignación)</h4>
+                        <ul class="space-y-3 text-sm text-slate-700 list-disc pl-5">
+                            <li><strong class="text-usm-navy">First Fit (Primer Ajuste):</strong> Busca desde el inicio de la RAM y asigna el <em>primer hueco</em> que sea lo suficientemente grande. Es rápido pero satura y fragmenta el inicio de la memoria.</li>
+                            <li><strong class="text-usm-navy">Best Fit (Mejor Ajuste):</strong> Busca en toda la memoria el hueco <em>más pequeño que sirva</em>. Conserva los bloques grandes para procesos pesados, pero deja "astillas" diminutas e inútiles por todas partes.</li>
+                            <li><strong class="text-usm-navy">Worst Fit (Peor Ajuste):</strong> Busca siempre el hueco <em>más grande disponible</em>. La idea es que el hueco resultante sea suficientemente grande para ser útil, pero agota rápidamente el espacio para procesos grandes.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-900 p-6 rounded-xl shadow-inner mb-6 border border-slate-700">
+                        <h4 class="font-bold text-usm-gold text-lg mb-3">Soluciones a la Fragmentación Externa</h4>
+                        
+                        <p class="text-sm text-slate-100 mb-3">
+                            <strong class="text-white">Compactación:</strong> Consiste en mover todos los procesos activos hacia un extremo de la memoria, empujando todos los huecos libres para formar un solo gran bloque continuo. 
+                        </p>
+                        <p class="text-sm text-slate-100 border-l-2 border-usm-burgundy pl-3 mb-5">
+                            <em>Por qué es mala idea:</em> Es computacionalmente excesivamente costosa. Requiere detener el sistema por completo (alto overhead) para copiar megabytes de información, y exige hardware complejo para recalcular (relocalizar) las direcciones de memoria de todos los programas al vuelo.
+                        </p>
+                        
+                        <p class="text-sm text-slate-100 mb-3">
+                            <strong class="text-white">Swapping (Intercambio):</strong> Si la memoria está llena, el SO expulsa temporalmente procesos inactivos o bloqueados al disco duro (swap file).
+                        </p>
+                        <p class="text-sm text-slate-100 border-l-2 border-usm-burgundy pl-3">
+                            <em>Por qué es problemático:</em> El disco duro es extremadamente lento en comparación a la RAM, desplomando el rendimiento del sistema. Además, al traer el proceso de vuelta, es muy difícil ubicarlo en la <em>misma</em> dirección física, lo que requiere relocalización dinámica.
+                        </p>
+                    </div>
+
+                    <div class="bg-usm-burgundy text-white p-6 rounded-xl shadow-lg text-center">
+                        <h4 class="font-bold text-xl mb-2 flex justify-center items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                            Conclusión: El fin de la Memoria Lineal
+                        </h4>
+                        <p class="text-sm text-slate-100 leading-relaxed">
+                            Debido a la ineficiencia crónica de la fragmentación, lo costoso de la compactación y el impacto negativo del swapping en el rendimiento, la gestión de memoria lineal contigua <strong>está obsoleta</strong> para sistemas multiprogramados. Esta problemática dio paso al desarrollo de la <strong>Memoria Virtual (Paginación y Segmentación)</strong>, un modelo moderno que rompe la regla de la contigüidad, permitiendo dividir los procesos en pequeños pedazos dispersos por toda la RAM física, resolviendo definitivamente la fragmentación externa.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PARTE 2: PREGUNTAS DE AYUDANTÍA (ACORDEONES)-->
+        <!-- ========================================== -->
+        <section id="conceptos" class="mb-20">
+            <h3 class="section-title text-3xl font-bold mb-8 pb-4">Parte 2: Análisis de Conceptos Clave</h3>
+            
+            <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                <p class="text-slate-600 mb-6 text-sm">Preguntas teóricas típicas sobre la gestión de memoria lineal y sus mitigaciones. Haz clic en cada pregunta para revelar el análisis detallado.</p>
+
+                <div class="space-y-4">
+                    <!-- Q1 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden transition-all duration-300 shadow-sm">
+                        <button onclick="toggleAccordion('q1', this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 font-bold text-usm-navy flex justify-between items-center transition-colors">
+                            <span>1. ¿Por qué la compactación no se realiza constantemente si resuelve la fragmentación externa?</span>
+                            <svg class="w-5 h-5 text-slate-400 accordion-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
+                        <div id="q1" class="hidden px-6 py-5 bg-white border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
+                            <p>Porque <strong>es una operación extremadamente costosa (Overhead muy alto)</strong>. Para compactar, el Sistema Operativo debe copiar y mover físicamente megabytes o gigabytes de datos de un lado a otro en la RAM. Durante este proceso, los programas de usuario no pueden ejecutarse. Además, requiere hardware avanzado (registros de relocalización en la MMU) para recalcular las direcciones de memoria de los programas sobre la marcha.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden transition-all duration-300 shadow-sm">
+                        <button onclick="toggleAccordion('q2', this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 font-bold text-usm-navy flex justify-between items-center transition-colors">
+                            <span>2. ¿Qué problemas genera el "Swapping" (Intercambio) sobre las instrucciones de los procesos?</span>
+                            <svg class="w-5 h-5 text-slate-400 accordion-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
+                        <div id="q2" class="hidden px-6 py-5 bg-white border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
+                            <p>Cuando un proceso es enviado al disco y luego traído de vuelta a la RAM, <strong>es muy probable que no pueda volver a cargarse en la misma dirección física</strong> que ocupaba antes (porque ese espacio ya podría estar ocupado por otro proceso). Si el código compilado utilizaba direcciones físicas rígidas (ej. punteros a variables absolutas), el programa fallará al volver del Swap. Esto exige que el código deba ser reubicable dinámicamente.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden transition-all duration-300 shadow-sm">
+                        <button onclick="toggleAccordion('q3', this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 font-bold text-usm-navy flex justify-between items-center transition-colors">
+                            <span>3. ¿Es el programador responsable de gestionar la MMU (Memory Management Unit)?</span>
+                            <svg class="w-5 h-5 text-slate-400 accordion-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
+                        <div id="q3" class="hidden px-6 py-5 bg-white border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
+                            <p><strong>No.</strong> A diferencia de las antiguas técnicas de <em>Overlays</em> (donde el programador debía dividir su código manualmente para que cupiera en RAM), la MMU es un componente de hardware administrado íntegramente por el <strong>Sistema Operativo</strong>. El programador solo trabaja con <em>direcciones lógicas</em> (el código asume que tiene toda la memoria para él), y la MMU se encarga de la traducción a las direcciones físicas reales de manera totalmente transparente e invisible para la aplicación.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PARTE 3: EJERCITACIÓN PRÁCTICA             -->
+        <!-- ========================================== -->
+        <section id="practica" class="mb-20">
+            <h3 class="section-title text-3xl font-bold mb-8 pb-4">Parte 3: Ejercitación Práctica (Ayudantía 4)</h3>
+            <p class="text-slate-600 mb-8 max-w-3xl">Ponte a prueba resolviendo el ejercicio central de algoritmos de memoria. Haz clic en "Mostrar Resolución" para ver el análisis de cada algoritmo paso a paso.</p>
+
+            <div class="space-y-10">
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover border border-slate-200">
+                    <span class="inline-block bg-slate-100 text-usm-navy border border-usm-navy text-xs font-bold px-3 py-1 rounded-full mb-4">Ejercicio Central</span>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Asignación de Memoria Lineal</h3>
+                    
+                    <p class="text-slate-700 text-sm mb-4">
+                        Suponga que al instante t quedan los siguientes bloques libres en la memoria física (en este orden exacto):
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <div class="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-center shadow-sm">
+                            <div class="text-xs text-slate-500">Bloque 1</div>
+                            <div class="font-bold text-usm-navy">100 KB</div>
+                        </div>
+                        <div class="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-center shadow-sm">
+                            <div class="text-xs text-slate-500">Bloque 2</div>
+                            <div class="font-bold text-usm-navy">500 KB</div>
+                        </div>
+                        <div class="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-center shadow-sm">
+                            <div class="text-xs text-slate-500">Bloque 3</div>
+                            <div class="font-bold text-usm-navy">200 KB</div>
+                        </div>
+                        <div class="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-center shadow-sm">
+                            <div class="text-xs text-slate-500">Bloque 4</div>
+                            <div class="font-bold text-usm-navy">300 KB</div>
+                        </div>
+                        <div class="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-center shadow-sm">
+                            <div class="text-xs text-slate-500">Bloque 5</div>
+                            <div class="font-bold text-usm-navy">600 KB</div>
+                        </div>
+                    </div>
+
+                    <p class="text-slate-700 text-sm mb-4">
+                        Llegan 4 procesos en el siguiente orden (P1, P2, P3, P4) con los siguientes requerimientos de memoria:
+                    </p>
+
+                    <table class="w-full max-w-sm text-sm text-left border-collapse border border-slate-200 bg-white mb-6 shadow-sm">
+                        <thead class="bg-slate-50 text-usm-navy">
+                            <tr>
+                                <th class="border border-slate-200 px-4 py-2">Proceso</th>
+                                <th class="border border-slate-200 px-4 py-2 text-center">Memoria Requerida</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="border border-slate-200 px-4 py-2 font-bold text-usm-burgundy">P1</td><td class="border border-slate-200 px-4 py-2 text-center font-mono">212 KB</td></tr>
+                            <tr><td class="border border-slate-200 px-4 py-2 font-bold text-usm-burgundy">P2</td><td class="border border-slate-200 px-4 py-2 text-center font-mono">417 KB</td></tr>
+                            <tr><td class="border border-slate-200 px-4 py-2 font-bold text-usm-burgundy">P3</td><td class="border border-slate-200 px-4 py-2 text-center font-mono">112 KB</td></tr>
+                            <tr><td class="border border-slate-200 px-4 py-2 font-bold text-usm-burgundy">P4</td><td class="border border-slate-200 px-4 py-2 text-center font-mono">426 KB</td></tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1 mb-6">
+                        Pregunta: Muestre paso a paso dónde será cargado cada proceso utilizando las estrategias de First Fit (Primer Ajuste), Best Fit (Mejor Ajuste) y Worst Fit (Peor Ajuste). ¿Logran cargar a P4 todos los algoritmos?
+                    </p>
+
+                    <div class="flex justify-end border-t border-slate-100 pt-4">
+                        <button onclick="toggleAnswer('prac1', this)" class="bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> 
+                            <span>Mostrar Desarrollo Completo</span>
+                        </button>
+                    </div>
+
+                    <div id="prac1" class="hidden mt-6 p-6 md:p-8 bg-slate-50 border border-slate-200 rounded-lg animate-fadeIn">
+                        
+                        <!-- 1. FIRST FIT -->
+                        <div class="mb-10">
+                            <h4 class="font-bold text-usm-navy mb-4 border-b border-slate-200 pb-2 flex items-center gap-2">
+                                <span class="bg-usm-navy text-white px-2 py-0.5 rounded text-xs">1</span>
+                                First Fit (Primer Ajuste)
+                            </h4>
+                            <p class="text-sm text-slate-700 mb-3">Busca desde el inicio de la lista y asigna el primer bloque libre que tenga tamaño suficiente para el proceso.</p>
+                            
+                            <ul class="text-sm text-slate-700 space-y-2 font-mono bg-white p-4 rounded border border-slate-200 shadow-sm mb-4">
+                                <li>- <strong class="text-usm-burgundy">P1 (212K)</strong> entra en el <strong>Bloque 2 (500K)</strong>. Sobran 288K en B2.</li>
+                                <li>- <strong class="text-usm-burgundy">P2 (417K)</strong> entra en el <strong>Bloque 5 (600K)</strong>. Sobran 183K en B5.</li>
+                                <li>- <strong class="text-usm-burgundy">P3 (112K)</strong> entra en lo que sobró del <strong>Bloque 2 (288K)</strong>. Quedan 176K en B2.</li>
+                                <li class="text-red-600 font-bold">- P4 (426K) NO ENTRA. Revisa: B1(100), B2(176), B3(200), B4(300), B5(183). Ningún bloque continuo alcanza 426K. Falla.</li>
+                            </ul>
+                        </div>
+
+                        <!-- 2. BEST FIT -->
+                        <div class="mb-10">
+                            <h4 class="font-bold text-usm-navy mb-4 border-b border-slate-200 pb-2 flex items-center gap-2">
+                                <span class="bg-usm-navy text-white px-2 py-0.5 rounded text-xs">2</span>
+                                Best Fit (Mejor Ajuste)
+                            </h4>
+                            <p class="text-sm text-slate-700 mb-3">Busca en toda la memoria el bloque libre más pequeño que sea igual o mayor al tamaño requerido, para dejar la menor "astilla" posible.</p>
+                            
+                            <ul class="text-sm text-slate-700 space-y-2 font-mono bg-white p-4 rounded border border-slate-200 shadow-sm mb-4">
+                                <li>- <strong class="text-usm-burgundy">P1 (212K)</strong> busca. Le sirven: 500, 300, 600. El mejor es el <strong>Bloque 4 (300K)</strong>. Sobran 88K en B4.</li>
+                                <li>- <strong class="text-usm-burgundy">P2 (417K)</strong> busca. Le sirven: 500, 600. El mejor es el <strong>Bloque 2 (500K)</strong>. Sobran 83K en B2.</li>
+                                <li>- <strong class="text-usm-burgundy">P3 (112K)</strong> busca. Le sirven: 200, 600. El mejor es el <strong>Bloque 3 (200K)</strong>. Sobran 88K en B3.</li>
+                                <li>- <strong class="text-usm-burgundy">P4 (426K)</strong> busca. Le sirve el <strong>Bloque 5 (600K)</strong>. Entra ahí y sobran 174K.</li>
+                            </ul>
+                            <p class="text-sm font-bold text-green-700">✓ Con Best Fit, ¡TODOS los procesos logran ser cargados!</p>
+                        </div>
+
+                        <!-- 3. WORST FIT -->
+                        <div>
+                            <h4 class="font-bold text-usm-navy mb-4 border-b border-slate-200 pb-2 flex items-center gap-2">
+                                <span class="bg-usm-navy text-white px-2 py-0.5 rounded text-xs">3</span>
+                                Worst Fit (Peor Ajuste)
+                            </h4>
+                            <p class="text-sm text-slate-700 mb-3">Busca siempre el bloque más grande disponible en toda la memoria, para que el hueco resultante siga siendo útil para otros procesos grandes.</p>
+                            
+                            <ul class="text-sm text-slate-700 space-y-2 font-mono bg-white p-4 rounded border border-slate-200 shadow-sm mb-4">
+                                <li>- <strong class="text-usm-burgundy">P1 (212K)</strong> busca. El bloque más grande es el <strong>Bloque 5 (600K)</strong>. Entra. Sobran 388K en B5.</li>
+                                <li>- <strong class="text-usm-burgundy">P2 (417K)</strong> busca. El bloque más grande disponible es el <strong>Bloque 2 (500K)</strong>. Entra. Sobran 83K en B2.</li>
+                                <li>- <strong class="text-usm-burgundy">P3 (112K)</strong> busca. El bloque más grande ahora es el resto del <strong>Bloque 5 (388K)</strong>. Entra. Quedan 276K en B5.</li>
+                                <li class="text-red-600 font-bold">- P4 (426K) NO ENTRA. Revisa: B1(100), B2(83), B3(200), B4(300), B5(276). Ninguno alcanza. Falla.</li>
+                            </ul>
+                            
+                            <div class="border-l-4 border-usm-gold pl-4 py-2 bg-slate-100 mt-6">
+                                <p class="font-bold text-slate-800 mb-1">Conclusión del Ejercicio:</p>
+                                <p class="text-sm text-slate-700">En este escenario específico, <strong>Best Fit fue el único capaz de cargar todos los procesos</strong>, ya que protegió celosamente los bloques más grandes (dejándolos para los procesos pesados P2 y P4) al ubicar a P1 y P3 en bloques que les quedaban mucho más ajustados.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-10" style="background: linear-gradient(120deg, #0f1f33 0%, #002b5c 55%, #8c1d40 100%); color: #e2e8f0; border-top: 2px solid rgba(201,163,74,0.6);">
+        <div class="container mx-auto px-6 py-8 text-center text-sm font-medium">
+            <p>&copy; 2026 Ayudantía USM - Sistemas Operativos. Material de estudio - Gestión de Memoria.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleAnswer(id, btn) {
+            const el = document.getElementById(id);
+            const isHidden = el.classList.contains('hidden');
+            const iconShow = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+            const iconHide = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m2 2 20 20"></path><path d="M6.71 6.71A10.61 10.61 0 0 0 2 12a10.54 10.54 0 0 0 11.29 8.05"></path><path d="M11 17a5 5 0 0 1-5-5"></path><path d="M14 14a5 5 0 0 1-5-5"></path><path d="M17.3 17.3A10.56 10.56 0 0 0 22 12a10.58 10.58 0 0 0-11-7.05"></path></svg>`;
+            
+            if (isHidden) {
+                el.classList.remove('hidden');
+                btn.innerHTML = iconHide + ` <span>Ocultar Desarrollo</span>`;
+                btn.classList.replace('bg-usm-navy', 'bg-slate-200');
+                btn.classList.replace('hover:bg-usm-navy-dark', 'hover:bg-slate-300');
+                btn.classList.replace('text-white', 'text-slate-700');
+            } else {
+                el.classList.add('hidden');
+                btn.innerHTML = iconShow + ` <span>Mostrar Desarrollo Completo</span>`;
+                btn.classList.replace('bg-slate-200', 'bg-usm-navy');
+                btn.classList.replace('hover:bg-slate-300', 'hover:bg-usm-navy-dark');
+                btn.classList.replace('text-slate-700', 'text-white');
+            }
+        }
+
+        function toggleAccordion(id, btn) {
+            const el = document.getElementById(id);
+            const isHidden = el.classList.contains('hidden');
+            const icon = btn.querySelector('svg.accordion-icon');
+            
+            if (isHidden) {
+                el.classList.remove('hidden');
+                btn.classList.add('bg-slate-100');
+                btn.classList.replace('text-usm-navy', 'text-usm-burgundy');
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            } else {
+                el.classList.add('hidden');
+                btn.classList.remove('bg-slate-100');
+                btn.classList.replace('text-usm-burgundy', 'text-usm-navy');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+</body>
+</html>
