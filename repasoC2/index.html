@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repaso SO - Certámenes 2 & 3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --usm-navy: #002b5c;
+            --usm-burgundy: #8c1d40;
+            --usm-gold: #c9a34a;
+            --usm-ink: #0f1f33;
+            --usm-paper: #f6f7fb;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--usm-paper);
+            background-image:
+                radial-gradient(circle at 8% 12%, rgba(201, 163, 74, 0.22) 0%, transparent 28%),
+                radial-gradient(circle at 92% 84%, rgba(140, 29, 64, 0.15) 0%, transparent 32%),
+                linear-gradient(135deg, #f8fafc 0%, #edf2fb 55%, #f8fafc 100%);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, h5 { font-family: 'Sora', sans-serif; letter-spacing: -0.02em; }
+
+        .topbar {
+            background: linear-gradient(90deg, rgba(0, 43, 92, 0.95), rgba(140, 29, 64, 0.92));
+            box-shadow: 0 10px 30px rgba(15, 31, 51, 0.25);
+            border-bottom: 2px solid rgba(201, 163, 74, 0.65);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.8rem);
+            background: linear-gradient(135deg, var(--usm-navy), var(--usm-burgundy));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .section-title {
+            border-bottom-width: 3px;
+            color: var(--usm-ink);
+            border-color: rgba(0, 43, 92, 0.28);
+        }
+
+        .text-usm-navy     { color: var(--usm-navy); }
+        .text-usm-burgundy { color: var(--usm-burgundy); }
+        .text-usm-gold     { color: var(--usm-gold); }
+        .bg-usm-navy       { background-color: var(--usm-navy); }
+        .bg-usm-burgundy   { background-color: var(--usm-burgundy); }
+        .bg-usm-gold       { background-color: var(--usm-gold); }
+        .border-usm-navy   { border-color: var(--usm-navy); }
+        .border-usm-burgundy { border-color: var(--usm-burgundy); }
+        .border-usm-gold   { border-color: var(--usm-gold); }
+        .hover\:bg-usm-navy-dark:hover { background-color: #001a3b; }
+
+        .card {
+            background: rgba(255,255,255,0.9);
+            border: 1px solid rgba(0,43,92,0.09);
+            box-shadow: 0 16px 30px rgba(15,31,51,0.08);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 36px rgba(15,31,51,0.14);
+        }
+
+        .accordion-icon { transition: transform 0.3s ease; }
+
+        .animate-fadeIn { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .score-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 4px 14px; border-radius: 9999px;
+            font-size: 0.75rem; font-weight: 700;
+        }
+
+        /* progress bar */
+        #progress-bar { transition: width 0.5s ease; }
+
+        /* table style */
+        .page-table th { background: #002b5c; color: white; padding: 6px 10px; font-size:0.75rem; }
+        .page-table td { padding: 6px 10px; font-size:0.78rem; border: 1px solid #e2e8f0; }
+        .page-table tr:nth-child(even) td { background:#f8fafc; }
+
+        /* fifo/lru sim table */
+        .sim-table th, .sim-table td { padding:4px 8px; font-size:0.72rem; border:1px solid #cbd5e1; text-align:center; }
+        .sim-table th { background:#1e3a5f; color:white; }
+        .sim-table .fault { background:#fee2e2; color:#991b1b; font-weight:700; }
+        .sim-table .hit   { background:#dcfce7; color:#166534; }
+        .sim-table .frame { background:#f1f5f9; font-family:monospace; }
+
+        /* nav link */
+        .nav-link { color:#f1f5f9; padding:0.4rem 0.8rem; border-radius:9999px; transition:all 0.25s ease; border:1px solid transparent; font-size:0.85rem; }
+        .nav-link:hover { background:rgba(255,255,255,0.12); border-color:rgba(201,163,74,0.55); }
+
+        /* category pill */
+        .cat-pill { display:inline-block; font-size:0.7rem; font-weight:700; border-radius:9999px; padding:2px 10px; margin-bottom:8px; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+<!-- ===== TOPBAR ===== -->
+<header class="topbar sticky top-0 z-50">
+    <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+        <h1 class="text-xl font-extrabold text-white" style="font-family:'Sora',sans-serif;">Ayudantía SO</h1>
+        <div class="space-x-1 sm:space-x-2 hidden sm:flex">
+            <a href="#seccion-memoria-lineal" class="nav-link font-medium">Memoria Lineal</a>
+            <a href="#seccion-virtual" class="nav-link font-medium">Memoria Virtual</a>
+            <a href="#seccion-tiempo" class="nav-link font-medium">Tiempo</a>
+            <a href="#seccion-reemplazo" class="nav-link font-medium">Reemplazo</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container mx-auto px-4 sm:px-6 py-12 max-w-5xl">
+
+    <!-- HERO -->
+    <section class="text-center mb-14">
+        <h2 class="hero-title font-bold mb-4">Repaso para Certámenes</h2>
+        <p class="text-slate-600 font-medium max-w-2xl mx-auto mb-6">
+            Preguntas de repaso.
+        </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE 1: MEMORIA LINEAL                                     -->
+    <!-- ============================================================ -->
+    <section id="seccion-memoria-lineal" class="mb-16">
+        <h3 class="section-title text-2xl font-bold mb-8 pb-3">Bloque 1 — Gestión de Memoria Lineal</h3>
+        <div class="space-y-5">
+
+            <!-- P1 -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q1',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-blue-100 text-blue-800">MMU</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P1 — ¿Cuál es el rol de la MMU en la gestión de memoria?</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q1" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3">La <strong>MMU (Memory Management Unit)</strong> es un componente de <strong>hardware</strong> cuya responsabilidad principal es <strong>traducir en tiempo de ejecución las direcciones lógicas (virtuales) generadas por la CPU a direcciones físicas</strong> reales de la RAM.</p>
+                    <div class="grid sm:grid-cols-2 gap-4 mt-3">
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                            <p class="font-bold text-usm-navy mb-1">Dirección Lógica (Virtual)</p>
+                            <p class="text-slate-600 text-xs">La que genera el programa. El proceso "cree" que tiene toda la memoria para él (ej. siempre empieza en 0x0000).</p>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                            <p class="font-bold text-usm-navy mb-1">Dirección Física</p>
+                            <p class="text-slate-600 text-xs">La ubicación real en los chips de RAM. La MMU convierte transparentemente una en la otra durante cada acceso a memoria.</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 border-l-4 border-usm-gold pl-4 bg-amber-50 py-2 rounded-r-lg">
+                        <p class="font-bold text-slate-800 text-xs mb-1">Clave del examen:</p>
+                        <p class="text-xs text-slate-700">La MMU es gestionada íntegramente por el SO, <strong>no por el programador</strong>. A diferencia de los antiguos <em>overlays</em>, la traducción es completamente transparente para la aplicación.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- P2 -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q2',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-red-100 text-red-800">Fragmentación</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P2 — Define fragmentación interna y fragmentación externa. ¿Qué tipo de partición genera cada una?</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q2" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <div class="bg-red-50 border-l-4 border-red-400 rounded-r-lg p-4">
+                            <p class="font-bold text-red-700 mb-2">Fragmentación Interna</p>
+                            <p class="text-xs text-slate-700 mb-3">Ocurre en <strong>particiones fijas</strong>. El bloque asignado es más grande que el proceso: el espacio sobrante <em>dentro</em> del bloque se pierde (nadie más puede usarlo).</p>
+                            <div class="h-7 w-full border border-slate-300 rounded flex overflow-hidden text-xs font-bold text-white text-center">
+                                <div class="bg-blue-600 w-1/2 flex items-center justify-center">Proceso 50 KB</div>
+                                <div class="w-1/2 flex items-center justify-center bg-red-200 text-red-900" style="background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.5),rgba(255,255,255,0.5)8px,transparent 8px,transparent 16px)">Desperdicio 50 KB</div>
+                            </div>
+                            <p class="text-xs text-center text-slate-400 mt-1">Bloque fijo de 100 KB</p>
+                        </div>
+                        <div class="bg-orange-50 border-l-4 border-orange-400 rounded-r-lg p-4">
+                            <p class="font-bold text-orange-700 mb-2">Fragmentación Externa</p>
+                            <p class="text-xs text-slate-700 mb-3">Ocurre en <strong>particiones dinámicas</strong>. La memoria total libre es suficiente, pero está dispersa en múltiples huecos no contiguos, impidiendo cargar un proceso grande.</p>
+                            <div class="h-7 w-full border border-slate-300 rounded flex overflow-hidden text-xs font-bold text-center">
+                                <div class="bg-blue-700 w-1/3 flex items-center justify-center text-white">P1 30K</div>
+                                <div class="w-1/6 flex items-center justify-center bg-slate-200 text-slate-600" style="background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.5),rgba(255,255,255,0.5)8px,transparent 8px,transparent 16px)">15K</div>
+                                <div class="bg-red-700 w-1/3 flex items-center justify-center text-white">P2 30K</div>
+                                <div class="w-1/6 flex items-center justify-center bg-slate-200 text-slate-600" style="background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.5),rgba(255,255,255,0.5)8px,transparent 8px,transparent 16px)">15K</div>
+                            </div>
+                            <p class="text-xs text-center text-slate-400 mt-1">Total libre: 30 KB — ¡Proceso de 20 KB no cabe!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- P3 -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q3',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-red-100 text-red-800">Fragmentación</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P3 — ¿Por qué las particiones estáticas de diferente tamaño son ineficientes?</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q3" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3">Porque generan <strong>fragmentación interna masiva y estática</strong>: si un proceso de 5 KB cae en la única partición grande disponible de 512 KB, se desperdician 507 KB que quedan bloqueados e inutilizables. Además:</p>
+                    <ul class="list-disc pl-5 space-y-1 text-xs text-slate-700">
+                        <li>El número de particiones limita el grado de multiprogramación (<em>no más procesos activos que particiones</em>).</li>
+                        <li>Si llega un proceso mayor que la partición más grande disponible, <strong>nunca podrá ejecutarse</strong>, sin importar cuánta memoria libre haya en el sistema.</li>
+                        <li>La partición no se ajusta al tamaño real del proceso: el espacio sobrante no se puede reasignar.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- P4 -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q4',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-blue-100 text-blue-800">MMU</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P4 — ¿Por qué le interesa al SO mantener la mayor cantidad de memoria libre posible?</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q4" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3">Tener más memoria libre le permite al SO:</p>
+                    <ul class="list-disc pl-5 space-y-1.5 text-xs text-slate-700">
+                        <li><strong>Aumentar el grado de multiprogramación:</strong> cargar más procesos simultáneamente  mayor uso de la CPU.</li>
+                        <li><strong>Evitar el Swapping:</strong> si hay RAM suficiente, no es necesario expulsar procesos al disco (operación muy lenta).</li>
+                        <li><strong>Reducir los Page Faults (en paginación virtual):</strong> más frames disponibles significa que más páginas pueden residir en RAM.</li>
+                        <li><strong>Respuesta más rápida:</strong> un proceso nuevo puede cargarse inmediatamente sin esperar a que otro sea desalojado.</li>
+                    </ul>
+                    <div class="mt-3 border-l-4 border-usm-gold pl-3 py-1 bg-amber-50 rounded-r text-xs text-slate-700">
+                        En resumen, más memoria libre  menos swapping  más rendimiento general del sistema.
+                    </div>
+                </div>
+            </div>
+
+            <!-- P5 -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q5',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-purple-100 text-purple-800">Algoritmos</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P5 — Explica First Fit, Best Fit y Worst Fit. ¿Cuál conserva mejor los bloques grandes?</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q5" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <div class="space-y-4">
+                        <div class="border border-slate-200 rounded-lg p-4">
+                            <p class="font-bold text-usm-navy mb-1">First Fit (Primer Ajuste)</p>
+                            <p class="text-xs text-slate-600">Recorre la lista desde el principio y asigna el <em>primer</em> hueco que sea suficiente. Es rápido, pero tiende a fragmentar el inicio de la memoria y deja bloques grandes intactos al final.</p>
+                        </div>
+                        <div class="border border-slate-200 rounded-lg p-4">
+                            <p class="font-bold text-usm-navy mb-1">Best Fit (Mejor Ajuste)</p>
+                            <p class="text-xs text-slate-600">Busca en <em>toda</em> la lista el hueco más pequeño que sea suficiente. <strong>Conserva los bloques grandes</strong>, pero genera muchas "astillas" minúsculas e inútiles. Más lento por requerir búsqueda completa.</p>
+                        </div>
+                        <div class="border border-slate-200 rounded-lg p-4">
+                            <p class="font-bold text-usm-navy mb-1">Worst Fit (Peor Ajuste)</p>
+                            <p class="text-xs text-slate-600">Siempre elige el hueco <em>más grande</em> disponible, con la idea de que el resto siga siendo útil. Paradójicamente, agota rápido los bloques grandes e impide cargar procesos pesados.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- P6 -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q6',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-orange-100 text-orange-800">Swapping</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P6 — ¿Por qué el Swapping tiene un impacto tan negativo en el rendimiento en memoria lineal? ¿Cómo lo mejora la paginación?</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q6" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="font-bold text-usm-burgundy mb-2">Problema en memoria lineal:</p>
+                    <ul class="list-disc pl-5 space-y-1 text-xs text-slate-700 mb-4">
+                        <li>Al hacer swap, se mueve <strong>el proceso completo</strong> desde/hacia el disco. Si el proceso pesa 512 MB  hay que transferir 512 MB por el bus lento del disco.</li>
+                        <li>El disco es ~100,000× más lento que la RAM  el tiempo de swap domina el tiempo total.</li>
+                        <li>Al volver, el proceso puede no caber en su posición original  necesita relocalización dinámica.</li>
+                    </ul>
+                    <p class="font-bold text-green-700 mb-2">Mejora con paginación virtual:</p>
+                    <ul class="list-disc pl-5 space-y-1 text-xs text-slate-700">
+                        <li>En lugar de mover el proceso completo, solo se intercambian las <strong>páginas individuales</strong> que realmente se necesitan.</li>
+                        <li>Si una página es de 4 KB en vez de 512 MB  el costo de I/O se reduce drásticamente.</li>
+                        <li>El SO puede usar el principio de <strong>localidad de referencia</strong>: solo carga las páginas que se están usando activamente.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE 2: MEMORIA VIRTUAL Y PAGINADA                        -->
+    <!-- ============================================================ -->
+    <section id="seccion-virtual" class="mb-16">
+        <h3 class="section-title text-2xl font-bold mb-8 pb-3">Bloque 2 — Memoria Virtual, Paginación y Segmentación</h3>
+        <div class="space-y-5">
+
+            <!-- P7 -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q7',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-indigo-100 text-indigo-800">Paginación</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P7 — ¿Qué es un Page Fault? ¿Qué hace el SO cuando ocurre?</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q7" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3">Un <strong>Page Fault (Fallo de Página)</strong> ocurre cuando la CPU intenta acceder a una <strong>página virtual cuyo bit V (Valid) = 0</strong> en la tabla de páginas, es decir, la página no está cargada en ningún frame de la RAM física.</p>
+                    <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 text-xs space-y-2">
+                        <p class="font-bold text-usm-navy">Secuencia de manejo del Page Fault:</p>
+                        <ol class="list-decimal pl-5 space-y-1.5 text-slate-700">
+                            <li>La MMU genera una excepción (trap)  la CPU salta al handler del SO.</li>
+                            <li>El SO localiza la página en el disco (swap file o archivo ejecutable).</li>
+                            <li>Si hay frame libre  carga la página directamente. Si no  ejecuta un <strong>algoritmo de reemplazo</strong> para elegir una página víctima.</li>
+                            <li>Si la víctima está sucia (bit D=1)  se escribe al disco antes de liberarla.</li>
+                            <li>Se carga la nueva página, se actualiza la tabla de páginas (V=1, número de frame).</li>
+                            <li>Se reinicia la instrucción que provocó el fallo.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- P8 -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q8',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-indigo-100 text-indigo-800">Paginación</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P8 — Explica el rol de los bits V, U y D en una tabla de páginas.</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q8" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <div class="overflow-x-auto mb-4">
+                        <table class="page-table w-full border-collapse rounded-lg overflow-hidden shadow-sm">
+                            <thead><tr>
+                                <th>Bit</th><th>Nombre</th><th>Valor = 0</th><th>Valor = 1</th>
+                            </tr></thead>
+                            <tbody>
+                                <tr><td class="font-bold text-indigo-700">V</td><td>Valid (Válido)</td><td>Página NO está en RAM (causará Page Fault si se accede)</td><td>Página está en RAM y el frame es válido</td></tr>
+                                <tr><td class="font-bold text-green-700">U</td><td>Used (Usado / Referenciado)</td><td>No se ha accedido desde la última revisión</td><td>Se ha accedido recientemente (útil para LRU / Segunda Oportunidad)</td></tr>
+                                <tr><td class="font-bold text-orange-700">D</td><td>Dirty (Sucio / Modificado)</td><td>Página no modificada desde que se cargó (no necesita escribirse al disco)</td><td>Página fue modificada  debe escribirse al disco antes de ser reemplazada</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="border-l-4 border-usm-burgundy pl-4 bg-red-50 py-2 rounded-r text-xs text-slate-700">
+                        <strong>Observación:</strong> La entrada con <code>V=0, U=1</code> es incorrecta. Si la página no es válida (no está en RAM), no puede haberse "usado" recientemente. El bit U solo tiene sentido cuando V=1.
+                    </div>
+                </div>
+            </div>
+
+            <!-- P9 -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q9',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-blue-100 text-blue-800">MMU / TLB</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P9 — ¿Cómo funciona el TLB (Translation Lookaside Buffer)?</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q9" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3">Sin TLB, cada acceso a memoria requiere <strong>dos accesos a RAM</strong>: primero a la tabla de páginas y luego al dato real  muy lento.</p>
+                    <p class="mb-3">El <strong>TLB</strong> es una memoria <strong>caché especial dentro de la MMU</strong> (hardware muy rápido) que almacena las traducciones más recientes <code>página virtual  frame físico</code>.</p>
+                    <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 text-xs space-y-2">
+                        <p class="font-bold text-usm-navy">Funcionamiento:</p>
+                        <ol class="list-decimal pl-5 space-y-1 text-slate-700">
+                            <li><strong>TLB Hit:</strong> La página solicitada está en el TLB  se obtiene el número de frame directamente, sin acceder a la tabla de páginas en RAM. Muy rápido.</li>
+                            <li><strong>TLB Miss:</strong> La página no está en el TLB  se accede a la tabla de páginas en RAM, se obtiene el frame, se carga la traducción en el TLB (reemplazando una entrada vieja), y luego se accede al dato.</li>
+                        </ol>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3">El TLB aprovecha la <em>localidad temporal</em>: los programas tienden a acceder a las mismas páginas repetidamente. Una tasa de acierto alta (>95%) lo hace muy eficiente.</p>
+                </div>
+            </div>
+
+            <!-- P10 -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q10',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-teal-100 text-teal-800">Segmentación</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P10 — En Segmentación Paginada tipo Linux, ¿cuándo ocurre un SEGMENTATION VIOLATION?</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q10" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3">En un modelo de <strong>Segmentación Paginada</strong>, el espacio de dirección virtual del proceso está dividido en segmentos (código, datos, pila, heap…), y cada segmento está internamente paginado.</p>
+                    <p class="font-bold text-usm-burgundy mb-2">Un SEGMENTATION VIOLATION ocurre cuando:</p>
+                    <ul class="list-disc pl-5 space-y-1.5 text-xs text-slate-700">
+                        <li>El proceso intenta acceder a una <strong>dirección fuera de los límites de sus segmentos</strong> (ej. acceder al segmento de código de otro proceso, desreferenciar un puntero nulo).</li>
+                        <li>El proceso intenta una <strong>operación no permitida</strong> por los bits de protección del segmento: ej. escribir en un segmento de solo lectura (bit W=0 en RWX), o ejecutar datos.</li>
+                        <li>El segmento <strong>no existe</strong> en el espacio de dirección del proceso (acceso a dirección completamente inválida).</li>
+                    </ul>
+                    <div class="mt-3 bg-slate-800 text-white text-xs rounded p-3">
+                        <strong class="text-yellow-300">Diferencia clave:</strong> Page Fault = página válida pero no en RAM (recuperable). Segmentation Violation = acceso ilegal al espacio de dirección (generalmente fatal  el proceso muere con señal SIGSEGV).
+                    </div>
+                </div>
+            </div>
+
+            <!-- P11 -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q11',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-indigo-100 text-indigo-800">Paginación</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P11 — ¿Cuáles son las ventajas y desventajas de elegir páginas de tamaño pequeño vs. grande?</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q11" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <div class="overflow-x-auto">
+                        <table class="page-table w-full border-collapse">
+                            <thead><tr><th>Aspecto</th><th>Páginas Pequeñas</th><th>Páginas Grandes</th></tr></thead>
+                            <tbody>
+                                <tr><td class="font-semibold">Fragmentación interna</td><td class="text-green-700">Menor (menos desperdicio al final)</td><td class="text-red-700">Mayor</td></tr>
+                                <tr><td class="font-semibold">Tamaño tabla de páginas</td><td class="text-red-700">Enorme (más entradas)</td><td class="text-green-700">Compacta</td></tr>
+                                <tr><td class="font-semibold">TLB efficiency</td><td class="text-red-700">Más misses (cobertura por entrada menor)</td><td class="text-green-700">Cubre más espacio</td></tr>
+                                <tr><td class="font-semibold">I/O por Page Fault</td><td class="text-green-700">Menor (menos datos a mover)</td><td class="text-red-700">Mayor transferencia</td></tr>
+                                <tr><td class="font-semibold">Localidad de ref.</td><td class="text-green-700">Más precisión (solo lo necesario)</td><td class="text-red-700">Carga datos innecesarios</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3">En la práctica (ej. Linux x86-64) se usan páginas de <strong>4 KB</strong> con soporte opcional de "huge pages" de 2 MB para casos especiales (bases de datos, video).</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE 3: GESTIÓN DEL TIEMPO E INTERRUPCIONES               -->
+    <!-- ============================================================ -->
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE 4: ALGORITMOS DE REEMPLAZO DE PÁGINAS               -->
+    <!-- ============================================================ -->
+    <section id="seccion-reemplazo" class="mb-16">
+        <h3 class="section-title text-2xl font-bold mb-8 pb-3">Bloque 3 — Algoritmos de Reemplazo de Páginas</h3>
+        <div class="space-y-5">
+
+            <!-- P14 -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q14',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-yellow-100 text-yellow-800">Reemplazo</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P12 — ¿Qué es una "página víctima"? ¿Qué hace el SO con ella si tiene D=1?</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q14" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3">Cuando ocurre un Page Fault y no hay frames libres, el SO debe elegir una página ya cargada en RAM para desalojar y liberar su frame. Esta página elegida se llama <strong>página víctima</strong>.</p>
+                    <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                            <p class="font-bold text-green-700 mb-1">Víctima con D=0 (Limpia)</p>
+                            <p class="text-slate-600">La página no fue modificada desde que se cargó. Su copia en disco sigue siendo válida. El SO simplemente descarta la página de la RAM (sin escribir al disco). Rápido y barato.</p>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                            <p class="font-bold text-red-700 mb-1">Víctima con D=1 (Sucia)</p>
+                            <p class="text-slate-600">La página fue modificada. El SO <strong>debe escribirla al disco</strong> (swap write) antes de liberar el frame, para no perder los cambios. Costoso: implica una operación I/O adicional.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- P15 — FIFO simulación -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q15',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-yellow-100 text-yellow-800">FIFO</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P13 — Ejecuta FIFO con 3 frames sobre la secuencia del Certamen 3. ¿Cuántos Page Faults?</p>
+                        <p class="text-xs text-slate-500 mt-1">Secuencia: 1 2 0 1 3 1 2 1 4 3 1 2 1 4</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q15" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="text-xs text-slate-500 mb-3">3 frames disponibles. FIFO reemplaza siempre la página que lleva más tiempo cargada (la más antigua).</p>
+                    <div class="overflow-x-auto">
+                        <table class="sim-table border-collapse w-full text-center mb-3">
+                            <thead>
+                                <tr>
+                                    <th>Tiempo</th>
+                                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th>
+                                </tr>
+                                <tr>
+                                    <th>Página</th>
+                                    <th>1</th><th>2</th><th>0</th><th>1</th><th>3</th><th>1</th><th>2</th><th>1</th><th>4</th><th>3</th><th>1</th><th>2</th><th>1</th><th>4</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="frame">
+                                    <td class="font-bold text-usm-navy">Frame 1</td>
+                                    <td>1</td><td>1</td><td>1</td><td>1</td><td>3</td><td>3</td><td>3</td><td>3</td><td>4</td><td>4</td><td>4</td><td>2</td><td>2</td><td>2</td>
+                                </tr>
+                                <tr class="frame">
+                                    <td class="font-bold text-usm-navy">Frame 2</td>
+                                    <td>—</td><td>2</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td><td>3</td><td>3</td><td>3</td><td>3</td><td>4</td>
+                                </tr>
+                                <tr class="frame">
+                                    <td class="font-bold text-usm-navy">Frame 3</td>
+                                    <td>—</td><td>—</td><td>0</td><td>0</td><td>0</td><td>0</td><td>2</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold">Resultado</td>
+                                    <td class="fault">PF</td><td class="fault">PF</td><td class="fault">PF</td><td class="hit">HIT</td><td class="fault">PF</td><td class="fault">PF</td><td class="fault">PF</td><td class="hit">HIT</td><td class="fault">PF</td><td class="fault">PF</td><td class="fault">PF</td><td class="fault">PF</td><td class="hit">HIT</td><td class="fault">PF</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-3 text-xs">
+                        <strong class="text-red-700">Total Page Faults FIFO = 11</strong>
+                        <p class="text-slate-600 mt-1">FIFO no considera la frecuencia de uso de las páginas: puede expulsar una página muy usada solo porque es "antigua".</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- P16 — LRU simulación -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q16',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-yellow-100 text-yellow-800">LRU</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P14 — Ejecuta LRU con 3 frames sobre la misma secuencia. ¿Cuántos Page Faults genera y por qué menos que FIFO?</p>
+                        <p class="text-xs text-slate-500 mt-1">Secuencia: 1 2 0 1 3 1 2 1 4 3 1 2 1 4</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q16" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="text-xs text-slate-500 mb-3">LRU (Least Recently Used): reemplaza la página que no se ha utilizado durante más tiempo.</p>
+                    <div class="overflow-x-auto">
+                        <table class="sim-table border-collapse w-full text-center mb-3">
+                            <thead>
+                                <tr>
+                                    <th>Tiempo</th>
+                                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th>
+                                </tr>
+                                <tr>
+                                    <th>Página</th>
+                                    <th>1</th><th>2</th><th>0</th><th>1</th><th>3</th><th>1</th><th>2</th><th>1</th><th>4</th><th>3</th><th>1</th><th>2</th><th>1</th><th>4</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="frame">
+                                    <td class="font-bold text-usm-navy">Frame A</td>
+                                    <td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td>
+                                </tr>
+                                <tr class="frame">
+                                    <td class="font-bold text-usm-navy">Frame B</td>
+                                    <td>—</td><td>2</td><td>2</td><td>2</td><td>3</td><td>3</td><td>3</td><td>3</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td>
+                                </tr>
+                                <tr class="frame">
+                                    <td class="font-bold text-usm-navy">Frame C</td>
+                                    <td>—</td><td>—</td><td>0</td><td>0</td><td>0</td><td>0</td><td>2</td><td>2</td><td>2</td><td>2</td><td>1</td><td>2</td><td>2</td><td>2</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold">Resultado</td>
+                                    <td class="fault">PF</td><td class="fault">PF</td><td class="fault">PF</td><td class="hit">HIT</td><td class="fault">PF</td><td class="hit">HIT</td><td class="fault">PF</td><td class="hit">HIT</td><td class="fault">PF</td><td class="fault">PF</td><td class="fault">PF</td><td class="fault">PF</td><td class="hit">HIT</td><td class="hit">HIT</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-3 text-xs">
+                        <strong class="text-green-700">Total Page Faults LRU ≈ 9-10</strong>
+                        <p class="text-slate-600 mt-1">En este ejemplo específico los conteos son similares. En general, LRU supera a FIFO porque usa el <strong>principio de localidad temporal</strong>: si una página se usó recientemente, es probable que vuelva a usarse pronto, por lo que es mala víctima. FIFO ignora esto.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- P17 — Segunda Oportunidad -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q17',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-yellow-100 text-yellow-800">Reemplazo</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P15 — Explica el algoritmo de la Segunda Oportunidad (Clock Algorithm).</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q17" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3">La Segunda Oportunidad es una mejora de FIFO que incorpora el <strong>bit U (Used/Referenced)</strong> para evitar expulsar páginas usadas recientemente.</p>
+                    <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 text-xs mb-3">
+                        <p class="font-bold text-usm-navy mb-2">Funcionamiento (cola circular tipo reloj):</p>
+                        <ol class="list-decimal pl-5 space-y-1.5 text-slate-700">
+                            <li>Organiza las páginas en una cola circular (manecilla del reloj).</li>
+                            <li>Al necesitar una víctima, examina la página apuntada por la manecilla.</li>
+                            <li>Si <strong>U = 0</strong>  la página no fue usada recientemente  es elegida como víctima y se expulsa.</li>
+                            <li>Si <strong>U = 1</strong>  le da una "segunda oportunidad": pone U=0 (la "perdona"), avanza la manecilla a la siguiente, y repite.</li>
+                            <li>Si todas las páginas tienen U=1, la manecilla da una vuelta completa, resetea todos los bits, y al regresar al inicio, esa primera página se convierte en víctima.</li>
+                        </ol>
+                    </div>
+                    <p class="text-xs text-slate-500">Es una buena aproximación práctica de LRU sin el costo de hardware de mantener timestamps exactos para cada acceso.</p>
+                </div>
+            </div>
+
+            <!-- P18 -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q18',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-red-100 text-red-800">Hiperpaginación</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P16 — ¿Qué es la hiperpaginación (thrashing)? ¿Cómo ocurre?</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q18" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3"><strong>Hiperpaginación (Thrashing)</strong> es una situación patológica donde el sistema pasa más tiempo realizando operaciones de swap (cargando y descargando páginas entre disco y RAM) que ejecutando código de los procesos.</p>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-xs mb-3">
+                        <p class="font-bold text-red-700 mb-2">Ciclo vicioso que la origina:</p>
+                        <ol class="list-decimal pl-5 space-y-1.5 text-slate-700">
+                            <li>El SO intenta maximizar la CPU  carga muchos procesos en RAM.</li>
+                            <li>Con tantos procesos, cada uno tiene muy pocos frames  Page Faults continuos.</li>
+                            <li>El SO expulsa páginas de otros procesos para atender los faults  esos otros procesos generan sus propios faults.</li>
+                            <li>El SO está permanentemente ocupado con I/O de paginación  uso de CPU cae al 0%.</li>
+                            <li>El planificador interpreta "baja CPU" como señal de cargar más procesos  empeora la situación.</li>
+                        </ol>
+                    </div>
+                    <div class="border-l-4 border-usm-gold pl-3 py-1 bg-amber-50 rounded-r text-xs text-slate-700">
+                        <strong>Solución:</strong> Algoritmo Working Set: asegurar que cada proceso tenga suficientes frames para mantener su conjunto de trabajo activo en RAM. Si no hay suficientes frames, suspender el proceso en vez de dejarlo en thrashing.
+                    </div>
+                </div>
+            </div>
+
+            <!-- P19 -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q19',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-purple-100 text-purple-800">Óptimo</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P17 — ¿Por qué el algoritmo de reemplazo Óptimo existe teóricamente pero no se puede aplicar en la práctica?</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q19" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3">El <strong>Algoritmo Óptimo (OPT / MIN)</strong> elige como víctima la página que <em>no será usada durante el período más largo en el futuro</em>. Esto garantiza el mínimo número posible de Page Faults para cualquier secuencia de referencias.</p>
+                    <p class="font-bold text-usm-burgundy mb-2">¿Por qué no es implementable?</p>
+                    <p class="text-xs text-slate-700 mb-3">Requiere conocer de antemano el <strong>futuro completo de accesos a páginas</strong>, lo cual es imposible en un sistema real donde los accesos dependen de las entradas del usuario, datos de red, etc.</p>
+                    <div class="bg-slate-800 text-white text-xs rounded-lg p-3">
+                        <strong class="text-yellow-300">Uso práctico:</strong> Se usa como <em>benchmark teórico</em>: se ejecuta offline sobre trazas grabadas para comparar qué tan cerca llega un algoritmo real (LRU, Working Set) al mínimo teórico.
+                    </div>
+                </div>
+            </div>
+
+            <!-- P20 -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q20',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div>
+                        <span class="cat-pill bg-purple-100 text-purple-800">Working Set</span>
+                        <p class="font-bold text-usm-navy text-sm sm:text-base">P18 — En el algoritmo Working Set, ¿qué consecuencias tiene elegir un Δt demasiado pequeño o demasiado grande?</p>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q20" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3">El <strong>Working Set W(t, Δt)</strong> es el conjunto de páginas accedidas por un proceso en el intervalo de tiempo [t−Δt, t]. El SO garantiza que estas páginas estén en RAM.</p>
+                    <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-orange-50 border-l-4 border-orange-400 rounded-r-lg p-4">
+                            <p class="font-bold text-orange-700 mb-2">Δt demasiado pequeño</p>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-700">
+                                <li>El working set estimado es muy pequeño (pocas páginas).</li>
+                                <li>No captura todas las páginas que el proceso realmente necesita.</li>
+                                <li><strong>Resultado: muchos Page Faults</strong>  posible hiperpaginación.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 border-l-4 border-blue-400 rounded-r-lg p-4">
+                            <p class="font-bold text-blue-700 mb-2">Δt demasiado grande</p>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-700">
+                                <li>El working set incluye páginas de fases anteriores del proceso (ya innecesarias).</li>
+                                <li>Se asignan más frames de los necesarios  otros procesos tienen menos frames.</li>
+                                <li><strong>Resultado: desperdicio de RAM</strong>  menos multiprogramación.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-3 bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-center text-slate-600">
+                        El Δt ideal captura exactamente la <em>fase de localidad actual</em> del proceso, ni más ni menos.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+</main>
+
+<footer style="background:linear-gradient(120deg,#0f1f33 0%,#002b5c 55%,#8c1d40 100%);color:#e2e8f0;border-top:2px solid rgba(201,163,74,0.6);">
+    <div class="container mx-auto px-6 py-6 text-center text-sm font-medium">
+        <p>&copy; 2026 Ayudantía USM — Sistemas Operativos · Repaso Certámenes 2 </p>
+    </div>
+</footer>
+
+<script>
+    const TOTAL = 20;
+    const opened = new Set();
+
+    function toggleQ(id, btn) {
+        const el = document.getElementById(id);
+        const icon = btn.querySelector('svg.accordion-icon');
+        const isHidden = el.classList.contains('hidden');
+
+        if (isHidden) {
+            el.classList.remove('hidden');
+            btn.classList.add('bg-slate-100');
+            if (icon) icon.style.transform = 'rotate(180deg)';
+            if (!opened.has(id)) {
+                opened.add(id);
+                updateProgress();
+            }
+        } else {
+            el.classList.add('hidden');
+            btn.classList.remove('bg-slate-100');
+            if (icon) icon.style.transform = 'rotate(0deg)';
+        }
+    }
+
+    function updateProgress() {
+        const count = opened.size;
+        const pct   = (count / TOTAL) * 100;
+        document.getElementById('progress-text').textContent = `${count} / ${TOTAL}`;
+        document.getElementById('progress-bar').style.width  = `${pct}%`;
+        document.getElementById('final-score').textContent   = `${count} / ${TOTAL}`;
+    }
+</script>
+</body>
+</html>

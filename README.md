@@ -23,6 +23,7 @@ Las guías de ayudantía están diseñadas como páginas web interactivas para q
 | **02** | **Sistemas Operativos: Scheduling y Tiempo** | Conceptos de Programa/Tarea/Proceso, Planificación de CPU, Interrupciones vs Excepciones, Temporizador (RTMAX), TICK y cálculo de Overhead. | [Ver Guía 2](https://GonzaMichea.github.io/Ayudantias-Sistemas-Operativos/ayudantia-02/) |
 | **03** | **Gestión de Memoria Lineal** | MMU, Direcciones Lógicas/Físicas, Particiones Fijas/Dinámicas, Fragmentación (Interna/Externa), Algoritmos (First, Best, Worst Fit), Compactación y Swapping. | [Ver Guía 3](https://GonzaMichea.github.io/Ayudantias-Sistemas-Operativos/ayudantia-03/) |
 | **04** | **Memoria Virtual y Reemplazo de Páginas** | Paginación, Tabla de Páginas, Page Fault, Algoritmos de Reemplazo (FIFO, LRU, NFU, LFU), Principio de Localidad, Working Set y Simulador Interactivo. | [Ver Guía 4](https://GonzaMichea.github.io/Ayudantias-Sistemas-Operativos/ayudantia-04/) |
+| **05** | **Repaso para Certamen 2** | Todo lo que entra en el certamen. | [Ver Guía 5](https://GonzaMichea.github.io/Ayudantias-Sistemas-Operativos/repasoC2/) |
 
 ---
 
