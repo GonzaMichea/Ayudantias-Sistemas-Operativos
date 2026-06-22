@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayudantía SO — Procesos UNIX/Linux</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root{--navy:#002b5c;--burg:#8c1d40;--gold:#c9a34a;--ink:#0f1f33;--paper:#f6f7fb;}
+        body{font-family:'Montserrat',sans-serif;background-color:var(--paper);
+             background-image:radial-gradient(circle at 8% 12%,rgba(201,163,74,.22) 0%,transparent 28%),
+             radial-gradient(circle at 92% 84%,rgba(140,29,64,.15) 0%,transparent 32%),
+             linear-gradient(135deg,#f8fafc 0%,#edf2fb 55%,#f8fafc 100%);min-height:100vh;}
+        h1,h2,h3,h4,h5{font-family:'Sora',sans-serif;letter-spacing:-.02em;}
+        code,pre{font-family:'JetBrains Mono',monospace;}
+        .topbar{background:linear-gradient(90deg,rgba(0,43,92,.95),rgba(140,29,64,.92));
+                box-shadow:0 10px 30px rgba(15,31,51,.25);border-bottom:2px solid rgba(201,163,74,.65);backdrop-filter:blur(10px);}
+        .hero-title{font-size:clamp(2rem,5vw,3.8rem);background:linear-gradient(135deg,var(--navy),var(--burg));
+                    -webkit-background-clip:text;background-clip:text;color:transparent;}
+        .sec-title{border-bottom:3px solid rgba(0,43,92,.28);color:var(--ink);}
+        .card{background:rgba(255,255,255,.9);border:1px solid rgba(0,43,92,.09);
+              box-shadow:0 16px 30px rgba(15,31,51,.08);transition:transform .25s ease,box-shadow .25s ease;}
+        .card:hover{transform:translateY(-3px);box-shadow:0 22px 36px rgba(15,31,51,.14);}
+        .theory{background:rgba(255,255,255,.95);border:1px solid rgba(0,43,92,.12);
+                box-shadow:0 8px 24px rgba(15,31,51,.07);}
+        .accordion-icon{transition:transform .3s ease;}
+        .animate-fadeIn{animation:fadeIn .4s ease-in-out;}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+        #progress-bar{transition:width .5s ease;}
+        .nav-link{color:#f1f5f9;padding:.4rem .8rem;border-radius:9999px;transition:all .25s ease;border:1px solid transparent;font-size:.82rem;}
+        .nav-link:hover{background:rgba(255,255,255,.12);border-color:rgba(201,163,74,.55);}
+        .cat-pill{display:inline-block;font-size:.7rem;font-weight:700;border-radius:9999px;padding:2px 10px;margin-bottom:8px;}
+        .def-box{background:linear-gradient(135deg,#fffbeb,#fef3c7);border-left:4px solid var(--gold);border-radius:0 .5rem .5rem 0;padding:.75rem 1rem;}
+        .key-box{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-left:4px solid #3b82f6;border-radius:0 .5rem .5rem 0;padding:.75rem 1rem;}
+        .warn-box{background:linear-gradient(135deg,#fff1f2,#ffe4e6);border-left:4px solid #f43f5e;border-radius:0 .5rem .5rem 0;padding:.75rem 1rem;}
+        /* memory diagram */
+        .mem-zone{border-radius:.5rem;padding:1rem;text-align:center;font-size:.72rem;font-weight:700;}
+        .mem-seg{border-radius:.35rem;padding:.4rem .6rem;text-align:center;font-size:.68rem;font-weight:600;margin:.2rem 0;}
+        /* code */
+        .codebox{background:#1e293b;color:#e2e8f0;border-radius:.6rem;padding:1.1rem 1.3rem;
+                 font-size:.74rem;line-height:1.75;overflow-x:auto;white-space:pre;}
+        .ck{color:#7dd3fc;}.ct{color:#a5b4fc;}.cc{color:#6ee7b7;font-style:italic;}.cs{color:#fcd34d;}.cf{color:#f9a8d4;}
+        /* state chip */
+        .state-chip{display:inline-flex;align-items:center;padding:.25rem .8rem;border-radius:9999px;font-size:.7rem;font-weight:700;}
+    </style>
+</head>
+<body class="text-slate-800">
+
+<!-- TOPBAR -->
+<header class="topbar sticky top-0 z-50">
+    <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+        <h1 class="text-xl font-extrabold text-white" style="font-family:'Sora',sans-serif;">Ayudantía SO</h1>
+        <div class="space-x-1 hidden sm:flex flex-wrap gap-1">
+            <a href="#s-intro"     class="nav-link font-medium">Intro</a>
+            <a href="#s-estructura" class="nav-link font-medium">Estructura</a>
+            <a href="#s-zonau"     class="nav-link font-medium">Zona U / Task</a>
+            <a href="#s-shared"    class="nav-link font-medium">Compartidos</a>
+            <a href="#s-estados"   class="nav-link font-medium">Estados</a>
+            <a href="#s-fork"      class="nav-link font-medium">fork()</a>
+            <a href="#s-exec"      class="nav-link font-medium">exec()</a>
+            <a href="#s-term"      class="nav-link font-medium">Terminación</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container mx-auto px-4 sm:px-6 py-12 max-w-5xl">
+
+    <!-- HERO -->
+    <section class="text-center mb-14">
+        <h2 class="hero-title font-bold mb-3">Procesos UNIX / Linux</h2>
+        <p class="text-slate-500 font-medium max-w-xl mx-auto mb-7 text-sm">
+            Teoría completa + preguntas de repaso. Basado en el material del prof. Xavier Bonnaire — UTFSM.
+        </p>
+        <div class="max-w-md mx-auto bg-white rounded-2xl shadow p-5 border border-slate-100">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-bold uppercase tracking-wide" style="color:var(--navy)">Progreso Q&amp;A</span>
+                <span id="progress-text" class="text-xs font-bold" style="color:var(--burg)">0 / 16</span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-3 mb-2">
+                <div id="progress-bar" class="h-3 rounded-full" style="width:0%;background:linear-gradient(90deg,#002b5c,#8c1d40)"></div>
+            </div>
+            <p class="text-xs text-slate-500">Abre cada pregunta para marcarla. <strong id="final-score" style="color:var(--navy)">0 / 16</strong> completadas.</p>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- 1. INTRODUCCIÓN                                                    -->
+    <!-- ================================================================ -->
+    <section id="s-intro" class="mb-16">
+        <h3 class="sec-title text-2xl font-bold mb-7 pb-3">1 — Introducción a los Procesos</h3>
+
+        <!-- TEORÍA -->
+        <div class="theory rounded-2xl p-6 mb-6">
+            <h4 class="text-lg font-bold mb-4" style="color:var(--navy)">¿Qué es un proceso?</h4>
+            <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                Un <strong>proceso</strong> es una instancia activa de un programa en ejecución. A diferencia de un programa (que es código estático en disco), el proceso incluye el estado de ejecución, los datos en memoria y todos los recursos del sistema operativo asignados a él.
+            </p>
+            <div class="def-box mb-4">
+                <p class="text-xs font-bold text-amber-800 mb-1">Definición formal</p>
+                <p class="text-xs text-slate-700">Un proceso UNIX/Linux contiene: <strong>(1)</strong> un conjunto de estructuras de datos para su gestión, <strong>(2)</strong> 3 segmentos de memoria virtual y <strong>(3)</strong> posibles segmentos compartidos con otros procesos.</p>
+            </div>
+            <div class="grid sm:grid-cols-3 gap-3 text-xs">
+                <div class="bg-blue-50 rounded-xl p-4 border border-blue-100">
+                    <p class="font-bold text-blue-800 mb-1">Estructuras de datos</p>
+                    <p class="text-slate-600">Zona U, estructura task/proc — usadas por el kernel para gestionar el proceso.</p>
+                </div>
+                <div class="bg-indigo-50 rounded-xl p-4 border border-indigo-100">
+                    <p class="font-bold text-indigo-800 mb-1">3 Segmentos de memoria</p>
+                    <ul class="text-slate-600 space-y-0.5">
+                        <li>• <strong>Texto</strong> — código ejecutable</li>
+                        <li>• <strong>Datos</strong> — variables estáticas/globales</li>
+                        <li>• <strong>Pila</strong> — stack de ejecución</li>
+                    </ul>
+                </div>
+                <div class="bg-purple-50 rounded-xl p-4 border border-purple-100">
+                    <p class="font-bold text-purple-800 mb-1">Segmentos compartidos</p>
+                    <p class="text-slate-600">El segmento de código puede ser compartido entre procesos que ejecutan el mismo programa.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q&A -->
+        <div class="space-y-4">
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q1',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-blue-100 text-blue-800">Repaso</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P1 — ¿Cuál es la diferencia entre programa y proceso?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q1" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                            <p class="font-bold text-slate-700 mb-2"> Programa (estático)</p>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                                <li>Código binario almacenado en disco</li>
+                                <li>No tiene estado de ejecución</li>
+                                <li>Pasivo — no consume CPU ni RAM por sí solo</li>
+                                <li>Puede dar origen a múltiples procesos</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <p class="font-bold text-blue-800 mb-2"> Proceso (dinámico)</p>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                                <li>Instancia activa del programa cargado en RAM</li>
+                                <li>Tiene estado: registros, PC, datos en memoria</li>
+                                <li>Consume CPU, memoria, archivos abiertos, etc.</li>
+                                <li>Varios procesos pueden ejecutar el mismo programa</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- 2. ESTRUCTURA DEL PROCESO                                          -->
+    <!-- ================================================================ -->
+    <section id="s-estructura" class="mb-16">
+        <h3 class="sec-title text-2xl font-bold mb-7 pb-3">2 — Estructura del Proceso</h3>
+
+        <div class="theory rounded-2xl p-6 mb-6">
+            <h4 class="text-lg font-bold mb-4" style="color:var(--navy)">2 modos de ejecución y 2 zonas de memoria</h4>
+            <p class="text-sm text-slate-700 leading-relaxed mb-5">
+                Todo proceso en UNIX/Linux puede ejecutarse en dos modos distintos y su espacio de memoria virtual se divide en dos zonas claramente separadas:
+            </p>
+
+            <!-- Modes -->
+            <div class="grid sm:grid-cols-2 gap-4 mb-5 text-xs">
+                <div class="bg-sky-50 border border-sky-200 rounded-xl p-4">
+                    <p class="font-bold text-sky-700 text-sm mb-2"> Modo Usuario</p>
+                    <p class="text-slate-600 mb-2">El proceso ejecuta código de la <strong>aplicación</strong>. Acceso restringido al hardware — no puede ejecutar instrucciones privilegiadas ni acceder directamente a periféricos.</p>
+                    <p class="text-slate-500 italic">Ej. el código de tu programa C corriendo normalmente.</p>
+                </div>
+                <div class="bg-orange-50 border border-orange-200 rounded-xl p-4">
+                    <p class="font-bold text-orange-700 text-sm mb-2"> Modo Sistema (Kernel)</p>
+                    <p class="text-slate-600 mb-2">El proceso ejecuta código del <strong>kernel</strong> tras una syscall o interrupción. Acceso total al hardware. El proceso no cambia — solo cambia el modo de privilegio del procesador.</p>
+                    <p class="text-slate-500 italic">Ej. el mismo proceso cuando llama a read(), write(), fork()…</p>
+                </div>
+            </div>
+
+            <!-- Memory zones diagram -->
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Espacio de trabajo del proceso</p>
+            <div class="border-2 border-slate-300 rounded-xl p-4 bg-slate-50">
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="bg-sky-100 border-2 border-dashed border-sky-400 rounded-xl p-4">
+                        <p class="text-center font-bold text-sky-700 text-xs mb-3 uppercase tracking-wide">Zona Usuario</p>
+                        <div class="bg-blue-300 mem-seg text-blue-900">Zona Propia al proceso<br><span class="font-normal">(Memoria)</span></div>
+                        <div class="bg-blue-200 mem-seg text-blue-900">Pila de Ejecución<br><span class="font-normal">(Stack usuario)</span></div>
+                        <p class="text-center text-xs text-sky-600 mt-2 font-semibold">↑ Accesible en modo usuario</p>
+                    </div>
+                    <div class="bg-amber-100 border-2 border-dashed border-amber-400 rounded-xl p-4">
+                        <p class="text-center font-bold text-amber-700 text-xs mb-3 uppercase tracking-wide">Zona Sistema</p>
+                        <div class="bg-amber-300 mem-seg text-amber-900 py-3">Zona U<br><span class="font-normal">+ Pila Sistema</span><br><span class="font-normal">+ Estructuras kernel</span></div>
+                        <p class="text-center text-xs text-amber-600 mt-2 font-semibold">↑ Accesible en modo sistema</p>
+                    </div>
+                </div>
+                <p class="text-center text-xs text-slate-500 mt-3 italic">El kernel es parte de la zona de memoria virtual del proceso — no es un espacio separado.</p>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q2',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-green-100 text-green-800">Estructura</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P2 — ¿Por qué el kernel forma parte del espacio virtual del proceso?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q2" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3 text-xs">En UNIX/Linux el kernel está mapeado en la zona de sistema del espacio virtual de <em>cada</em> proceso. Esto permite que, cuando ocurre una syscall o interrupción, el procesador pueda cambiar de modo y empezar a ejecutar código del kernel <strong>sin cambiar el contexto del espacio de direcciones</strong> (sin cambiar el CR3 en x86).</p>
+                    <div class="key-box text-xs">
+                        <p class="font-bold text-blue-800 mb-1">Ventajas de este diseño:</p>
+                        <ul class="list-disc pl-4 space-y-1 text-slate-700">
+                            <li>La transición modo-usuario → modo-sistema es muy rápida (solo cambia el nivel de privilegio del procesador).</li>
+                            <li>El kernel puede acceder directamente a las estructuras del proceso (Zona U) sin necesidad de un cambio de espacio de direcciones.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- 3. ZONA U Y ESTRUCTURA TASK                                        -->
+    <!-- ================================================================ -->
+    <section id="s-zonau" class="mb-16">
+        <h3 class="sec-title text-2xl font-bold mb-7 pb-3">3 — Zona U y Estructura Task</h3>
+
+        <div class="theory rounded-2xl p-6 mb-6">
+            <h4 class="text-lg font-bold mb-4" style="color:var(--navy)">El Contexto del proceso y la Zona U</h4>
+
+            <div class="grid sm:grid-cols-2 gap-5 mb-5 text-xs">
+                <div>
+                    <p class="font-bold text-slate-700 mb-2 uppercase tracking-wide text-xs">Contexto del proceso</p>
+                    <div class="space-y-2">
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                            <p class="font-semibold text-slate-700 mb-1">Espacio usuario</p>
+                            <p class="text-slate-500">Código (Text), datos (Data) y pila de ejecución (Stack) del programa.</p>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                            <p class="font-semibold text-slate-700 mb-1">Informaciones de control</p>
+                            <p class="text-slate-500">Zona U y estructura proc — metadatos del proceso mantenidos por el kernel.</p>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                            <p class="font-semibold text-slate-700 mb-1">Variables de ambiente</p>
+                            <p class="text-slate-500">PATH, HOME, USER, etc. Heredadas del proceso padre.</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p class="font-bold text-slate-700 mb-2 uppercase tracking-wide text-xs">Contexto Hardware (en Zona U)</p>
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-1.5">
+                        <div class="flex items-center gap-2"><span class="bg-amber-400 text-white rounded px-1.5 font-bold text-xs w-10 text-center">PC</span><span>Program Counter — próxima instrucción</span></div>
+                        <div class="flex items-center gap-2"><span class="bg-amber-400 text-white rounded px-1.5 font-bold text-xs w-10 text-center">SP</span><span>Stack Pointer — cima de la pila</span></div>
+                        <div class="flex items-center gap-2"><span class="bg-amber-400 text-white rounded px-1.5 font-bold text-xs w-10 text-center">PSW</span><span>Process Status Word — flags del procesador</span></div>
+                        <div class="flex items-center gap-2"><span class="bg-amber-400 text-white rounded px-1.5 font-bold text-xs w-10 text-center">MEM</span><span>Registro de gestión de memoria</span></div>
+                        <div class="flex items-center gap-2"><span class="bg-amber-400 text-white rounded px-1.5 font-bold text-xs w-10 text-center">FPU</span><span>Floating Point Unit — registros coma flotante</span></div>
+                        <div class="flex items-center gap-2"><span class="bg-amber-400 text-white rounded px-1.5 font-bold text-xs w-10 text-center">IPL</span><span>Modo de ejecución + prioridad interrupciones</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warn-box mb-5 text-xs">
+                <p class="font-bold text-rose-700 mb-1"> Conmutación de proceso (context switch)</p>
+                <p class="text-slate-700">Cuando el kernel decide cambiar de proceso: <strong>(1)</strong> guarda el Contexto Hardware del proceso saliente en <em>su</em> Zona U. <strong>(2)</strong> Carga el Contexto Hardware del proceso entrante desde <em>su</em> Zona U a los registros físicos del procesador. El proceso "reanuda" exactamente donde quedó.</p>
+            </div>
+
+            <h4 class="text-base font-bold mb-4" style="color:var(--navy)">Contenido completo de la Zona U</h4>
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs">
+                <p class="text-amber-700 font-semibold mb-1 italic">La Zona U es parte del espacio del proceso y puede ser swapped out a disco.</p>
+                <div class="grid sm:grid-cols-2 gap-3 mt-2">
+                    <ul class="list-disc pl-4 space-y-1 text-slate-700">
+                        <li>Contexto Hardware del proceso</li>
+                        <li>UID y GID reales</li>
+                        <li>Argumentos del proceso</li>
+                        <li>Código de error del último system call</li>
+                        <li>Informaciones sobre señales pendientes</li>
+                    </ul>
+                    <ul class="list-disc pl-4 space-y-1 text-slate-700">
+                        <li>Header del programa (para el linker)</li>
+                        <li>Lista de archivos abiertos (file descriptors)</li>
+                        <li>Puntero al vnode del directorio corriente</li>
+                        <li>Estadísticas: CPU usado, límites, quotas</li>
+                        <li>System Stack (pila del kernel para este proceso)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4 class="text-base font-bold mt-6 mb-4" style="color:var(--navy)">Estructura Task</h4>
+            <p class="text-sm text-slate-700 leading-relaxed mb-4">La <strong>estructura Task</strong> (también llamada <em>task_struct</em> en Linux) es la representación principal del proceso en el kernel. Contiene punteros a todos sus segmentos:</p>
+
+            <!-- Task structure diagram -->
+            <div class="flex flex-col sm:flex-row gap-4 items-start">
+                <div class="flex-shrink-0">
+                    <div class="border-2 border-teal-600 rounded-lg overflow-hidden w-44 text-xs">
+                        <div class="bg-teal-600 text-white text-center py-2 font-bold">Estructura Task</div>
+                        <div class="bg-teal-100 text-teal-900 text-center py-2 border-b border-teal-300 font-semibold">Text Segment →</div>
+                        <div class="bg-teal-100 text-teal-900 text-center py-2 border-b border-teal-300 font-semibold">Data Segment →</div>
+                        <div class="bg-teal-100 text-teal-900 text-center py-2 border-b border-teal-300 font-semibold">Stack Segment →</div>
+                        <div class="bg-amber-300 text-amber-900 text-center py-2 font-bold">Zona U ↓</div>
+                    </div>
+                    <div class="border-2 border-amber-400 rounded-lg overflow-hidden w-44 mt-2 text-xs">
+                        <div class="bg-amber-400 text-amber-900 text-center py-1.5 font-bold">Zona U</div>
+                        <div class="bg-amber-100 text-center py-1.5 border-b border-amber-200">Contexto HW</div>
+                        <div class="bg-amber-100 text-center py-1.5 border-b border-amber-200">Pila Sistema</div>
+                        <div class="bg-amber-100 text-center py-1.5">+ info proceso</div>
+                    </div>
+                </div>
+                <div class="flex-1 text-xs space-y-2">
+                    <div class="bg-teal-50 border border-teal-200 rounded-lg p-3">
+                        <span class="font-bold text-teal-700">Text Segment</span> — puntero al código ejecutable. Puede ser compartido entre varios procesos que corren el mismo programa.
+                    </div>
+                    <div class="bg-teal-50 border border-teal-200 rounded-lg p-3">
+                        <span class="font-bold text-teal-700">Data Segment</span> — variables globales y estáticas del proceso. Privado (con mecanismo COW tras fork()).
+                    </div>
+                    <div class="bg-teal-50 border border-teal-200 rounded-lg p-3">
+                        <span class="font-bold text-teal-700">Stack Segment</span> — pila de ejecución en modo usuario (variables locales, retornos de funciones). Privado de cada proceso.
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                        <span class="font-bold text-amber-700">Zona U</span> — contiene el Contexto Hardware + Pila Sistema + resto de metadatos. Solo accesible en modo sistema.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q3',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-yellow-100 text-yellow-800">Zona U</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P3 — ¿Cuál es la diferencia entre la Pila de Ejecución (Stack usuario) y la Pila Sistema?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q3" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-sky-50 border-l-4 border-sky-400 rounded-r-lg p-4">
+                            <p class="font-bold text-sky-700 mb-2">Stack Usuario (Pila de Ejecución)</p>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-700">
+                                <li>Vive en la <strong>Zona Usuario</strong></li>
+                                <li>Usada cuando el proceso ejecuta en <strong>modo usuario</strong></li>
+                                <li>Contiene: variables locales, parámetros de funciones, dirección de retorno</li>
+                                <li>Manipulada por el código de la aplicación</li>
+                            </ul>
+                        </div>
+                        <div class="bg-amber-50 border-l-4 border-amber-400 rounded-r-lg p-4">
+                            <p class="font-bold text-amber-700 mb-2">Pila Sistema (System Stack)</p>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-700">
+                                <li>Vive dentro de la <strong>Zona U</strong> (zona sistema)</li>
+                                <li>Usada cuando el proceso ejecuta en <strong>modo sistema</strong> (kernel)</li>
+                                <li>Contiene: contexto de llamadas al kernel, parámetros de syscalls</li>
+                                <li>Solo accesible y manipulable por el kernel</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-3 def-box text-xs">
+                        Cada proceso tiene <strong>dos pilas</strong>: una para modo usuario y otra para modo sistema. Al entrar al kernel (por syscall o interrupción), el procesador cambia automáticamente al Stack Sistema del proceso.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q4',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-teal-100 text-teal-800">Task</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P4 — ¿Por qué la Zona U puede ser swapped out pero la estructura proc (task) no?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q4" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3 text-xs">El kernel distingue dos niveles de metadatos del proceso según su necesidad de estar siempre en RAM:</p>
+                    <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                            <p class="font-bold text-red-700 mb-1">Estructura proc / task — siempre en RAM</p>
+                            <p class="text-slate-600">Contiene información mínima que el kernel necesita <em>incluso cuando el proceso está durmiendo</em>: PID, estado, prioridad, puntero a la Zona U. El scheduler necesita acceder a estos datos sin hacer swap-in.</p>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                            <p class="font-bold text-amber-700 mb-1">Zona U — puede salir a disco</p>
+                            <p class="text-slate-600">Contiene información que solo se necesita cuando el proceso está activamente ejecutando (contexto HW, archivos abiertos, etc.). Si el proceso está completamente suspendido (swapped out), su Zona U puede ir a disco junto con sus segmentos de datos y código.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- 4. SEGMENTOS COMPARTIDOS                                           -->
+    <!-- ================================================================ -->
+    <section id="s-shared" class="mb-16">
+        <h3 class="sec-title text-2xl font-bold mb-7 pb-3">4 — Segmentos de Memoria Compartidos</h3>
+
+        <div class="theory rounded-2xl p-6 mb-6">
+            <h4 class="text-lg font-bold mb-4" style="color:var(--navy)">Compartición del segmento de código</h4>
+            <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                Cuando múltiples procesos ejecutan el mismo programa, el sistema puede hacer que sus Text Segments apunten al <strong>mismo bloque físico de memoria</strong>. Esto ahorra RAM significativamente.
+            </p>
+            <div class="grid sm:grid-cols-3 gap-3 mb-5">
+                <div class="border-2 border-teal-500 rounded-lg overflow-hidden text-xs">
+                    <div class="bg-teal-500 text-white text-center py-1.5 font-bold">Task — Process 1</div>
+                    <div class="bg-teal-100 text-center py-1.5 border-b border-teal-200 font-semibold">Text Seg ──────┐</div>
+                    <div class="bg-teal-50 text-center py-1.5 border-b border-teal-200">Data Seg</div>
+                    <div class="bg-teal-50 text-center py-1.5 border-b border-teal-200">Stack Seg</div>
+                    <div class="bg-amber-200 text-center py-1.5">Zona U</div>
+                </div>
+                <div class="border-2 border-teal-400 rounded-lg overflow-hidden text-xs">
+                    <div class="bg-teal-400 text-white text-center py-1.5 font-bold">Task — Process 2</div>
+                    <div class="bg-teal-100 text-center py-1.5 border-b border-teal-200 font-semibold">Text Seg ──────┤</div>
+                    <div class="bg-teal-50 text-center py-1.5 border-b border-teal-200">Data Seg</div>
+                    <div class="bg-teal-50 text-center py-1.5 border-b border-teal-200">Stack Seg</div>
+                    <div class="bg-amber-200 text-center py-1.5">Zona U</div>
+                </div>
+                <div class="border-2 border-slate-400 rounded-lg overflow-hidden text-xs">
+                    <div class="bg-slate-600 text-white text-center py-1.5 font-bold">Estructura Text</div>
+                    <div class="bg-slate-100 text-center py-1.5 border-b font-semibold text-slate-600">xcount = 2</div>
+                    <div class="bg-slate-50 text-center py-3 text-slate-500">Código compartido<br>(una sola copia en RAM)</div>
+                </div>
+            </div>
+            <div class="def-box text-xs">
+                <p class="font-bold text-amber-800 mb-1">Campo xcount</p>
+                <p class="text-slate-700">La Estructura Text lleva un contador <code class="bg-amber-100 px-1 rounded">xcount</code> que indica cuántos procesos comparten ese código en este momento. Cuando xcount llega a 0, el sistema puede liberar ese bloque de memoria física.</p>
+            </div>
+            <div class="mt-4 grid sm:grid-cols-2 gap-4 text-xs">
+                <div class="bg-green-50 border border-green-200 rounded-lg p-3">
+                    <p class="font-bold text-green-700 mb-1"> Se puede compartir</p>
+                    <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                        <li><strong>Text Segment</strong> — el código es de solo lectura, es seguro compartirlo</li>
+                    </ul>
+                </div>
+                <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                    <p class="font-bold text-red-700 mb-1"> No se comparte (privado)</p>
+                    <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                        <li><strong>Data Segment</strong> — variables propias de cada proceso</li>
+                        <li><strong>Stack Segment</strong> — pila única de cada proceso</li>
+                        <li><strong>Zona U</strong> — contexto hardware individual</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q5',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-purple-100 text-purple-800">Compartidos</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P5 — ¿Por qué el código puede compartirse pero los datos no?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q5" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3 text-xs">La respuesta está en la naturaleza de cada segmento:</p>
+                    <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-3">
+                            <p class="font-bold text-green-700 mb-1">Código — inmutable (read-only)</p>
+                            <p class="text-slate-600">Las instrucciones del programa no cambian durante la ejecución. Si proceso 1 y proceso 2 ejecutan el mismo programa, la instrucción en la dirección X siempre es la misma para ambos. Compartirla es 100% seguro y eficiente.</p>
+                        </div>
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                            <p class="font-bold text-red-700 mb-1">Datos — mutable (read-write)</p>
+                            <p class="text-slate-600">Las variables globales son propias de cada proceso. Si P1 y P2 ejecutan el mismo programa, cada uno tiene su propio contador, su propia variable <code>x</code>, etc. Si compartieran datos, una escritura de P1 afectaría a P2 — eso sería incorrecto.</p>
+                        </div>
+                    </div>
+                    <div class="mt-3 def-box text-xs">
+                        <strong>Excepción:</strong> los segmentos de datos <em>sí</em> se comparten temporalmente justo después de un fork(), pero protegidos con el mecanismo <strong>Copy On Write</strong>. En cuanto alguno escribe, se genera una copia privada.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- 5. ESTADOS DEL PROCESO                                             -->
+    <!-- ================================================================ -->
+    <section id="s-estados" class="mb-16">
+        <h3 class="sec-title text-2xl font-bold mb-7 pb-3">5 — Estados de un Proceso</h3>
+
+        <div class="theory rounded-2xl p-6 mb-6">
+            <h4 class="text-lg font-bold mb-5" style="color:var(--navy)">Grafo de estados de un proceso UNIX/Linux</h4>
+
+            <!-- States grid -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6 text-xs">
+                <div class="bg-blue-50 border-2 border-blue-300 rounded-xl p-3">
+                    <p class="state-chip bg-blue-600 text-white mb-2">READY</p>
+                    <p class="text-slate-600">El proceso está listo y <strong>en espera</strong> de que el scheduler le asigne la CPU. Puede haber muchos procesos READY simultáneamente.</p>
+                    <p class="mt-2 text-blue-700 font-semibold">Entrada: fork(), wakeup(), task_switch()</p>
+                </div>
+                <div class="bg-sky-50 border-2 border-sky-300 rounded-xl p-3">
+                    <p class="state-chip bg-sky-500 text-white mb-2">RUNNING USER MODE</p>
+                    <p class="text-slate-600">El proceso tiene la CPU y ejecuta código de la <strong>aplicación</strong> (modo usuario).</p>
+                    <p class="mt-2 text-sky-700 font-semibold">Entrada: INTR return, Syscall return</p>
+                </div>
+                <div class="bg-orange-50 border-2 border-orange-300 rounded-xl p-3">
+                    <p class="state-chip bg-orange-500 text-white mb-2">RUNNING SYSTEM MODE</p>
+                    <p class="text-slate-600">El proceso tiene la CPU ejecutando código del <strong>kernel</strong> (por syscall o interrupción).</p>
+                    <p class="mt-2 text-orange-700 font-semibold">Entrada: Interruption, System Call</p>
+                </div>
+                <div class="bg-slate-50 border-2 border-slate-300 rounded-xl p-3">
+                    <p class="state-chip bg-slate-500 text-white mb-2">SLEEPING</p>
+                    <p class="text-slate-600">El proceso está <strong>bloqueado</strong>, esperando un evento externo (E/S terminada, señal, recurso disponible).</p>
+                    <p class="mt-2 text-slate-600 font-semibold">Entrada: sleep() — Salida: wakeup()</p>
+                </div>
+                <div class="bg-red-50 border-2 border-red-300 rounded-xl p-3">
+                    <p class="state-chip bg-red-600 text-white mb-2">ZOMBIE</p>
+                    <p class="text-slate-600">El proceso terminó con exit(). Espacio de trabajo liberado, pero la <strong>task persiste</strong> hasta que el padre haga wait().</p>
+                    <p class="mt-2 text-red-700 font-semibold">Entrada: exit() — Salida: wait()</p>
+                </div>
+                <div class="bg-rose-50 border-2 border-rose-300 rounded-xl p-3">
+                    <p class="state-chip bg-rose-800 text-white mb-2">TERMINATED</p>
+                    <p class="text-slate-600">El padre llamó a wait(). <strong>Todas</strong> las estructuras del proceso (Zona U, proc, task…) son liberadas definitivamente.</p>
+                    <p class="mt-2 text-rose-700 font-semibold">Entrada: wait()</p>
+                </div>
+            </div>
+
+            <!-- State transition summary -->
+            <div class="bg-slate-800 rounded-xl p-4 text-xs">
+                <p class="font-bold text-yellow-300 mb-3">Transiciones principales:</p>
+                <div class="space-y-1.5 font-mono text-slate-300">
+                    <p>Parent Process <span class="text-yellow-300">──fork()──▶</span> <span class="text-blue-300">READY</span></p>
+                    <p><span class="text-blue-300">READY</span> <span class="text-yellow-300">──task_switch()──▶</span> <span class="text-orange-300">RUNNING SYSTEM MODE</span></p>
+                    <p><span class="text-orange-300">RUNNING SYSTEM</span> <span class="text-yellow-300">──INTR/Syscall Return──▶</span> <span class="text-sky-300">RUNNING USER MODE</span></p>
+                    <p><span class="text-sky-300">RUNNING USER</span> <span class="text-yellow-300">──Interruption/Syscall──▶</span> <span class="text-orange-300">RUNNING SYSTEM MODE</span></p>
+                    <p><span class="text-orange-300">RUNNING SYSTEM</span> <span class="text-yellow-300">──sleep()──▶</span> <span class="text-slate-400">SLEEPING</span> <span class="text-yellow-300">──wakeup()──▶</span> <span class="text-blue-300">READY</span></p>
+                    <p><span class="text-orange-300">RUNNING SYSTEM</span> <span class="text-yellow-300">──exit()──▶</span> <span class="text-red-400">ZOMBIE</span> <span class="text-yellow-300">──wait()──▶</span> <span class="text-rose-400">TERMINATED</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q6',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-orange-100 text-orange-800">Estados</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P6 — ¿Cuándo pasa un proceso de RUNNING USER a RUNNING SYSTEM y viceversa?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q6" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-orange-50 border-l-4 border-orange-400 rounded-r-lg p-4">
+                            <p class="font-bold text-orange-700 mb-2">USER → SYSTEM (dos causas)</p>
+                            <ul class="list-disc pl-4 space-y-1.5 text-slate-700">
+                                <li><strong>System Call:</strong> el proceso invoca explícitamente al kernel (read, write, fork, open, exit…). El hardware cambia el nivel de privilegio y el SP al System Stack.</li>
+                                <li><strong>Interrupción hardware:</strong> el procesador recibe una interrupción externa (timer, dispositivo de E/S, etc.) mientras ejecuta el proceso. El kernel toma control.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-sky-50 border-l-4 border-sky-400 rounded-r-lg p-4">
+                            <p class="font-bold text-sky-700 mb-2">SYSTEM → USER (dos causas)</p>
+                            <ul class="list-disc pl-4 space-y-1.5 text-slate-700">
+                                <li><strong>INTR Return:</strong> el kernel terminó de manejar la interrupción y retorna al código de usuario donde fue interrumpido.</li>
+                                <li><strong>Syscall Return:</strong> el kernel completó la syscall y retorna el resultado al código de usuario.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q7',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-red-100 text-red-800">Estados</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P7 — ¿Por qué un proceso en estado ZOMBIE todavía ocupa espacio? ¿Qué recursos se liberan y cuáles no?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q7" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3 text-xs">Cuando el proceso hace exit(), el kernel libera lo que ya no sirve pero preserva lo que el padre aún necesita leer:</p>
+                    <div class="grid sm:grid-cols-2 gap-4 text-xs mb-3">
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-3">
+                            <p class="font-bold text-green-700 mb-1"> Se libera al hacer exit()</p>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-700">
+                                <li>Segmentos de memoria virtual (Text, Data, Stack)</li>
+                                <li>Zonas en el área de Swap</li>
+                                <li>Archivos abiertos (se cierran)</li>
+                                <li>La mayor parte de la Zona U</li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                            <p class="font-bold text-red-700 mb-1"> Persiste hasta wait()</p>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-700">
+                                <li><strong>Estructura Task / proc</strong> — para que el padre pueda recuperar el PID y el código de salida (<code>exit status</code>)</li>
+                                <li>El PID (reservado hasta que el padre lo recoja)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="warn-box text-xs">
+                        Si el padre nunca llama a wait(), el zombie persiste <em>indefinidamente</em>, ocupando una entrada en la tabla de procesos. Con suficientes zombies se puede agotar el límite de procesos del sistema.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- 6. CREACIÓN DE PROCESOS — FORK                                     -->
+    <!-- ================================================================ -->
+    <section id="s-fork" class="mb-16">
+        <h3 class="sec-title text-2xl font-bold mb-7 pb-3">6 — Creación de Procesos: fork()</h3>
+
+        <div class="theory rounded-2xl p-6 mb-6">
+            <h4 class="text-lg font-bold mb-4" style="color:var(--navy)">Jerarquía PADRE ⇌ HIJO e Init</h4>
+            <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                UNIX/Linux organiza todos los procesos del sistema en un <strong>árbol jerárquico</strong>. Cada proceso tiene exactamente un padre (salvo el primero). Para crear un proceso hijo se usa la syscall <code class="bg-slate-100 px-1 rounded text-xs">fork()</code>.
+            </p>
+            <div class="grid sm:grid-cols-3 gap-3 mb-5 text-xs">
+                <div class="key-box col-span-1">
+                    <p class="font-bold text-blue-800 mb-1">Proceso Init (PID 1)</p>
+                    <p class="text-slate-600">El primer proceso, creado directamente por el Kernel tras el boot. Es la raíz del árbol de procesos. Todos los demás procesos son descendientes de Init.</p>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 col-span-2">
+                    <p class="font-bold text-slate-700 mb-2">Árbol de procesos</p>
+                    <div class="flex flex-col items-center text-xs">
+                        <div class="bg-amber-400 text-amber-900 rounded-full px-4 py-1 font-bold">INIT</div>
+                        <div class="flex gap-8 mt-2">
+                            <div class="flex flex-col items-center">
+                                <div class="w-px h-4 bg-slate-400"></div>
+                                <div class="bg-blue-400 text-white rounded-full px-3 py-0.5 font-semibold">P0</div>
+                                <div class="flex gap-3 mt-1">
+                                    <div class="flex flex-col items-center"><div class="w-px h-3 bg-slate-400"></div><div class="bg-blue-200 text-blue-900 rounded-full px-2 text-xs">P01</div></div>
+                                    <div class="flex flex-col items-center"><div class="w-px h-3 bg-slate-400"></div><div class="bg-blue-200 text-blue-900 rounded-full px-2 text-xs">P02</div></div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-px h-4 bg-slate-400"></div>
+                                <div class="bg-blue-400 text-white rounded-full px-3 py-0.5 font-semibold">P1</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-px h-4 bg-slate-400"></div>
+                                <div class="bg-blue-400 text-white rounded-full px-3 py-0.5 font-semibold">P2</div>
+                                <div class="flex gap-3 mt-1">
+                                    <div class="flex flex-col items-center"><div class="w-px h-3 bg-slate-400"></div><div class="bg-blue-200 text-blue-900 rounded-full px-2 text-xs">P21</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="text-base font-bold mb-4 mt-6" style="color:var(--navy)">Algoritmo de fork() — paso a paso</h4>
+            <div class="grid sm:grid-cols-2 gap-3 text-xs mb-5">
+                <ol class="space-y-2">
+                    <li class="flex items-start gap-2"><span class="bg-navy text-white rounded-full w-5 h-5 flex items-center justify-center font-bold flex-shrink-0 text-xs" style="background:var(--navy)">1</span><p><strong>Crear nuevo proceso</strong> y asignar un nuevo PID único.</p></li>
+                    <li class="flex items-start gap-2"><span class="bg-navy text-white rounded-full w-5 h-5 flex items-center justify-center font-bold flex-shrink-0 text-xs" style="background:var(--navy)">2</span><p><strong>Inicializar la estructura task</strong> del hijo.</p></li>
+                    <li class="flex items-start gap-2"><span class="bg-navy text-white rounded-full w-5 h-5 flex items-center justify-center font-bold flex-shrink-0 text-xs" style="background:var(--navy)">3</span><p><strong>Asignar zona de memoria virtual</strong> (espacio de trabajo) al hijo.</p></li>
+                    <li class="flex items-start gap-2"><span class="bg-navy text-white rounded-full w-5 h-5 flex items-center justify-center font-bold flex-shrink-0 text-xs" style="background:var(--navy)">4</span><p><strong>Copiar la Zona U</strong> del padre al hijo.</p></li>
+                    <li class="flex items-start gap-2"><span class="bg-navy text-white rounded-full w-5 h-5 flex items-center justify-center font-bold flex-shrink-0 text-xs" style="background:var(--navy)">5</span><p><strong>Compartir Text y Data Segments</strong> entre padre e hijo (mismo bloque físico).</p></li>
+                </ol>
+                <ol class="space-y-2" start="6">
+                    <li class="flex items-start gap-2"><span class="bg-navy text-white rounded-full w-5 h-5 flex items-center justify-center font-bold flex-shrink-0 text-xs" style="background:var(--navy)">6</span><p><strong>Copiar el Stack Segment</strong> del padre al hijo.</p></li>
+                    <li class="flex items-start gap-2"><span class="bg-navy text-white rounded-full w-5 h-5 flex items-center justify-center font-bold flex-shrink-0 text-xs" style="background:var(--navy)">7</span><p><strong>Copiar el contexto hardware</strong> del padre al hijo (PC, registros, PSW, FPU).</p></li>
+                    <li class="flex items-start gap-2"><span class="bg-navy text-white rounded-full w-5 h-5 flex items-center justify-center font-bold flex-shrink-0 text-xs" style="background:var(--navy)">8</span><p><strong>Poner el hijo en estado READY</strong> e insertarlo en la lista de ejecución.</p></li>
+                    <li class="flex items-start gap-2"><span class="w-5 h-5 rounded-full flex items-center justify-center font-bold flex-shrink-0 text-xs text-white" style="background:var(--gold)">9</span><p><strong>Activar bit COW=1</strong> en todas las páginas del Data Segment de ambos procesos.</p></li>
+                    <li class="flex items-start gap-2"><span class="w-5 h-5 rounded-full flex items-center justify-center font-bold flex-shrink-0 text-xs text-white" style="background:var(--burg)">10</span><p><strong>Return 0</strong> al hijo, <strong>Return PID_hijo</strong> al padre.</p></li>
+                </ol>
+            </div>
+
+            <!-- COW theory -->
+            <h4 class="text-base font-bold mb-3 mt-6" style="color:var(--navy)">Copy On Write (COW)</h4>
+            <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                El mecanismo <strong>Copy On Write</strong> evita copiar el segmento de datos en el momento de fork(). Las páginas se marcan como "protegidas" y solo se copian si alguno de los dos procesos las modifica:
+            </p>
+            <div class="space-y-3 text-xs mb-4">
+                <div class="flex items-start gap-3 bg-blue-50 rounded-lg p-3 border border-blue-100">
+                    <span class="text-blue-700 font-bold text-base mt-0.5">①</span>
+                    <div><p class="font-semibold text-blue-800 mb-0.5">Después del fork()</p><p class="text-slate-600">Padre e hijo apuntan al mismo Data Segment. El sistema pone el <strong>bit COW = 1</strong> en todas sus páginas en las tablas de páginas de ambos procesos, marcándolas como solo-lectura.</p></div>
+                </div>
+                <div class="flex items-start gap-3 bg-amber-50 rounded-lg p-3 border border-amber-100">
+                    <span class="text-amber-700 font-bold text-base mt-0.5">②</span>
+                    <div><p class="font-semibold text-amber-800 mb-0.5">Cuando un proceso escribe en una página COW</p><p class="text-slate-600">El hardware genera una excepción de protección. El kernel detecta que es una página COW, <strong>crea una copia privada</strong> de esa página para el proceso que escribe, y actualiza su tabla de páginas. Ahora ese proceso tiene su propia copia.</p></div>
+                </div>
+                <div class="flex items-start gap-3 bg-green-50 rounded-lg p-3 border border-green-100">
+                    <span class="text-green-700 font-bold text-base mt-0.5">③</span>
+                    <div><p class="font-semibold text-green-800 mb-0.5">Resultado</p><p class="text-slate-600">Solo se copian las páginas que realmente se modifican. Si el hijo hace exec() inmediatamente, <strong>ninguna página de datos llega a copiarse</strong> → fork() es casi gratuito en práctica.</p></div>
+                </div>
+            </div>
+
+            <!-- La tabla de páginas COW -->
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Tabla de Páginas tras fork() — bit COW activo en segmento de datos:</p>
+            <div class="overflow-x-auto">
+                <table class="text-xs border-collapse w-full">
+                    <thead>
+                        <tr style="background:var(--navy);color:white;">
+                            <th class="px-3 py-2">Página</th>
+                            <th class="px-3 py-2">V(Valid)</th>
+                            <th class="px-3 py-2">U(Used)</th>
+                            <th class="px-3 py-2">D(Dirty)</th>
+                            <th class="px-3 py-2">R(Refer)</th>
+                            <th class="px-3 py-2 bg-amber-500 text-white">COW ⚑</th>
+                            <th class="px-3 py-2">R(Read)</th>
+                            <th class="px-3 py-2">W(Write)</th>
+                            <th class="px-3 py-2">Frame(RAM)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-white border border-slate-200"><td class="px-3 py-1.5 font-bold text-slate-600">0 (texto)</td><td class="text-center px-3">1</td><td class="text-center px-3">1</td><td class="text-center px-3">1</td><td class="text-center px-3">1</td><td class="text-center px-3 bg-slate-100">0</td><td class="text-center px-3">1</td><td class="text-center px-3">1</td><td class="text-center px-3">4</td></tr>
+                        <tr class="bg-slate-50 border border-slate-200"><td class="px-3 py-1.5 font-bold text-slate-600">1 (texto)</td><td class="text-center px-3">1</td><td class="text-center px-3">1</td><td class="text-center px-3">1</td><td class="text-center px-3">1</td><td class="text-center px-3 bg-slate-100">0</td><td class="text-center px-3">1</td><td class="text-center px-3">1</td><td class="text-center px-3">1</td></tr>
+                        <tr class="bg-white border border-slate-200"><td class="px-3 py-1.5 font-bold text-amber-700">2 (datos)</td><td class="text-center px-3">1</td><td class="text-center px-3">1</td><td class="text-center px-3">0</td><td class="text-center px-3">1</td><td class="text-center px-3 font-bold bg-amber-100 text-amber-800">1 ✓</td><td class="text-center px-3">1</td><td class="text-center px-3">1</td><td class="text-center px-3">2</td></tr>
+                        <tr class="bg-slate-50 border border-slate-200"><td class="px-3 py-1.5 font-bold text-amber-700">3 (datos)</td><td class="text-center px-3">1</td><td class="text-center px-3">1</td><td class="text-center px-3">1</td><td class="text-center px-3">1</td><td class="text-center px-3 font-bold bg-amber-100 text-amber-800">1 ✓</td><td class="text-center px-3">1</td><td class="text-center px-3">1</td><td class="text-center px-3">20</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Code example -->
+            <h4 class="text-base font-bold mb-3 mt-6" style="color:var(--navy)">Uso de fork() en C</h4>
+<div class="codebox"><span class="ct">void</span> <span class="cf">CreateProcess</span>() {
+    <span class="ct">int</span> pid;
+
+    pid = <span class="cf">fork</span>();           <span class="cc">// Llamada al sistema — crea el proceso hijo</span>
+    <span class="ck">switch</span> (pid) {
+
+        <span class="ck">case</span> -1:            <span class="cc">// ERROR — no se pudo crear el proceso</span>
+            <span class="cf">perror</span>(<span class="cs">"Error fork"</span>);
+            <span class="cf">exit</span>(1);
+            <span class="ck">break</span>;
+
+        <span class="ck">case</span> 0:             <span class="cc">// HIJO — fork() retorna 0 al proceso hijo</span>
+            <span class="cf">RunChild</span>();
+            <span class="ck">break</span>;
+
+        <span class="ck">default</span>:            <span class="cc">// PADRE — fork() retorna PID del hijo al padre</span>
+            <span class="cf">RunFather</span>();
+            <span class="ck">break</span>;
+    }
+}</div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q8',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-green-100 text-green-800">fork()</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P8 — Después de fork(), ¿en qué punto del código comienza a ejecutarse el proceso hijo? ¿Por qué?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q8" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3 text-xs">El hijo comienza a ejecutarse <strong>inmediatamente después de la llamada a fork()</strong>, es decir, en el mismo punto del código donde el padre estaba cuando llamó a fork().</p>
+                    <div class="key-box text-xs mb-3">
+                        <p class="font-bold text-blue-800 mb-1">¿Por qué?</p>
+                        <p>El paso 7 del algoritmo de fork() <strong>copia el contexto hardware del padre al hijo</strong>, incluyendo el registro PC (Program Counter). El PC del padre apunta a la instrucción siguiente a fork() — y ese mismo valor se copia al hijo. Por tanto, cuando el hijo se ejecuta, retoma exactamente desde ese punto.</p>
+                    </div>
+                    <p class="text-xs text-slate-600">La única diferencia es el <strong>valor de retorno</strong> de fork(): el padre ve el PID del hijo (≠ 0) y el hijo ve 0. Eso es lo que permite distinguirlos en el switch/case.</p>
+                </div>
+            </div>
+
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q9',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-amber-100 text-amber-800">COW</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P9 — ¿Qué problema resolvería COW si no existiera? ¿Por qué es especialmente útil con fork()+exec()?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q9" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <div class="space-y-3 text-xs">
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                            <p class="font-bold text-red-700 mb-1">Sin COW (copiado inmediato)</p>
+                            <p class="text-slate-600">Cada fork() copiaría completamente todos los segmentos de datos del padre al hijo. Si el padre tiene 500 MB de datos, el fork() tardaría un tiempo notable y consumiría 500 MB adicionales de RAM, incluso si el hijo va a hacer exec() inmediatamente y nunca usará esos datos.</p>
+                        </div>
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-3">
+                            <p class="font-bold text-green-700 mb-1">Con COW (copia diferida)</p>
+                            <p class="text-slate-600">fork() es casi instantáneo: solo se crean las tablas de páginas del hijo. La copia real de cada página ocurre solo si alguien la modifica. En el patrón fork()+exec(), el hijo nunca modifica nada antes de exec() → <strong>cero copias</strong>, fork() cuesta casi 0 memoria extra.</p>
+                        </div>
+                        <div class="def-box">
+                            <strong>Patrón fork()+exec():</strong> El shell hace fork() → el hijo llama inmediatamente exec() para correr el programa pedido → exec() reemplaza todos los segmentos → las páginas COW nunca se copian porque el hijo las descarta antes de tocarlas.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- 7. EXEC                                                            -->
+    <!-- ================================================================ -->
+    <section id="s-exec" class="mb-16">
+        <h3 class="sec-title text-2xl font-bold mb-7 pb-3">7 — Ejecución de otro programa: exec()</h3>
+
+        <div class="theory rounded-2xl p-6 mb-6">
+            <h4 class="text-lg font-bold mb-4" style="color:var(--navy)">¿Qué hace exec()?</h4>
+            <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                <code class="bg-slate-100 px-1 rounded text-sm">exec()</code> reemplaza la <strong>imagen del proceso</strong> (código, datos y stack) por un nuevo programa ejecutable, <em>sin crear un nuevo proceso</em>. El proceso conserva su PID e identidad, pero su contenido cambia completamente.
+            </p>
+
+            <div class="grid sm:grid-cols-2 gap-5 mb-5 text-xs">
+                <div class="bg-green-50 border-2 border-green-300 rounded-xl p-4">
+                    <p class="font-bold text-green-700 mb-3 text-sm"> Permanece igual</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2"><span class="bg-green-500 text-white rounded px-1.5 font-bold">PID</span><p class="text-slate-600">El proceso conserva su identificador — para el sistema es el mismo proceso.</p></li>
+                        <li class="flex items-start gap-2"><span class="bg-green-500 text-white rounded px-1.5 font-bold whitespace-nowrap">FDs</span><p class="text-slate-600">Los archivos abiertos (file descriptors) se heredan en el nuevo programa, salvo los marcados con <code>O_CLOEXEC</code>.</p></li>
+                        <li class="flex items-start gap-2"><span class="bg-green-500 text-white rounded px-1.5 font-bold">Zona U</span><p class="text-slate-600">La Zona U se actualiza pero el proceso mantiene el mismo PID y archivos.</p></li>
+                    </ul>
+                </div>
+                <div class="bg-orange-50 border-2 border-orange-300 rounded-xl p-4">
+                    <p class="font-bold text-orange-700 mb-3 text-sm"> Cambia completamente</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2"><span class="bg-orange-500 text-white rounded px-1.5 font-bold">Text</span><p class="text-slate-600">Nuevo segmento de código cargado desde disco. Si ya existe en RAM (otro proceso lo usa), el sistema lo <em>comparte</em>.</p></li>
+                        <li class="flex items-start gap-2"><span class="bg-orange-500 text-white rounded px-1.5 font-bold">Data</span><p class="text-slate-600">Nuevas variables globales y estáticas del nuevo programa (cargadas desde disco).</p></li>
+                        <li class="flex items-start gap-2"><span class="bg-orange-500 text-white rounded px-1.5 font-bold">Stack</span><p class="text-slate-600">Reinicializado (INIT system stack). La pila comienza desde cero para el nuevo programa.</p></li>
+                        <li class="flex items-start gap-2"><span class="bg-orange-500 text-white rounded px-1.5 font-bold">PC</span><p class="text-slate-600">El PC apunta al entry point del nuevo ejecutable.</p></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="warn-box mb-4 text-xs">
+                <p class="font-bold text-rose-700 mb-1">⚠ Valor de retorno especial de exec()</p>
+                <p class="text-slate-700"><code>exec()</code> <strong>no retorna si tiene éxito</strong>. El proceso original ya no existe — fue reemplazado por el nuevo programa. Solo retorna (con valor -1 y errno) si ocurre un error (ej. archivo no encontrado, sin permisos). Esto se debe a que el código que llamó exec() ya no existe en memoria.</p>
+            </div>
+
+            <h4 class="text-base font-bold mb-3" style="color:var(--navy)">Diagrama fork() + exec() — patrón del shell</h4>
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs">
+                <div class="flex flex-col sm:flex-row items-start gap-4">
+                    <div class="flex-1 space-y-2">
+                        <div class="flex items-center gap-2"><span class="bg-blue-500 text-white rounded px-2 py-0.5 font-bold">SHELL</span><span class="text-slate-600">Recibe comando del usuario</span></div>
+                        <div class="flex items-center gap-2 pl-4"><span class="text-slate-400">↓</span><span class="text-slate-500">llama a fork()</span></div>
+                        <div class="flex gap-4">
+                            <div class="flex-1 bg-blue-50 border border-blue-200 rounded-lg p-2">
+                                <p class="font-bold text-blue-700">PADRE (Shell)</p>
+                                <p class="text-slate-500 mt-1">Llama a wait() y espera a que el hijo termine. Cuando termina, muestra el prompt nuevamente.</p>
+                            </div>
+                            <div class="flex-1 bg-orange-50 border border-orange-200 rounded-lg p-2">
+                                <p class="font-bold text-orange-700">HIJO</p>
+                                <p class="text-slate-500 mt-1">Llama a exec() con el comando pedido (ej. /bin/ls). La imagen del hijo se reemplaza por ls. Ejecuta ls, termina con exit().</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q10',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-red-100 text-red-800">exec()</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P10 — ¿Por qué exec() no retorna en caso de éxito? Explícalo con el ciclo de vida del proceso.</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q10" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3 text-xs">El razonamiento es simple: <code>exec()</code> reemplaza el segmento de código (Text Segment) del proceso por el del nuevo programa. Esto significa que:</p>
+                    <ol class="list-decimal pl-5 space-y-2 text-xs text-slate-700 mb-3">
+                        <li>El código original (que contenía la llamada a exec()) <strong>ya no existe en memoria</strong>.</li>
+                        <li>No hay ningún punto del código original al cual retornar.</li>
+                        <li>El PC del proceso fue cambiado al <strong>entry point del nuevo ejecutable</strong>.</li>
+                        <li>La ejecución continúa en el nuevo programa, no después de exec().</li>
+                    </ol>
+                    <div class="warn-box text-xs">
+                        Si exec() <em>falla</em> (archivo no existe, sin permisos), el segmento de código original <em>no fue reemplazado</em>. El proceso sigue intacto y exec() puede retornar el error al código que lo llamó.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- 8. TERMINACIÓN                                                     -->
+    <!-- ================================================================ -->
+    <section id="s-term" class="mb-16">
+        <h3 class="sec-title text-2xl font-bold mb-7 pb-3">8 — Terminación de Procesos</h3>
+
+        <div class="theory rounded-2xl p-6 mb-6">
+            <h4 class="text-lg font-bold mb-4" style="color:var(--navy)">Ciclo completo de terminación</h4>
+            <p class="text-sm text-slate-700 leading-relaxed mb-5">
+                Cuando un proceso llama a <code class="bg-slate-100 px-1 rounded text-sm">exit()</code>, la terminación no es inmediata: el proceso pasa por el estado <strong>ZOMBIE</strong> antes de ser definitivamente eliminado.
+            </p>
+
+            <!-- Termination steps -->
+            <div class="relative space-y-0 mb-5">
+                <div class="flex items-start gap-4 pb-4">
+                    <div class="flex flex-col items-center"><div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white text-sm flex-shrink-0" style="background:var(--burg)">1</div><div class="w-0.5 h-full bg-slate-200 mt-1"></div></div>
+                    <div class="bg-rose-50 border border-rose-200 rounded-xl p-4 flex-1 text-xs mb-2">
+                        <p class="font-bold text-rose-700 mb-1">El proceso llama a exit()</p>
+                        <p class="text-slate-600">El sistema libera el espacio de trabajo: memoria virtual, zonas en swap, archivos abiertos. <strong class="text-red-700">Pero NO la estructura task.</strong> El sistema elige otro proceso READY para ejecutar.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 pb-4">
+                    <div class="flex flex-col items-center"><div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white text-sm flex-shrink-0 bg-red-600">Z</div><div class="w-0.5 h-full bg-slate-200 mt-1"></div></div>
+                    <div class="bg-red-50 border border-red-300 rounded-xl p-4 flex-1 text-xs mb-2">
+                        <p class="font-bold text-red-700 mb-1">Estado ZOMBIE </p>
+                        <p class="text-slate-600">El proceso queda "muerto pero no enterrado". La estructura task persiste con el PID y el exit status (código de salida). El sistema envía la señal <strong>SIGCHLD</strong> al proceso padre para notificarle.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 pb-4">
+                    <div class="flex flex-col items-center"><div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white text-sm flex-shrink-0 bg-green-600">3</div><div class="w-0.5 h-full bg-slate-200 mt-1"></div></div>
+                    <div class="bg-green-50 border border-green-200 rounded-xl p-4 flex-1 text-xs mb-2">
+                        <p class="font-bold text-green-700 mb-1">El padre llama a wait()</p>
+                        <p class="text-slate-600"><code>wait()</code> retorna al padre el <strong>PID del hijo terminado</strong> y su código de salida. A partir de este momento el proceso puede pasar a TERMINATED.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white text-sm flex-shrink-0" style="background:var(--navy)">4</div>
+                    <div class="bg-slate-50 border border-slate-300 rounded-xl p-4 flex-1 text-xs">
+                        <p class="font-bold text-slate-700 mb-1">Estado TERMINATED — liberación total</p>
+                        <p class="text-slate-600">El sistema libera definitivamente <strong>todas</strong> las estructuras restantes: Zona U, proc, task, PID. El proceso ya no existe en el sistema.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIGCHLD and orphans -->
+            <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                <div class="key-box">
+                    <p class="font-bold text-blue-800 mb-1">Señal SIGCHLD</p>
+                    <p class="text-slate-600">Cuando un hijo hace exit(), el kernel envía <code>SIGCHLD</code> al padre. El padre puede:</p>
+                    <ul class="list-disc pl-4 mt-1 space-y-1 text-slate-600">
+                        <li>Ignorarla (default) — el zombie persiste hasta que el padre haga wait()</li>
+                        <li>Instalar un handler que llame a wait() de forma asíncrona</li>
+                        <li>Llamar a wait() explícitamente (blocking o non-blocking)</li>
+                    </ul>
+                </div>
+                <div class="def-box">
+                    <p class="font-bold text-amber-800 mb-1">Procesos huérfanos y el rol de Init</p>
+                    <p class="text-slate-600">Si el padre termina <em>antes</em> que el hijo, el hijo se convierte en <strong>huérfano</strong>. El kernel reasigna <strong>Init (PID 1)</strong> como nuevo padre. Init está permanentemente en wait(), por lo que recogerá al huérfano cuando este termine → evita zombies permanentes.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q11',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-rose-100 text-rose-800">Terminación</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P11 — ¿Qué riesgos conlleva no llamar a wait() en un proceso padre?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q11" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <div class="space-y-3 text-xs">
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                            <p class="font-bold text-red-700 mb-1">Acumulación de procesos ZOMBIE</p>
+                            <p class="text-slate-600">Cada hijo que termina sin que el padre haga wait() deja una entrada en la tabla de procesos del kernel (la estructura task). Aunque no consume CPU ni memoria de usuario, sí ocupa <strong>una entrada de PID</strong> en la tabla.</p>
+                        </div>
+                        <div class="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                            <p class="font-bold text-orange-700 mb-1">Agotamiento de la tabla de procesos</p>
+                            <p class="text-slate-600">El kernel tiene un límite máximo de procesos simultáneos (configurable). Si una cantidad suficiente de zombies acumula PIDs sin liberarlos, el sistema puede llegar a ese límite y <strong>rechazar la creación de nuevos procesos</strong> — incluso para root.</p>
+                        </div>
+                        <div class="def-box">
+                            <strong>Buena práctica:</strong> Siempre llamar a wait() o waitpid() por cada fork(), o instalar un handler de SIGCHLD que lo haga. Alternativamente, hacer doble fork() (el nieto queda huérfano y es adoptado por Init).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preguntas de repaso globales -->
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q12',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-slate-200 text-slate-700">Repaso global</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P12 — Traza completa: ¿qué pasa exactamente cuando un shell ejecuta el comando "ls -l"?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q12" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <ol class="list-decimal pl-5 space-y-2 text-xs text-slate-700">
+                        <li>El shell (bash) está en estado <strong>RUNNING USER MODE</strong> esperando entrada del usuario.</li>
+                        <li>El usuario escribe <code>ls -l</code>. El shell interpreta el comando y llama a <code>fork()</code> → entra en <strong>RUNNING SYSTEM MODE</strong>.</li>
+                        <li>El kernel ejecuta el algoritmo de fork(): crea el proceso hijo, le asigna PID, copia Zona U, comparte segmentos de texto/datos con COW, copia Stack, pone el hijo en <strong>READY</strong>.</li>
+                        <li>El hijo eventualmente llega a RUNNING SYSTEM MODE, sale a RUNNING USER MODE. El hijo llama a <code>exec("/bin/ls", ["-l"])</code>.</li>
+                        <li>exec() reemplaza la imagen del hijo: carga el código de <code>/bin/ls</code>, inicializa nuevos datos y stack, actualiza el PC. El hijo ahora <em>es</em> ls.</li>
+                        <li>ls ejecuta, imprime el listado. El padre (bash) está en estado <strong>SLEEPING</strong> — llamó a <code>wait()</code>.</li>
+                        <li>ls termina con <code>exit(0)</code>. El proceso pasa a estado <strong>ZOMBIE</strong>. El kernel envía <strong>SIGCHLD</strong> al bash.</li>
+                        <li>Bash despierta del wait() → recibe el PID de ls y su exit status (0 = éxito).</li>
+                        <li>El proceso ls pasa a estado <strong>TERMINATED</strong>. Sus estructuras se liberan.</li>
+                        <li>Bash vuelve a RUNNING USER MODE y muestra el prompt.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q13',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-slate-200 text-slate-700">Repaso general</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P13 — ¿Qué contiene la Zona U que no está en la estructura task/proc?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q13" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3 text-xs">La distinción es sobre qué información necesita el kernel cuando el proceso <em>no está activo</em> vs. solo cuando está <em>ejecutando</em>:</p>
+                    <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                            <p class="font-bold text-slate-700 mb-1">Estructura task/proc (siempre en RAM)</p>
+                            <p class="text-slate-500 mb-2 italic">Necesaria incluso si el proceso está durmiendo o swapped out.</p>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                                <li>PID, PPID, estado del proceso</li>
+                                <li>Prioridad de scheduling</li>
+                                <li>Puntero a la Zona U</li>
+                                <li>Punteros a segmentos de memoria</li>
+                            </ul>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                            <p class="font-bold text-amber-700 mb-1">Zona U (puede ir a disco)</p>
+                            <p class="text-slate-500 mb-2 italic">Solo necesaria cuando el proceso está activamente ejecutando.</p>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                                <li>Contexto Hardware completo (PC, SP, FPU, PSW…)</li>
+                                <li>System Stack</li>
+                                <li>Lista de archivos abiertos</li>
+                                <li>Argumentos de syscalls</li>
+                                <li>Estadísticas de CPU, quotas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q14',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-slate-200 text-slate-700">Repaso global</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P14 — Compara fork() y exec(): ¿qué crea cada uno y qué modifica?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q14" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <div class="overflow-x-auto">
+                        <table class="text-xs w-full border-collapse">
+                            <thead>
+                                <tr style="background:var(--navy);color:white;">
+                                    <th class="px-4 py-2 text-left">Aspecto</th>
+                                    <th class="px-4 py-2 text-center">fork()</th>
+                                    <th class="px-4 py-2 text-center">exec()</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-700">
+                                <tr class="border-b border-slate-200 bg-white"><td class="px-4 py-2 font-semibold">Número de procesos</td><td class="px-4 py-2 text-center text-green-700 font-bold">+1 (crea un hijo)</td><td class="px-4 py-2 text-center text-slate-500">Sin cambio</td></tr>
+                                <tr class="border-b border-slate-200 bg-slate-50"><td class="px-4 py-2 font-semibold">PID del proceso</td><td class="px-4 py-2 text-center">Padre conserva su PID. Hijo recibe nuevo PID.</td><td class="px-4 py-2 text-center">El proceso conserva el mismo PID.</td></tr>
+                                <tr class="border-b border-slate-200 bg-white"><td class="px-4 py-2 font-semibold">Segmento de código</td><td class="px-4 py-2 text-center">Compartido entre padre e hijo (read-only)</td><td class="px-4 py-2 text-center text-orange-700 font-bold">Reemplazado por nuevo código</td></tr>
+                                <tr class="border-b border-slate-200 bg-slate-50"><td class="px-4 py-2 font-semibold">Segmento de datos</td><td class="px-4 py-2 text-center">Compartido con COW activo</td><td class="px-4 py-2 text-center text-orange-700 font-bold">Reemplazado por nuevos datos</td></tr>
+                                <tr class="border-b border-slate-200 bg-white"><td class="px-4 py-2 font-semibold">Stack</td><td class="px-4 py-2 text-center">Copiado del padre al hijo</td><td class="px-4 py-2 text-center text-orange-700 font-bold">Reinicializado (vacío)</td></tr>
+                                <tr class="border-b border-slate-200 bg-slate-50"><td class="px-4 py-2 font-semibold">Archivos abiertos</td><td class="px-4 py-2 text-center">Heredados por el hijo</td><td class="px-4 py-2 text-center">Conservados (salvo O_CLOEXEC)</td></tr>
+                                <tr class="bg-white"><td class="px-4 py-2 font-semibold">Uso típico</td><td class="px-4 py-2 text-center">Crear un proceso hijo que continuará el mismo código</td><td class="px-4 py-2 text-center">Hacer que un proceso ejecute un programa diferente</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q15',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-slate-200 text-slate-700">Repaso global</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P15 — ¿Qué ocurre con los archivos abiertos después de fork()? ¿Y después de exec()?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q15" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <p class="font-bold text-blue-700 mb-2">Tras fork()</p>
+                            <p class="text-slate-600 mb-2">El hijo <strong>hereda todos los file descriptors</strong> del padre. Ambos procesos comparten los mismos archivos abiertos (mismas entradas en la tabla de archivos del kernel, mismo offset de lectura/escritura).</p>
+                            <p class="text-slate-500 italic">Cuidado: si padre e hijo escriben al mismo archivo sin coordinación, puede haber corrupción de datos.</p>
+                        </div>
+                        <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                            <p class="font-bold text-orange-700 mb-2">Tras exec()</p>
+                            <p class="text-slate-600 mb-2">Los file descriptors se <strong>conservan por defecto</strong> en el nuevo programa (el FD 0/1/2 para stdin/stdout/stderr se mantiene). Esto permite redireccionamiento de E/S: el shell configura los FDs antes del exec() del hijo.</p>
+                            <p class="text-slate-500 italic">Los FDs marcados con <code>O_CLOEXEC</code> o <code>FD_CLOEXEC</code> se cierran automáticamente al hacer exec().</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q16',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-slate-200 text-slate-700">Repaso global</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P16 — Resumen: ¿qué comparten padre e hijo tras fork() y cómo el COW garantiza independencia?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q16" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <div class="grid sm:grid-cols-3 gap-3 text-xs mb-4">
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
+                            <p class="font-bold text-green-700 mb-1">Compartido realmente</p>
+                            <p class="text-slate-600">Text Segment (código) — es inmutable, compartirlo es seguro y eficiente permanentemente.</p>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 text-center">
+                            <p class="font-bold text-amber-700 mb-1">Compartido con COW</p>
+                            <p class="text-slate-600">Data Segment — compartido inicialmente, se copia página a página <em>solo</em> al escribir.</p>
+                        </div>
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-3 text-center">
+                            <p class="font-bold text-red-700 mb-1">Privado (copiado)</p>
+                            <p class="text-slate-600">Stack Segment y Zona U — se copian en el fork(); nunca se comparten.</p>
+                        </div>
+                    </div>
+                    <div class="def-box text-xs">
+                        <strong>Garantía de independencia del COW:</strong> desde el punto de vista del programador, padre e hijo tienen espacios de datos completamente independientes. El COW es un detalle de implementación transparente — solo cambia <em>cuándo</em> ocurre la copia, no <em>si</em> ocurre. El primer write a una página compartida siempre genera la copia, garantizando que una modificación de un proceso nunca afecte al otro.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer style="background:linear-gradient(120deg,#0f1f33 0%,#002b5c 55%,#8c1d40 100%);color:#e2e8f0;border-top:2px solid rgba(201,163,74,.6);">
+    <div class="container mx-auto px-6 py-6 text-center text-sm font-medium">
+        <p>&copy; 2026 Ayudantía USM — Sistemas Operativos · Procesos UNIX/Linux · Basado en material de Xavier Bonnaire</p>
+    </div>
+</footer>
+
+<script>
+    const TOTAL = 16;
+    const opened = new Set();
+
+    function toggleQ(id, btn) {
+        const el   = document.getElementById(id);
+        const icon = btn.querySelector('svg.accordion-icon');
+        const hidden = el.classList.contains('hidden');
+        if (hidden) {
+            el.classList.remove('hidden');
+            btn.classList.add('bg-slate-100');
+            if (icon) icon.style.transform = 'rotate(180deg)';
+            if (!opened.has(id)) { opened.add(id); updateProgress(); }
+        } else {
+            el.classList.add('hidden');
+            btn.classList.remove('bg-slate-100');
+            if (icon) icon.style.transform = 'rotate(0deg)';
+        }
+    }
+
+    function updateProgress() {
+        const c = opened.size, pct = (c / TOTAL) * 100;
+        document.getElementById('progress-text').textContent = `${c} / ${TOTAL}`;
+        document.getElementById('progress-bar').style.width  = `${pct}%`;
+        document.getElementById('final-score').textContent   = `${c} / ${TOTAL}`;
+    }
+</script>
+</body>
+</html>
