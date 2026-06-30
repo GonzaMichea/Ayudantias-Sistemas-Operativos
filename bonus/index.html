@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonus · Certamen Procesos + Interfaces UNIX/Linux</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+    :root{--navy:#002b5c;--burg:#8c1d40;--gold:#c9a34a;--ink:#0f1f33;--paper:#f6f7fb;}
+    body{font-family:'Montserrat',sans-serif;background-color:var(--paper);
+         background-image:radial-gradient(circle at 8% 12%,rgba(201,163,74,.22) 0%,transparent 28%),
+         radial-gradient(circle at 92% 84%,rgba(140,29,64,.15) 0%,transparent 32%),
+         linear-gradient(135deg,#f8fafc 0%,#edf2fb 55%,#f8fafc 100%);min-height:100vh;color:#1e293b;}
+    h1,h2,h3,h4,h5{font-family:'Sora',sans-serif;letter-spacing:-.02em;}
+    code,pre{font-family:'JetBrains Mono',monospace;}
+    .topbar{background:linear-gradient(90deg,rgba(0,43,92,.95),rgba(140,29,64,.92));
+            box-shadow:0 10px 30px rgba(15,31,51,.25);border-bottom:2px solid rgba(201,163,74,.65);backdrop-filter:blur(10px);}
+    .nav-link{color:#f1f5f9;padding:.4rem .8rem;border-radius:9999px;transition:all .25s ease;border:1px solid transparent;font-size:.78rem;white-space:nowrap;}
+    .nav-link:hover{background:rgba(255,255,255,.12);border-color:rgba(201,163,74,.55);}
+    .hero-title{font-size:clamp(2rem,5vw,3.4rem);background:linear-gradient(135deg,var(--navy),var(--burg));
+                -webkit-background-clip:text;background-clip:text;color:transparent;}
+    .sec-title{border-bottom:3px solid rgba(0,43,92,.28);color:var(--ink);}
+    .sub-title{border-left:4px solid var(--gold);padding-left:.75rem;color:var(--ink);}
+    .card{background:rgba(255,255,255,.92);border:1px solid rgba(0,43,92,.09);
+          box-shadow:0 16px 30px rgba(15,31,51,.08);}
+    .exam-box{border:1.5px solid rgba(0,43,92,.35);border-radius:1rem;background:#fff;}
+    .cat-pill{display:inline-block;font-size:.7rem;font-weight:700;border-radius:9999px;padding:2px 10px;margin-bottom:8px;}
+    .topic-pill{display:inline-block;font-size:.68rem;font-weight:800;border-radius:9999px;padding:3px 14px;letter-spacing:.04em;text-transform:uppercase;}
+    .accordion-icon{transition:transform .3s ease;}
+    .animate-fadeIn{animation:fadeIn .4s ease-in-out;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+    /* interactive V/F + alternativas */
+    .vf-table{border:1px solid rgba(0,43,92,.18);border-radius:1rem;overflow:hidden;}
+    .vf-cell{border:1px solid rgba(0,43,92,.10);padding:1rem 1.1rem;transition:background-color .25s;}
+    .vf-cell.vf-correct-cell{background:#f0fdf4;}
+    .vf-cell.vf-wrong-cell{background:#fef2f2;}
+    .vf-options{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+    .vf-btn{padding:7px 18px;border-radius:999px;border:2px solid #cbd5e1;background:#fff;
+            font-size:.78rem;font-weight:700;color:#64748b;cursor:pointer;transition:all .15s;text-align:left;}
+    .vf-btn:hover{border-color:var(--navy);color:var(--navy);}
+    .vf-btn-active{border-color:var(--navy);background:#eaf1ff;color:var(--navy);}
+    .vf-btn-correct{border-color:#166534 !important;background:#dcfce7 !important;color:#166534 !important;}
+    .vf-btn-wrong{border-color:#b91c1c !important;background:#fee2e2 !important;color:#b91c1c !important;}
+    .mc-btn{display:block;width:100%;}
+</style>
+</head>
+<body class="text-slate-800">
+
+<header class="topbar sticky top-0 z-50">
+    <nav class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-2 max-w-6xl">
+        <h1 class="text-lg font-extrabold text-white" style="font-family:'Sora',sans-serif;">Bonus · Certamen 3</h1>
+        <div class="flex flex-wrap gap-1">
+            <a href="#conceptuales" class="nav-link font-medium">Conceptuales</a>
+            <a href="#vf" class="nav-link font-medium">V/F</a>
+            <a href="#alternativas" class="nav-link font-medium">Alternativas</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container mx-auto px-4 sm:px-6 py-10 max-w-5xl">
+
+
+  <!-- ══════════════════════════════ SECCIÓN 1 · CONCEPTUALES ══════════════════════════════ -->
+  <section id="conceptuales" class="mb-20">
+    <h2 class="sec-title text-2xl font-bold mb-7 pb-3">Sección 1 · Preguntas conceptuales</h2>
+
+    <p class="topic-pill bg-blue-100 text-blue-800 mb-4">Tema A · Procesos UNIX/Linux</p>
+    <div class="space-y-4 mb-10">
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c1',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-blue-100 text-blue-800">Introducción</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.1 — ¿Qué contiene un proceso UNIX/Linux?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c1" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          Un conjunto de estructuras de datos para su gestión (Zona U, estructura task/proc) y 3 segmentos de memoria virtual: código ejecutable (Text), datos fijos (Data) y pila de ejecución (Stack). Algunos de estos segmentos, en particular el de código, pueden estar compartidos entre varios procesos que ejecutan el mismo programa.
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c2',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-green-100 text-green-800">Estructura</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.2 — ¿Cuáles son los 2 modos de ejecución y las 2 zonas de memoria virtual de un proceso?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c2" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          Modos: <strong>usuario</strong> (ejecuta código de la aplicación, sin privilegios) y <strong>sistema</strong> (ejecuta código del kernel tras una syscall o interrupción, con privilegios totales). Zonas: <strong>Zona Usuario</strong> (memoria propia del proceso + pila de ejecución, accesible en modo usuario) y <strong>Zona Sistema</strong> (Zona U + pila sistema + estructuras del kernel, accesible solo en modo sistema). El kernel es parte del espacio virtual de cada proceso.
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c3',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-amber-100 text-amber-800">Zona U</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.3 — ¿Qué información contiene la Zona U y por qué puede ser swapped out?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c3" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          Contiene el contexto hardware (PC, SP, PSW, registro de memoria, FPU), UID/GID reales, argumentos y código de error de syscalls, información de señales, header del programa, lista de archivos abiertos, punteros al directorio corriente y al terminal, estadísticas de uso y la pila de sistema. Es parte del espacio del proceso (no de la estructura task), por eso puede ser enviada a swap cuando el proceso no está activo; la estructura task/proc, en cambio, siempre permanece en RAM porque el scheduler necesita acceder a ella incluso para procesos dormidos.
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c4',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-purple-100 text-purple-800">Compartidos</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.4 — ¿Por qué el segmento de código se puede compartir entre procesos y el de datos no (en general)?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c4" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          El código es de solo lectura (read-only) y no cambia durante la ejecución, por lo que es seguro que varios procesos que ejecutan el mismo programa apunten al mismo bloque físico de memoria (un contador <code>xcount</code> en la Estructura Text indica cuántos procesos lo comparten). El segmento de datos, en cambio, es mutable: cada proceso necesita su propia copia de sus variables. La excepción es justo después de un fork(), donde se comparte temporalmente protegido por Copy On Write.
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c5',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-orange-100 text-orange-800">Estados</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.5 — Describa el grafo de estados de un proceso y los eventos que provocan cada transición.</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c5" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          Un proceso nace en <strong>READY</strong> (vía fork()). El scheduler lo pasa a <strong>RUNNING SYSTEM MODE</strong> (task_switch()), desde donde retorna a <strong>RUNNING USER MODE</strong> (INTR/Syscall return). Desde modo usuario puede volver a modo sistema por una interrupción o una syscall. Desde modo sistema puede ir a <strong>SLEEPING</strong> (sleep(), esperando un evento) y de ahí volver a READY (wakeup()). Al llamar exit() desde modo sistema, pasa a <strong>ZOMBIE</strong>; cuando el padre hace wait(), pasa a <strong>TERMINATED</strong> y se liberan todas sus estructuras.
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c6',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-green-100 text-green-800">fork()</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.6 — Enumere los pasos del algoritmo de fork().</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c6" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          <ol class="list-decimal pl-5 space-y-1.5 text-xs">
+            <li>Crear el nuevo proceso y asignarle un nuevo PID.</li>
+            <li>Inicializar la estructura task.</li>
+            <li>Asignar la zona de memoria virtual (espacio de trabajo).</li>
+            <li>Asignar la Zona U como copia de la del padre.</li>
+            <li>Compartir los segmentos de código y datos entre ambos procesos.</li>
+            <li>Copiar el segmento de Stack del padre.</li>
+            <li>Copiar el contexto hardware del padre (incluido el PC).</li>
+            <li>Poner al hijo en estado READY e insertarlo en la lista de ejecución.</li>
+            <li>Activar el bit COW (Copy On Write) en todas las páginas del segmento de datos, para ambos procesos.</li>
+            <li>Retornar 0 al hijo y el PID del hijo al padre.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c7',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-amber-100 text-amber-800">COW</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.7 — ¿Qué es Copy On Write y cuándo se activa la copia real de una página?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c7" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          Después de un fork(), las páginas del segmento de datos quedan marcadas con el bit COW = 1 y se comparten entre padre e hijo. La copia física de una página solo ocurre en el momento en que <strong>uno de los dos procesos intenta escribir</strong> en ella: el sistema detecta la falta de escritura (la página es de solo lectura mientras COW=1), crea una copia privada para ese proceso, y a partir de ahí cada uno tiene su propia versión de esa página. Mientras nadie escriba, no se copia nada.
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c8',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-red-100 text-red-800">exec()</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.8 — ¿Qué se mantiene y qué cambia cuando un proceso ejecuta exec()?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c8" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          Se mantiene el <strong>mismo PID</strong> y los <strong>mismos archivos abiertos</strong> (salvo los marcados O_CLOEXEC). Cambia el espacio de trabajo completo: nuevo segmento de código (Text, compartido si ya está en memoria), nuevo segmento de Datos y un Stack reinicializado, además del valor del PC, que pasa a apuntar al entry point del nuevo programa. exec() solo retorna si ocurre un error; si tiene éxito, nunca retorna porque el código que lo llamó ya no existe en memoria.
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c9',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-rose-100 text-rose-800">Terminación</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.9 — ¿Qué ocurre exactamente cuando un proceso llama a exit()?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c9" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          El sistema libera el espacio de trabajo del proceso (zonas de memoria virtual, zonas en swap, etc.) pero <strong>no la estructura task</strong>. Elige a otro proceso READY para ejecutar, y el proceso que terminó pasa al estado <strong>ZOMBIE</strong>, donde permanece hasta que su padre haga wait(). El kernel envía la señal <strong>SIGCHLD</strong> al padre para notificarle.
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c10',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-rose-100 text-rose-800">Terminación</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.10 — Si el proceso padre ya terminó antes que su hijo, ¿quién recoge al hijo cuando este finalice?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c10" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          El kernel reasigna como nuevo padre del huérfano al proceso <strong>INIT</strong> (el primer proceso del sistema, sin padre propio). Como INIT está permanentemente haciendo wait() sobre sus hijos, recogerá al huérfano en cuanto este termine, evitando que quede como zombie permanente.
+        </div>
+      </div>
+
+    </div>
+
+    <p class="topic-pill bg-orange-100 text-orange-800 mb-4">Tema B · Interfaces y Procesos (Kernel / Hardware / TRAPS)</p>
+    <div class="space-y-4">
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c11',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-blue-100 text-blue-800">Kernel</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.11 — ¿Cuáles son los tres niveles de gestión del sistema operativo? Dé un ejemplo de cada uno.</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c11" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          <strong>Corto plazo:</strong> reacciones a eventos, inicialización de tareas, protección (ej. atender una interrupción de disco). <strong>Mediano plazo:</strong> gestión de memoria/discos, scheduling, concurrencia entre tareas (ej. decidir hacer swap-out de un proceso). <strong>Largo plazo:</strong> gestión global de recursos, creación e inicialización de tareas (ej. crear el proceso de la shell al hacer login).
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c12',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-sky-100 text-sky-800">Hardware</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.12 — ¿Cuáles son los dos mecanismos principales con los que el sistema se comunica con el hardware?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c12" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          <strong>(1) Puertos de Entrada/Salida:</strong> cada periférico tiene uno o más puertos, y el procesador tiene instrucciones especiales para leer/escribir a través de ellos directamente. <strong>(2) Interrupciones:</strong> cuando un periférico termina su E/S, ocurre un error o el reloj marca un tick, se genera una interrupción que el procesador debe atender, sin necesidad de sondear constantemente (polling).
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c13',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-rose-100 text-rose-800">Interrupciones</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.13 — ¿Cuál es la diferencia entre una interrupción y una excepción?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c13" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          Una <strong>interrupción</strong> es un evento hardware <strong>esperado</strong> por el sistema operativo: fin de una E/S, el reloj, etc. — forma parte del funcionamiento normal. Una <strong>excepción</strong> es un evento hardware <strong>inesperado</strong>, resultante de un error: división por cero, violación de derechos de acceso, falla de un periférico.
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c14',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-purple-100 text-purple-800">Excepciones</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.14 — Distinga entre excepciones síncronas y asíncronas, con un ejemplo de cada una.</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c14" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          Las <strong>sincrónicas</strong> son provocadas directamente por la instrucción en ejecución (ej. zero divide, segmentation violation): el PC apunta exactamente a la instrucción culpable. Las <strong>asincrónicas</strong> tienen una causa externa al flujo de instrucciones (ej. falla de una placa de memoria, sector de disco dañado, falla eléctrica): pueden ocurrir en cualquier punto del programa, sin relación con la instrucción actual.
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c15',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-amber-100 text-amber-800">Masking</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.15 — ¿Qué es una operación atómica y cómo el interrupt masking ayuda a garantizarla?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c15" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          Una operación atómica es aquella que <strong>se hace completamente o no se hace</strong>; una vez que empieza, no puede interrumpirse a medio camino. Para garantizarlo, el sistema usa el IRQ Controller para enmascarar (<strong>MASKING</strong>) momentáneamente una o más líneas de interrupción mientras dura la sección crítica, y luego las restablece (<strong>UNMASKING</strong>). Una interrupción enmascarada no se pierde: queda en una lista de interrupciones <em>pendientes</em> hasta ser desenmascarada.
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c16',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-indigo-100 text-indigo-800">Contexto</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.16 — ¿Qué compone el contexto de un proceso y cuáles son los tres pasos de un task switch?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c16" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          El contexto de un proceso en el instante <em>t</em> incluye: el valor de <strong>todos los registros</strong> del procesador, su <strong>espacio de trabajo</strong> en memoria (Address Space) y sus <strong>pilas de ejecución</strong> (proceso + sistema). El task switching consiste en: <strong>(1)</strong> salvar el contexto del proceso actual, <strong>(2)</strong> elegir el siguiente proceso (scheduler) y <strong>(3)</strong> restaurar el contexto del proceso elegido.
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c17',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-indigo-100 text-indigo-800">Contexto</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.17 — ¿Por qué Linux no usa las instrucciones especiales del procesador para salvar el contexto?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c17" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          Porque esas instrucciones, aunque existen en muchos procesadores, <strong>no son eficientes</strong> (son lentas) y <strong>no salvan necesariamente todos los registros</strong> que el kernel necesita. Linux usa una solución por software: empuja los registros a la <strong>pila de ejecución sistema</strong> del proceso (no la pila usuario) con instrucciones <code>push</code> normales — más rápido y totalmente controlado por el kernel.
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c18',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-orange-100 text-orange-800">Modos</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.18 — ¿Qué diferencia hay entre el modo System/Real y el modo User/Protected de un procesador?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c18" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          En modo <strong>SYSTEM</strong> el procesador ejecuta el conjunto completo de instrucciones, incluidas las privilegiadas: manipular tablas de páginas, modificar registros de gestión (timers), modificar la tabla de interrupciones y ver direcciones reales de memoria. En modo <strong>USER</strong> el proceso solo accede a instrucciones no privilegiadas y no puede hacer nada de lo anterior; el sistema operativo corre en modo SYSTEM, y un proceso corre en modo USER excepto durante una system call. El proceso es el mismo en ambos casos — solo cambia el nivel de privilegio del procesador.
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c19',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-rose-100 text-rose-800">TRAPS</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.19 — ¿Qué es un TRAP y cuáles son sus dos causas posibles?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c19" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          Un TRAP es un evento <strong>sincrónico</strong> provocado por la ejecución de una instrucción. Sus dos causas: <strong>(1) errores</strong> — overflow, zero divide, violación de protección, fallas de hardware — y <strong>(2) llamadas de sistema (system calls)</strong>, que son el punto de entrada de todos los servicios que el SO ofrece a los procesos.
+        </div>
+      </div>
+
+      <div class="card rounded-xl overflow-hidden">
+        <button onclick="toggleQ('c20',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+          <div><span class="cat-pill bg-rose-100 text-rose-800">System Calls</span>
+          <p class="font-bold text-sm" style="color:var(--navy)">1.20 — ¿Qué diferencia hay entre una system call en modo 32 bits (IA-32) y en modo 64 bits (IA-64)?</p></div>
+          <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="c20" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+          En <strong>IA-32</strong> se usa la instrucción <code>INT 0x80</code> (o <code>SYSENTER</code> en Intel), el código de servicio va en <code>%eax</code> y los argumentos en <code>%ebx/%ecx/%edx...</code>, y se retorna con <code>IRET</code> (o <code>SYSEXIT</code>). En <strong>IA-64</strong> (modo 64 bits) se usa la instrucción <code>SYSCALL</code>, el código de servicio va en <code>%rax</code> y los argumentos en <code>%rdi/%rsi/%rdx...</code>, retornando con <code>SYSRET</code>. Además, <strong>los números de servicio cambian</strong> entre arquitecturas (ej. write es el syscall 4 en 32 bits, pero el 1 en 64 bits) — por eso la libc actúa como wrapper y traduce las llamadas C a la secuencia correcta según la arquitectura del binario.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ SECCIÓN 2 · V/F ══════════════════════════════ -->
+  <section id="vf" class="mb-20">
+    <h2 class="sec-title text-2xl font-bold mb-7 pb-3">Sección 2 · Verdadero / Falso</h2>
+
+    <h3 class="sub-title text-lg font-bold mb-4">Tema A · Procesos UNIX/Linux</h3>
+    <div class="card p-8 mb-10">
+      <p class="text-slate-500 mb-6 text-sm">Haz clic en Verdadero o Falso para cada afirmación. Cuando termines, pulsa "Revisar respuestas".</p>
+
+      <div class="vf-table grid md:grid-cols-2" id="vf-proc">
+        <div class="vf-cell" data-ans="F">
+          <p class="font-semibold text-slate-700 mb-2">A. Después de un fork(), el proceso hijo comienza a ejecutarse desde la primera línea de main().</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Falso — el hijo retoma exactamente en el punto siguiente a la llamada fork(), porque el algoritmo copia el contexto hardware (incluido el PC) del padre.</p>
+        </div>
+        <div class="vf-cell" data-ans="V">
+          <p class="font-semibold text-slate-700 mb-2">B. El segmento de Stack se copia para el hijo durante el fork(); nunca se comparte.</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Verdadero — a diferencia del Text Segment (compartido) y el Data Segment (compartido con COW), el Stack se copia directamente y es siempre privado de cada proceso.</p>
+        </div>
+        <div class="vf-cell" data-ans="F">
+          <p class="font-semibold text-slate-700 mb-2">C. El mecanismo COW copia inmediatamente todas las páginas de datos en el momento del fork().</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Falso — COW marca las páginas pero difiere la copia real hasta que alguno de los dos procesos efectivamente escribe en una de ellas.</p>
+        </div>
+        <div class="vf-cell" data-ans="V">
+          <p class="font-semibold text-slate-700 mb-2">D. Tras un exec() exitoso, el proceso conserva su PID y sus archivos abiertos.</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Verdadero — exec() reemplaza código, datos y stack, pero el proceso sigue siendo "el mismo" para el sistema: mismo PID y mismos FDs (salvo los O_CLOEXEC).</p>
+        </div>
+        <div class="vf-cell" data-ans="F">
+          <p class="font-semibold text-slate-700 mb-2">E. Un proceso pasa a estado ZOMBIE después de que su padre hace wait().</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Falso — el orden es al revés: el proceso pasa a ZOMBIE al llamar exit(), y recién después de que el padre hace wait() pasa a TERMINATED.</p>
+        </div>
+        <div class="vf-cell" data-ans="V">
+          <p class="font-semibold text-slate-700 mb-2">F. Si el proceso padre ya terminó, INIT adopta al hijo huérfano y hace wait() en su lugar.</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Verdadero — INIT es reasignado como padre de cualquier huérfano y está permanentemente en wait(), evitando zombies sin dueño.</p>
+        </div>
+        <div class="vf-cell" data-ans="F">
+          <p class="font-semibold text-slate-700 mb-2">G. La estructura task/proc puede ser enviada a swap junto con la Zona U.</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Falso — la estructura task/proc siempre permanece en RAM (el scheduler la necesita incluso para procesos dormidos o suspendidos); solo la Zona U y los segmentos de memoria pueden ir a swap.</p>
+        </div>
+        <div class="vf-cell" data-ans="V">
+          <p class="font-semibold text-slate-700 mb-2">H. El campo xcount de la Estructura Text indica cuántos procesos comparten ese mismo código.</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Verdadero — cuando xcount llega a 0 (ningún proceso usa ya ese código), el sistema puede liberar ese bloque de memoria física.</p>
+        </div>
+      </div>
+      <p id="vf-proc-score" class="text-sm font-bold mt-4 min-h-[1.2em]"></p>
+      <div class="flex justify-end gap-3 mt-5">
+        <button onclick="resetVF('vf-proc')" class="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-700 px-5 py-2.5 rounded-xl text-sm font-bold transition">
+          <span>Reiniciar</span>
+        </button>
+        <button onclick="reviewVF('vf-proc')" class="flex items-center gap-2 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition shadow-md" style="background:var(--navy)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>Revisar respuestas</span>
+        </button>
+      </div>
+    </div>
+
+    <h3 class="sub-title text-lg font-bold mb-4">Tema B · Interfaces y Procesos</h3>
+    <div class="card p-8">
+      <p class="text-slate-500 mb-6 text-sm">Haz clic en Verdadero o Falso para cada afirmación. Cuando termines, pulsa "Revisar respuestas".</p>
+
+      <div class="vf-table grid md:grid-cols-2" id="vf-if">
+        <div class="vf-cell" data-ans="F">
+          <p class="font-semibold text-slate-700 mb-2">A. Si el hardware genera una interrupción mientras su línea está enmascarada, esa interrupción se pierde definitivamente.</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Falso — el IRQ Controller la guarda en una lista de interrupciones pendientes; al desenmascarar, se entrega al procesador.</p>
+        </div>
+        <div class="vf-cell" data-ans="V">
+          <p class="font-semibold text-slate-700 mb-2">B. El kernel interviene "excepcionalmente" porque buena parte del control básico (instrucciones, periféricos, tiempo) lo maneja el hardware por sí solo.</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Verdadero — el kernel solo entra en acción ante fallas detectadas por el hardware o eventos que requieren una decisión (scheduling, recursos, etc.).</p>
+        </div>
+        <div class="vf-cell" data-ans="F">
+          <p class="font-semibold text-slate-700 mb-2">C. Las excepciones síncronas, como la división por cero, no tienen relación con la instrucción que se estaba ejecutando.</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Falso — es justo lo contrario: una excepción sincrónica es provocada directamente por la instrucción en curso, por lo que el PC apunta exactamente a ella.</p>
+        </div>
+        <div class="vf-cell" data-ans="V">
+          <p class="font-semibold text-slate-700 mb-2">D. Una system call es una interrupción software que usa la misma tabla de interrupciones que las interrupciones de hardware.</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Verdadero — el hardware detecta la llamada (INT 0x80, SYSCALL, etc.) y la procesa con la misma tabla de interrupciones, pasando el procesador a modo SYSTEM.</p>
+        </div>
+        <div class="vf-cell" data-ans="F">
+          <p class="font-semibold text-slate-700 mb-2">E. Cuando el procesador pasa de modo usuario a modo sistema, el sistema operativo crea un proceso nuevo para atender la interrupción.</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Falso — el proceso es exactamente el mismo; solo cambia el nivel de privilegio con que el procesador ejecuta instrucciones.</p>
+        </div>
+        <div class="vf-cell" data-ans="V">
+          <p class="font-semibold text-slate-700 mb-2">F. El registro cr3 apunta a la tabla de páginas del proceso que está actualmente en ejecución.</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Verdadero — al hacer task switch, el kernel actualiza cr3 para que apunte al mm_struct/tabla de páginas del nuevo proceso elegido.</p>
+        </div>
+        <div class="vf-cell" data-ans="F">
+          <p class="font-semibold text-slate-700 mb-2">G. En Linux, usar las instrucciones especiales del procesador para salvar contexto es más eficiente que usar la pila de ejecución sistema.</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Falso — es al revés: esas instrucciones son lentas y no salvan necesariamente todos los registros, por eso Linux prefiere la solución software vía la pila sistema.</p>
+        </div>
+        <div class="vf-cell" data-ans="V">
+          <p class="font-semibold text-slate-700 mb-2">H. Tanto una interrupción de hardware como un TRAP por error dejan al procesador en modo SYSTEM.</p>
+          <div class="vf-options">
+            <button class="vf-btn" data-val="V" onclick="selectVF(this)">Verdadero</button>
+            <button class="vf-btn" data-val="F" onclick="selectVF(this)">Falso</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Verdadero — ambas pasan por la tabla de interrupciones y obligan al procesador a ejecutar la rutina del kernel en modo SYSTEM, sin importar su origen.</p>
+        </div>
+      </div>
+      <p id="vf-if-score" class="text-sm font-bold mt-4 min-h-[1.2em]"></p>
+      <div class="flex justify-end gap-3 mt-5">
+        <button onclick="resetVF('vf-if')" class="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-700 px-5 py-2.5 rounded-xl text-sm font-bold transition">
+          <span>Reiniciar</span>
+        </button>
+        <button onclick="reviewVF('vf-if')" class="flex items-center gap-2 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition shadow-md" style="background:var(--navy)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>Revisar respuestas</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ SECCIÓN 3 · ALTERNATIVAS ══════════════════════════════ -->
+  <section id="alternativas" class="mb-20">
+    <h2 class="sec-title text-2xl font-bold mb-7 pb-3">Sección 3 · Selección múltiple</h2>
+
+    <h3 class="sub-title text-lg font-bold mb-4">Tema A · Procesos UNIX/Linux</h3>
+    <div class="card p-8 mb-10">
+      <p class="text-slate-500 mb-6 text-sm">Elige una alternativa por pregunta. Pulsa "Revisar respuestas" al final.</p>
+
+      <div class="space-y-7" id="mc-proc">
+
+        <div class="vf-cell" data-ans="B">
+          <p class="font-semibold text-slate-700 mb-3">1. ¿Cuál de las siguientes estructuras <u>nunca</u> se comparte entre el proceso padre y el hijo después de un fork()?</p>
+          <div class="vf-options" style="flex-direction:column;">
+            <button class="vf-btn mc-btn" data-val="A" onclick="selectVF(this)">A) El segmento de código (Text Segment)</button>
+            <button class="vf-btn mc-btn" data-val="B" onclick="selectVF(this)">B) La Zona U</button>
+            <button class="vf-btn mc-btn" data-val="C" onclick="selectVF(this)">C) Los archivos abiertos</button>
+            <button class="vf-btn mc-btn" data-val="D" onclick="selectVF(this)">D) El segmento de datos (antes de cualquier escritura)</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Correcta: B. La Zona U es siempre una copia independiente del padre, nunca compartida. El Text Segment se comparte siempre; el Data Segment se comparte con COW hasta la primera escritura; los archivos abiertos se heredan.</p>
+        </div>
+
+        <div class="vf-cell" data-ans="C">
+          <p class="font-semibold text-slate-700 mb-3">2. Inmediatamente después de un fork() exitoso, ¿qué retorna la llamada al proceso padre?</p>
+          <div class="vf-options" style="flex-direction:column;">
+            <button class="vf-btn mc-btn" data-val="A" onclick="selectVF(this)">A) 0</button>
+            <button class="vf-btn mc-btn" data-val="B" onclick="selectVF(this)">B) -1</button>
+            <button class="vf-btn mc-btn" data-val="C" onclick="selectVF(this)">C) El PID del proceso hijo</button>
+            <button class="vf-btn mc-btn" data-val="D" onclick="selectVF(this)">D) El PID del proceso padre</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Correcta: C. fork() retorna 0 al hijo y el PID del nuevo hijo al padre. -1 se retorna solo si fork() falla (sin crear ningún proceso).</p>
+        </div>
+
+        <div class="vf-cell" data-ans="B">
+          <p class="font-semibold text-slate-700 mb-3">3. ¿Cuál alternativa describe correctamente lo que hace exec()?</p>
+          <div class="vf-options" style="flex-direction:column;">
+            <button class="vf-btn mc-btn" data-val="A" onclick="selectVF(this)">A) Crea un nuevo proceso con un PID distinto</button>
+            <button class="vf-btn mc-btn" data-val="B" onclick="selectVF(this)">B) Reemplaza código, datos y stack del proceso actual, manteniendo el mismo PID y los mismos archivos abiertos</button>
+            <button class="vf-btn mc-btn" data-val="C" onclick="selectVF(this)">C) Pone al proceso en estado ZOMBIE</button>
+            <button class="vf-btn mc-btn" data-val="D" onclick="selectVF(this)">D) Copia el segmento de datos del proceso a un nuevo proceso hijo</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Correcta: B. exec() no crea un proceso nuevo (eso es fork()); reemplaza la imagen del proceso actual conservando PID y FDs.</p>
+        </div>
+
+        <div class="vf-cell" data-ans="B">
+          <p class="font-semibold text-slate-700 mb-3">4. ¿En qué transición de estado interviene la syscall sleep()?</p>
+          <div class="vf-options" style="flex-direction:column;">
+            <button class="vf-btn mc-btn" data-val="A" onclick="selectVF(this)">A) De READY a RUNNING SYSTEM MODE</button>
+            <button class="vf-btn mc-btn" data-val="B" onclick="selectVF(this)">B) De RUNNING SYSTEM MODE a SLEEPING</button>
+            <button class="vf-btn mc-btn" data-val="C" onclick="selectVF(this)">C) De ZOMBIE a TERMINATED</button>
+            <button class="vf-btn mc-btn" data-val="D" onclick="selectVF(this)">D) De RUNNING USER MODE a READY</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Correcta: B. sleep() bloquea al proceso que está en modo sistema esperando un evento, llevándolo a SLEEPING; wakeup() lo devuelve a READY.</p>
+        </div>
+
+        <div class="vf-cell" data-ans="C">
+          <p class="font-semibold text-slate-700 mb-3">5. Si nadie llama nunca a wait() sobre un proceso ZOMBIE, ¿qué ocurre?</p>
+          <div class="vf-options" style="flex-direction:column;">
+            <button class="vf-btn mc-btn" data-val="A" onclick="selectVF(this)">A) Se elimina automáticamente después de unos segundos</button>
+            <button class="vf-btn mc-btn" data-val="B" onclick="selectVF(this)">B) Pasa a READY y vuelve a ejecutarse</button>
+            <button class="vf-btn mc-btn" data-val="C" onclick="selectVF(this)">C) Permanece como zombie indefinidamente, ocupando una entrada de la tabla de procesos</button>
+            <button class="vf-btn mc-btn" data-val="D" onclick="selectVF(this)">D) El kernel lo convierte en el nuevo proceso INIT</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Correcta: C. La estructura task del zombie no se libera hasta que alguien haga wait(); si se acumulan suficientes, se puede agotar la tabla de procesos.</p>
+        </div>
+
+        <div class="vf-cell" data-ans="C">
+          <p class="font-semibold text-slate-700 mb-3">6. ¿Qué bit se activa en las páginas del segmento de datos compartido inmediatamente después de un fork()?</p>
+          <div class="vf-options" style="flex-direction:column;">
+            <button class="vf-btn mc-btn" data-val="A" onclick="selectVF(this)">A) Dirty bit</button>
+            <button class="vf-btn mc-btn" data-val="B" onclick="selectVF(this)">B) Valid bit</button>
+            <button class="vf-btn mc-btn" data-val="C" onclick="selectVF(this)">C) COW (Copy On Write) bit</button>
+            <button class="vf-btn mc-btn" data-val="D" onclick="selectVF(this)">D) Used bit</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Correcta: C. El fork() pone en 1 el bit COW de todas las páginas del segmento de datos compartido entre padre e hijo.</p>
+        </div>
+
+        <div class="vf-cell" data-ans="A">
+          <p class="font-semibold text-slate-700 mb-3">7. ¿Qué señal recibe el proceso padre cuando uno de sus hijos termina con exit()?</p>
+          <div class="vf-options" style="flex-direction:column;">
+            <button class="vf-btn mc-btn" data-val="A" onclick="selectVF(this)">A) SIGCHLD</button>
+            <button class="vf-btn mc-btn" data-val="B" onclick="selectVF(this)">B) SIGKILL</button>
+            <button class="vf-btn mc-btn" data-val="C" onclick="selectVF(this)">C) SIGTERM</button>
+            <button class="vf-btn mc-btn" data-val="D" onclick="selectVF(this)">D) SIGSTOP</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Correcta: A. El kernel envía SIGCHLD al padre para notificarle que un hijo terminó y quedó en estado ZOMBIE.</p>
+        </div>
+
+      </div>
+
+      <p id="mc-proc-score" class="text-sm font-bold mt-4 min-h-[1.2em]"></p>
+      <div class="flex justify-end gap-3 mt-5">
+        <button onclick="resetVF('mc-proc')" class="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-700 px-5 py-2.5 rounded-xl text-sm font-bold transition">
+          <span>Reiniciar</span>
+        </button>
+        <button onclick="reviewVF('mc-proc')" class="flex items-center gap-2 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition shadow-md" style="background:var(--navy)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>Revisar respuestas</span>
+        </button>
+      </div>
+    </div>
+
+    <h3 class="sub-title text-lg font-bold mb-4">Tema B · Interfaces y Procesos</h3>
+    <div class="card p-8">
+      <p class="text-slate-500 mb-6 text-sm">Elige una alternativa por pregunta. Pulsa "Revisar respuestas" al final.</p>
+
+      <div class="space-y-7" id="mc-if">
+
+        <div class="vf-cell" data-ans="D">
+          <p class="font-semibold text-slate-700 mb-3">1. ¿Cuál de las siguientes NO es uno de los tres niveles de gestión del sistema operativo vistos en clase?</p>
+          <div class="vf-options" style="flex-direction:column;">
+            <button class="vf-btn mc-btn" data-val="A" onclick="selectVF(this)">A) Corto plazo</button>
+            <button class="vf-btn mc-btn" data-val="B" onclick="selectVF(this)">B) Mediano plazo</button>
+            <button class="vf-btn mc-btn" data-val="C" onclick="selectVF(this)">C) Largo plazo</button>
+            <button class="vf-btn mc-btn" data-val="D" onclick="selectVF(this)">D) Tiempo real absoluto</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Correcta: D. Los tres niveles son corto, mediano y largo plazo; "tiempo real absoluto" no corresponde a esta clasificación.</p>
+        </div>
+
+        <div class="vf-cell" data-ans="B">
+          <p class="font-semibold text-slate-700 mb-3">2. ¿Qué mecanismo permite que el procesador no tenga que sondear constantemente el estado de un periférico?</p>
+          <div class="vf-options" style="flex-direction:column;">
+            <button class="vf-btn mc-btn" data-val="A" onclick="selectVF(this)">A) Puertos de E/S exclusivamente</button>
+            <button class="vf-btn mc-btn" data-val="B" onclick="selectVF(this)">B) Interrupciones</button>
+            <button class="vf-btn mc-btn" data-val="C" onclick="selectVF(this)">C) Memoria virtual</button>
+            <button class="vf-btn mc-btn" data-val="D" onclick="selectVF(this)">D) Segmentación</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Correcta: B. Las interrupciones avisan al procesador solo cuando el periférico realmente tiene algo que entregar, evitando el polling constante.</p>
+        </div>
+
+        <div class="vf-cell" data-ans="C">
+          <p class="font-semibold text-slate-700 mb-3">3. ¿Cuál de las siguientes es una excepción asincrónica?</p>
+          <div class="vf-options" style="flex-direction:column;">
+            <button class="vf-btn mc-btn" data-val="A" onclick="selectVF(this)">A) Zero divide</button>
+            <button class="vf-btn mc-btn" data-val="B" onclick="selectVF(this)">B) Segmentation fault</button>
+            <button class="vf-btn mc-btn" data-val="C" onclick="selectVF(this)">C) Falla de una placa de memoria</button>
+            <button class="vf-btn mc-btn" data-val="D" onclick="selectVF(this)">D) Overflow aritmético</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Correcta: C. Las otras tres son provocadas directamente por la instrucción en ejecución (sincrónicas); la falla de hardware tiene una causa externa al flujo de instrucciones.</p>
+        </div>
+
+        <div class="vf-cell" data-ans="C">
+          <p class="font-semibold text-slate-700 mb-3">4. ¿Qué ocurre con una interrupción que llega mientras su línea está enmascarada en el IRQ Controller?</p>
+          <div class="vf-options" style="flex-direction:column;">
+            <button class="vf-btn mc-btn" data-val="A" onclick="selectVF(this)">A) Se descarta de inmediato</button>
+            <button class="vf-btn mc-btn" data-val="B" onclick="selectVF(this)">B) Se ejecuta igual, sin esperar</button>
+            <button class="vf-btn mc-btn" data-val="C" onclick="selectVF(this)">C) Queda en una lista de interrupciones pendientes</button>
+            <button class="vf-btn mc-btn" data-val="D" onclick="selectVF(this)">D) Provoca una excepción de protección</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Correcta: C. El AND entre el registro INTR y la máscara deja la interrupción "pendiente" hasta que se desenmascara esa línea.</p>
+        </div>
+
+        <div class="vf-cell" data-ans="D">
+          <p class="font-semibold text-slate-700 mb-3">5. ¿Cuál de las siguientes NO forma parte del contexto de un proceso?</p>
+          <div class="vf-options" style="flex-direction:column;">
+            <button class="vf-btn mc-btn" data-val="A" onclick="selectVF(this)">A) El valor de todos los registros del procesador</button>
+            <button class="vf-btn mc-btn" data-val="B" onclick="selectVF(this)">B) El espacio de trabajo en memoria (Address Space)</button>
+            <button class="vf-btn mc-btn" data-val="C" onclick="selectVF(this)">C) Las pilas de ejecución (proceso + sistema)</button>
+            <button class="vf-btn mc-btn" data-val="D" onclick="selectVF(this)">D) El código fuente en lenguaje C del programa</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Correcta: D. El contexto es un concepto de ejecución (registros, memoria, pilas); el código fuente en C ni siquiera existe en tiempo de ejecución, solo el binario compilado.</p>
+        </div>
+
+        <div class="vf-cell" data-ans="B">
+          <p class="font-semibold text-slate-700 mb-3">6. ¿Qué ocurre cuando un proceso en modo USER intenta ejecutar una instrucción privilegiada?</p>
+          <div class="vf-options" style="flex-direction:column;">
+            <button class="vf-btn mc-btn" data-val="A" onclick="selectVF(this)">A) Se ejecuta sin problema</button>
+            <button class="vf-btn mc-btn" data-val="B" onclick="selectVF(this)">B) Se genera un TRAP de protección</button>
+            <button class="vf-btn mc-btn" data-val="C" onclick="selectVF(this)">C) El kernel la ignora silenciosamente</button>
+            <button class="vf-btn mc-btn" data-val="D" onclick="selectVF(this)">D) El proceso pasa automáticamente a modo SYSTEM sin generar ningún evento</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Correcta: B. El hardware bloquea la instrucción privilegiada y eso mismo genera un TRAP (excepción sincrónica de protección), normalmente terminando el proceso.</p>
+        </div>
+
+        <div class="vf-cell" data-ans="C">
+          <p class="font-semibold text-slate-700 mb-3">7. En una syscall de 64 bits en Linux/x86-64 (instrucción SYSCALL), ¿qué registro contiene el código del servicio solicitado?</p>
+          <div class="vf-options" style="flex-direction:column;">
+            <button class="vf-btn mc-btn" data-val="A" onclick="selectVF(this)">A) %ebx</button>
+            <button class="vf-btn mc-btn" data-val="B" onclick="selectVF(this)">B) %rdi</button>
+            <button class="vf-btn mc-btn" data-val="C" onclick="selectVF(this)">C) %rax</button>
+            <button class="vf-btn mc-btn" data-val="D" onclick="selectVF(this)">D) %rdx</button>
+          </div>
+          <p class="vf-explain hidden text-xs mt-2 text-slate-500">Correcta: C. %rax lleva el número de servicio (ej. 1 = write, 60 = exit); %rdi, %rsi, %rdx llevan los argumentos.</p>
+        </div>
+
+      </div>
+
+      <p id="mc-if-score" class="text-sm font-bold mt-4 min-h-[1.2em]"></p>
+      <div class="flex justify-end gap-3 mt-5">
+        <button onclick="resetVF('mc-if')" class="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-700 px-5 py-2.5 rounded-xl text-sm font-bold transition">
+          <span>Reiniciar</span>
+        </button>
+        <button onclick="reviewVF('mc-if')" class="flex items-center gap-2 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition shadow-md" style="background:var(--navy)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>Revisar respuestas</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer style="background:linear-gradient(120deg,#0f1f33 0%,#002b5c 55%,#8c1d40 100%);color:#e2e8f0;border-top:2px solid rgba(201,163,74,.6);">
+  <div class="container mx-auto px-6 py-6 text-center text-sm font-medium">
+    <p>&copy; 2026 Bonus de repaso — Sistemas Operativos · Procesos UNIX/Linux + Interfaces y Procesos</p>
+  </div>
+</footer>
+
+<script>
+  function toggleQ(id, btn) {
+    const el = document.getElementById(id);
+    const icon = btn.querySelector('svg.accordion-icon');
+    const hidden = el.classList.contains('hidden');
+    if (hidden) {
+      el.classList.remove('hidden');
+      btn.classList.add('bg-slate-100');
+      if (icon) icon.style.transform = 'rotate(180deg)';
+    } else {
+      el.classList.add('hidden');
+      btn.classList.remove('bg-slate-100');
+      if (icon) icon.style.transform = 'rotate(0deg)';
+    }
+  }
+
+  function selectVF(btn) {
+    const cell = btn.closest('.vf-cell');
+    cell.dataset.selected = btn.dataset.val;
+    cell.querySelectorAll('.vf-btn').forEach(b => {
+      b.classList.remove('vf-btn-active', 'vf-btn-correct', 'vf-btn-wrong');
+    });
+    btn.classList.add('vf-btn-active');
+    cell.classList.remove('vf-correct-cell', 'vf-wrong-cell');
+    cell.querySelector('.vf-explain').classList.add('hidden');
+  }
+
+  function reviewVF(containerId) {
+    const container = document.getElementById(containerId);
+    const cells = container.querySelectorAll('.vf-cell');
+    let correct = 0, answered = 0;
+    cells.forEach(cell => {
+      const ans = cell.dataset.ans;
+      const sel = cell.dataset.selected;
+      if (sel) answered++;
+      const isCorrect = sel === ans;
+      if (isCorrect) correct++;
+      cell.classList.remove('vf-correct-cell', 'vf-wrong-cell');
+      if (sel) cell.classList.add(isCorrect ? 'vf-correct-cell' : 'vf-wrong-cell');
+      cell.querySelectorAll('.vf-btn').forEach(b => {
+        b.classList.remove('vf-btn-correct', 'vf-btn-wrong');
+        if (b.dataset.val === ans) b.classList.add('vf-btn-correct');
+        else if (b.dataset.val === sel) b.classList.add('vf-btn-wrong');
+      });
+      cell.querySelector('.vf-explain').classList.remove('hidden');
+    });
+    const scoreEl = document.getElementById(containerId + '-score');
+    if (!scoreEl) return;
+    if (answered < cells.length) {
+      scoreEl.textContent = `Respondiste ${answered} de ${cells.length}. Responde todas para ver tu puntaje.`;
+      scoreEl.className = 'text-sm font-bold mt-4 min-h-[1.2em] text-amber-700';
+    } else {
+      scoreEl.textContent = `Resultado: ${correct} de ${cells.length} correctas.`;
+      scoreEl.className = 'text-sm font-bold mt-4 min-h-[1.2em] ' + (correct === cells.length ? 'text-green-700' : '');
+      if (correct !== cells.length) scoreEl.style.color = 'var(--navy)';
+    }
+  }
+
+  function resetVF(containerId) {
+    const container = document.getElementById(containerId);
+    container.querySelectorAll('.vf-cell').forEach(cell => {
+      delete cell.dataset.selected;
+      cell.classList.remove('vf-correct-cell', 'vf-wrong-cell');
+      cell.querySelectorAll('.vf-btn').forEach(b => b.classList.remove('vf-btn-active', 'vf-btn-correct', 'vf-btn-wrong'));
+      cell.querySelector('.vf-explain').classList.add('hidden');
+    });
+    const scoreEl = document.getElementById(containerId + '-score');
+    if (scoreEl) scoreEl.textContent = '';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayudantía SO 2 — Interfaces y Procesos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root{--navy:#002b5c;--burg:#8c1d40;--gold:#c9a34a;--ink:#0f1f33;--paper:#f6f7fb;}
+        body{font-family:'Montserrat',sans-serif;background-color:var(--paper);
+             background-image:radial-gradient(circle at 8% 12%,rgba(201,163,74,.22) 0%,transparent 28%),
+             radial-gradient(circle at 92% 84%,rgba(140,29,64,.15) 0%,transparent 32%),
+             linear-gradient(135deg,#f8fafc 0%,#edf2fb 55%,#f8fafc 100%);min-height:100vh;}
+        h1,h2,h3,h4,h5{font-family:'Sora',sans-serif;letter-spacing:-.02em;}
+        code,pre{font-family:'JetBrains Mono',monospace;}
+        .topbar{background:linear-gradient(90deg,rgba(0,43,92,.95),rgba(140,29,64,.92));
+                box-shadow:0 10px 30px rgba(15,31,51,.25);border-bottom:2px solid rgba(201,163,74,.65);backdrop-filter:blur(10px);}
+        .hero-title{font-size:clamp(2rem,5vw,3.8rem);background:linear-gradient(135deg,var(--navy),var(--burg));
+                    -webkit-background-clip:text;background-clip:text;color:transparent;}
+        .sec-title{border-bottom:3px solid rgba(0,43,92,.28);color:var(--ink);}
+        .card{background:rgba(255,255,255,.9);border:1px solid rgba(0,43,92,.09);
+              box-shadow:0 16px 30px rgba(15,31,51,.08);transition:transform .25s ease,box-shadow .25s ease;}
+        .card:hover{transform:translateY(-3px);box-shadow:0 22px 36px rgba(15,31,51,.14);}
+        .theory{background:rgba(255,255,255,.95);border:1px solid rgba(0,43,92,.12);
+                box-shadow:0 8px 24px rgba(15,31,51,.07);}
+        .accordion-icon{transition:transform .3s ease;}
+        .animate-fadeIn{animation:fadeIn .4s ease-in-out;}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+        #progress-bar{transition:width .5s ease;}
+        .nav-link{color:#f1f5f9;padding:.4rem .8rem;border-radius:9999px;transition:all .25s ease;border:1px solid transparent;font-size:.8rem;}
+        .nav-link:hover{background:rgba(255,255,255,.12);border-color:rgba(201,163,74,.55);}
+        .cat-pill{display:inline-block;font-size:.7rem;font-weight:700;border-radius:9999px;padding:2px 10px;margin-bottom:8px;}
+        .def-box{background:linear-gradient(135deg,#fffbeb,#fef3c7);border-left:4px solid var(--gold);border-radius:0 .5rem .5rem 0;padding:.75rem 1rem;}
+        .key-box{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-left:4px solid #3b82f6;border-radius:0 .5rem .5rem 0;padding:.75rem 1rem;}
+        .warn-box{background:linear-gradient(135deg,#fff1f2,#ffe4e6);border-left:4px solid #f43f5e;border-radius:0 .5rem .5rem 0;padding:.75rem 1rem;}
+        .mem-seg{border-radius:.35rem;padding:.4rem .6rem;text-align:center;font-size:.68rem;font-weight:600;margin:.2rem 0;}
+        .codebox{background:#1e293b;color:#e2e8f0;border-radius:.6rem;padding:1.1rem 1.3rem;
+                 font-size:.74rem;line-height:1.75;overflow-x:auto;white-space:pre;}
+        .ck{color:#7dd3fc;}.ct{color:#a5b4fc;}.cc{color:#6ee7b7;font-style:italic;}.cs{color:#fcd34d;}.cf{color:#f9a8d4;}
+        .state-chip{display:inline-flex;align-items:center;padding:.25rem .8rem;border-radius:9999px;font-size:.7rem;font-weight:700;}
+        .flow-node{border-radius:.6rem;padding:.6rem .9rem;font-size:.7rem;font-weight:700;text-align:center;}
+        .flow-arrow{color:var(--gold);font-weight:800;}
+    </style>
+</head>
+<body class="text-slate-800">
+
+<!-- TOPBAR -->
+<header class="topbar sticky top-0 z-50">
+    <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <h1 class="text-xl font-extrabold text-white" style="font-family:'Sora',sans-serif;">Ayudantía SO</h1>
+            <span class="text-xs font-bold px-2 py-0.5 rounded-full" style="background:rgba(201,163,74,.85);color:#0f1f33;">PARTE 2</span>
+        </div>
+        <div class="space-x-1 hidden lg:flex flex-wrap gap-1">
+            <a href="#s-sistema"       class="nav-link font-medium">Kernel</a>
+            <a href="#s-hardware"      class="nav-link font-medium">Hardware</a>
+            <a href="#s-interrupciones" class="nav-link font-medium">Interrupciones</a>
+            <a href="#s-masking"       class="nav-link font-medium">Masking</a>
+            <a href="#s-contexto"      class="nav-link font-medium">Contexto</a>
+            <a href="#s-control"       class="nav-link font-medium">Modos</a>
+            <a href="#s-traps"         class="nav-link font-medium">TRAPS / Syscall</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container mx-auto px-4 sm:px-6 py-12 max-w-5xl">
+
+    <!-- HERO -->
+    <section class="text-center mb-14">
+        <p class="text-xs font-bold uppercase tracking-widest mb-2" style="color:var(--burg)">Continuación de la Ayudantía 1 — Procesos UNIX/Linux</p>
+        <h2 class="hero-title font-bold mb-3">Interfaces y Procesos</h2>
+        <p class="text-slate-500 font-medium max-w-xl mx-auto mb-7 text-sm">
+            Cómo el kernel conversa con el hardware: interrupciones, excepciones, conmutación de contexto, modos de ejecución y system calls. Basado en el material del prof. Xavier Bonnaire — UTFSM.
+        </p>
+        <div class="max-w-md mx-auto bg-white rounded-2xl shadow p-5 border border-slate-100">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-bold uppercase tracking-wide" style="color:var(--navy)">Progreso Q&amp;A</span>
+                <span id="progress-text" class="text-xs font-bold" style="color:var(--burg)">0 / 13</span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-3 mb-2">
+                <div id="progress-bar" class="h-3 rounded-full" style="width:0%;background:linear-gradient(90deg,#002b5c,#8c1d40)"></div>
+            </div>
+            <p class="text-xs text-slate-500">Abre cada pregunta para marcarla. <strong id="final-score" style="color:var(--navy)">0 / 13</strong> completadas.</p>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- 1. SISTEMA DE COMPUTACIÓN Y EL KERNEL                              -->
+    <!-- ================================================================ -->
+    <section id="s-sistema" class="mb-16">
+        <h3 class="sec-title text-2xl font-bold mb-7 pb-3">1 — Sistema de Computación y el Kernel</h3>
+
+        <div class="theory rounded-2xl p-6 mb-6">
+            <h4 class="text-lg font-bold mb-4" style="color:var(--navy)">¿Qué debe hacer un sistema operativo?</h4>
+            <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                El SO controla la ejecución correcta de múltiples tareas y el funcionamiento del hardware: asigna memoria, crea/inicializa/termina tareas, gestiona recursos físicos y lógicos, y <strong>reacciona a eventos múltiples</strong> — system calls, fallas de tareas, interrupciones y excepciones.
+            </p>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Tres niveles de gestión</p>
+            <div class="grid sm:grid-cols-3 gap-3 mb-5 text-xs">
+                <div class="bg-blue-50 rounded-xl p-4 border border-blue-100">
+                    <p class="font-bold text-blue-800 mb-1">Corto plazo</p>
+                    <p class="text-slate-600">Reacciones a eventos, inicialización de tareas, protección. Ocurre constantemente, a nivel de microsegundos.</p>
+                </div>
+                <div class="bg-indigo-50 rounded-xl p-4 border border-indigo-100">
+                    <p class="font-bold text-indigo-800 mb-1">Mediano plazo</p>
+                    <p class="text-slate-600">Gestión de memoria/discos, reducción del Idle Wait, scheduling, concurrencia entre tareas.</p>
+                </div>
+                <div class="bg-purple-50 rounded-xl p-4 border border-purple-100">
+                    <p class="font-bold text-purple-800 mb-1">Largo plazo</p>
+                    <p class="text-slate-600">Gestión global de recursos: creación/inicialización de tareas, asignación y distribución de recursos.</p>
+                </div>
+            </div>
+            <div class="def-box">
+                <p class="text-xs font-bold text-amber-800 mb-1">El Kernel</p>
+                <p class="text-xs text-slate-700">Es la parte del sistema que efectúa las <strong>operaciones básicas</strong> de gestión del hardware y de las tareas: corrección de instrucciones, accesos a memoria, control de periféricos y gestión del tiempo. El hardware se encarga de gran parte de esto por sí solo — el kernel interviene <strong>excepcionalmente</strong>, ante fallas detectadas por el hardware.</p>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q1',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-blue-100 text-blue-800">Repaso</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P1 — ¿Por qué el kernel interviene "excepcionalmente" si el hardware ya controla los periféricos y el tiempo?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q1" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-3">El hardware (controladores de periféricos, MMU, reloj) ejecuta solo la mecánica de bajo nivel: mover bits, generar una señal cuando termina una E/S, decrementar un contador. <strong>No decide nada</strong> sobre qué proceso debe correr ni cómo reaccionar a un error.</p>
+                    <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                            <p class="font-bold text-slate-700 mb-2">Lo hace solo el hardware</p>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                                <li>Ejecutar la instrucción actual</li>
+                                <li>Generar la señal de interrupción</li>
+                                <li>Avanzar el reloj / temporizador</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <p class="font-bold text-blue-800 mb-2">Requiere al kernel</p>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                                <li>Decidir qué hacer cuando ocurre la interrupción</li>
+                                <li>Elegir el próximo proceso (scheduling)</li>
+                                <li>Tratar fallas y recursos faltantes</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q2',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-indigo-100 text-indigo-800">Repaso</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P2 — Da un ejemplo concreto de gestión a corto, mediano y largo plazo.</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q2" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <ul class="list-disc pl-5 space-y-2 text-xs text-slate-700">
+                        <li><strong>Corto plazo:</strong> al terminar una E/S de disco, el kernel atiende la interrupción y despierta el proceso bloqueado (milisegundos).</li>
+                        <li><strong>Mediano plazo:</strong> el scheduler decide hacer swap-out de un proceso SLEEPING para liberar memoria física para otro READY (decenas de milisegundos a segundos).</li>
+                        <li><strong>Largo plazo:</strong> al hacer login, el sistema crea el proceso de la shell, le asigna su PID, memoria inicial y recursos (una vez, al inicio de la sesión).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- 2. INTERFACES CON EL HARDWARE                                      -->
+    <!-- ================================================================ -->
+    <section id="s-hardware" class="mb-16">
+        <h3 class="sec-title text-2xl font-bold mb-7 pb-3">2 — Interfaces con el Hardware</h3>
+
+        <div class="theory rounded-2xl p-6 mb-6">
+            <h4 class="text-lg font-bold mb-4" style="color:var(--navy)">Dos mecanismos de comunicación</h4>
+            <div class="grid sm:grid-cols-2 gap-4 mb-5 text-xs">
+                <div class="bg-sky-50 border border-sky-200 rounded-xl p-4">
+                    <p class="font-bold text-sky-700 text-sm mb-2">① Puertos de Entrada/Salida</p>
+                    <p class="text-slate-600">Cada periférico y circuito tiene uno o más puertos de E/S. El procesador tiene instrucciones especiales para leer y escribir datos a través de estos puertos directamente.</p>
+                </div>
+                <div class="bg-orange-50 border border-orange-200 rounded-xl p-4">
+                    <p class="font-bold text-orange-700 text-sm mb-2">② Interrupciones</p>
+                    <p class="text-slate-600">Cuando un periférico termina su E/S, ocurre un error, o el reloj marca un tick, se genera una <strong>interrupción</strong> que el procesador debe atender.</p>
+                </div>
+            </div>
+
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Camino de datos típico (Intel/PC)</p>
+            <div class="border-2 border-slate-300 rounded-xl p-4 bg-slate-50 text-xs">
+                <div class="grid sm:grid-cols-2 gap-3 mb-2">
+                    <div class="bg-blue-300 mem-seg text-blue-900 py-3">CPU ↔ CACHE</div>
+                    <div class="bg-emerald-300 mem-seg text-emerald-900 py-3">RAM ↔ Memory Controller</div>
+                </div>
+                <div class="bg-amber-300 mem-seg text-amber-900 py-2 mb-2">↓ CPU BUS ↓</div>
+                <div class="bg-orange-300 mem-seg text-orange-900 py-2 mb-2">PCI Express Controller</div>
+                <div class="bg-amber-300 mem-seg text-amber-900 py-2 mb-2">↓ CPU BUS ↓</div>
+                <div class="grid sm:grid-cols-2 gap-3">
+                    <div class="bg-green-300 mem-seg text-green-900 py-3">Hard Disk Controller → Data Store</div>
+                    <div class="bg-teal-300 mem-seg text-teal-900 py-3">Controladores → Periféricos (teclado, impresora, red...)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q3',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-sky-100 text-sky-800">Hardware</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P3 — ¿Por qué las interrupciones son más eficientes que el "polling" (preguntar constantemente por puerto) para la E/S?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q3" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p>Si el procesador tuviera que leer repetidamente un puerto de E/S para saber si el periférico terminó (polling), estaría desperdiciando ciclos de CPU que podría usar otro proceso. Con interrupciones, el procesador <strong>ejecuta otro proceso mientras espera</strong>, y solo se detiene cuando el periférico realmente tiene algo que entregar — esto reduce el <em>Idle Wait</em> y mejora el uso global de la CPU.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- 3. INTERRUPCIONES Y EXCEPCIONES                                    -->
+    <!-- ================================================================ -->
+    <section id="s-interrupciones" class="mb-16">
+        <h3 class="sec-title text-2xl font-bold mb-7 pb-3">3 — Interrupciones y Excepciones</h3>
+
+        <div class="theory rounded-2xl p-6 mb-6">
+            <div class="grid sm:grid-cols-2 gap-4 mb-5 text-xs">
+                <div class="key-box">
+                    <p class="font-bold text-blue-800 mb-1">Interrupción</p>
+                    <p class="text-slate-700">Evento hardware <strong>esperado</strong> por el sistema operativo: fin de una E/S, el reloj, etc. Es parte del funcionamiento normal.</p>
+                </div>
+                <div class="warn-box">
+                    <p class="font-bold text-rose-700 mb-1">Excepción</p>
+                    <p class="text-slate-700">Evento hardware <strong>inesperado</strong>, resultante de un error: división por cero, violación de derechos de acceso, falla de hardware.</p>
+                </div>
+            </div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Dos tipos de excepciones</p>
+            <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                <div class="bg-purple-50 border border-purple-200 rounded-xl p-4">
+                    <p class="font-bold text-purple-700 mb-2">Asincrónicas</p>
+                    <p class="text-slate-600">No están ligadas a la instrucción que se ejecutaba: error de un periférico (sector dañado), falla de una placa de memoria/procesador, fallas de alimentación eléctrica.</p>
+                </div>
+                <div class="bg-rose-50 border border-rose-200 rounded-xl p-4">
+                    <p class="font-bold text-rose-700 mb-2">Sincrónicas</p>
+                    <p class="text-slate-600">Provocadas <strong>directamente</strong> por la instrucción en curso: violación de protecciones (segmentation violation, FPU error), zero divide, falta de datos en memoria.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q4',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-rose-100 text-rose-800">Interrupciones</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P4 — Clasifica: timer tick, segmentation fault, fin de lectura de disco, falla eléctrica, división por cero.</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q4" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <table class="w-full text-xs border-collapse">
+                        <thead><tr class="bg-slate-100"><th class="px-3 py-2 text-left">Evento</th><th class="px-3 py-2 text-center">Categoría</th></tr></thead>
+                        <tbody>
+                            <tr class="border-b border-slate-200"><td class="px-3 py-2">Timer tick (reloj)</td><td class="px-3 py-2 text-center font-bold text-blue-700">Interrupción</td></tr>
+                            <tr class="border-b border-slate-200 bg-slate-50"><td class="px-3 py-2">Segmentation fault</td><td class="px-3 py-2 text-center font-bold text-rose-700">Excepción sincrónica</td></tr>
+                            <tr class="border-b border-slate-200"><td class="px-3 py-2">Fin de lectura de disco</td><td class="px-3 py-2 text-center font-bold text-blue-700">Interrupción</td></tr>
+                            <tr class="border-b border-slate-200 bg-slate-50"><td class="px-3 py-2">Falla de alimentación eléctrica</td><td class="px-3 py-2 text-center font-bold text-purple-700">Excepción asincrónica</td></tr>
+                            <tr><td class="px-3 py-2">División por cero</td><td class="px-3 py-2 text-center font-bold text-rose-700">Excepción sincrónica</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q5',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-purple-100 text-purple-800">Interrupciones</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P5 — ¿Por qué una excepción asincrónica no se puede asociar a "la instrucción que falló"?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q5" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p>Una excepción asincrónica (ej. falla de una placa de memoria, sector de disco dañado) ocurre por una causa <strong>externa al flujo de instrucciones</strong> que el procesador está ejecutando en ese instante — el procesador puede estar en cualquier punto del programa cuando el hardware avisa del problema. En cambio, una excepción sincrónica (zero divide) es consecuencia directa de la instrucción que se acaba de ejecutar, por lo que el PC apunta exactamente a la instrucción culpable.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- 4. INTERRUPT MASKING                                               -->
+    <!-- ================================================================ -->
+    <section id="s-masking" class="mb-16">
+        <h3 class="sec-title text-2xl font-bold mb-7 pb-3">4 — Interrupt Masking y Operaciones Atómicas</h3>
+
+        <div class="theory rounded-2xl p-6 mb-6">
+            <div class="def-box mb-5">
+                <p class="text-xs font-bold text-amber-800 mb-1">Operación atómica</p>
+                <p class="text-xs text-slate-700">Una operación que <strong>se hace completamente</strong> o <strong>no se hace</strong> — nunca queda a medio camino. Una vez que empieza, no se puede interrumpir.</p>
+            </div>
+            <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                Para garantizar atomicidad, el sistema usa el <strong>IRQ Controller</strong> para prohibir momentáneamente una o más interrupciones (<strong>MASKING</strong>) y luego restablecerlas (<strong>UNMASKING</strong>). Una interrupción enmascarada <strong>no se pierde</strong>: queda en una lista de interrupciones <em>pendientes</em> hasta que se desenmascara.
+            </p>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Ciclo de atención de una interrupción</p>
+            <div class="flex flex-wrap items-center justify-center gap-2 text-xs">
+                <div class="flow-node bg-sky-200 text-sky-900">User Process</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node bg-orange-200 text-orange-900">Interrupt Service Routine</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node bg-rose-200 text-rose-900">MASKING</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node bg-amber-200 text-amber-900">Save Context</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node bg-yellow-200 text-yellow-900">Procesa el SO</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node bg-amber-200 text-amber-900">Restore Context</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node bg-emerald-200 text-emerald-900">UNMASK</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node bg-sky-200 text-sky-900">Return</div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q6',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-amber-100 text-amber-800">Masking</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P6 — Si llegan 3 interrupciones de disco mientras el reloj está enmascarado, ¿qué pasa con ellas?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q6" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p class="mb-2">Depende de <strong>qué línea IRQ</strong> está enmascarada. El masking es por línea: si solo se enmascaró la línea del reloj, las interrupciones de disco (otra línea) se atienden normalmente y no entran en la lista de pendientes.</p>
+                    <p>Si en cambio se enmascarara también la línea del disco, las 3 interrupciones de disco entrarían en la lista <em>pending</em> del IRQ Controller. Al desenmascarar, el controlador entrega la(s) interrupción(es) pendiente(s) al procesador — el SO debe estar preparado para procesarlas, aunque típicamente solo se necesita atender una vez por línea (las señales repetidas del mismo dispositivo suelen coalescer).</p>
+                </div>
+            </div>
+
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q7',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-amber-100 text-amber-800">Masking</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P7 — ¿Por qué el SO necesita masking si las interrupciones ya pasan por una tabla y una rutina ordenada?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q7" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p>Porque algunas operaciones del kernel —como modificar una estructura compartida (lista de procesos READY, tabla de páginas)— deben verse como atómicas. Si una segunda interrupción llegara <strong>a mitad</strong> de esa modificación, podría dejar la estructura en un estado inconsistente (ej. un puntero a medio actualizar). El masking convierte ese tramo crítico en una sección que no puede ser interrumpida, garantizando la integridad de las estructuras del kernel.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- 5. CONTEXTO Y CONMUTACIÓN DE PROCESOS                              -->
+    <!-- ================================================================ -->
+    <section id="s-contexto" class="mb-16">
+        <h3 class="sec-title text-2xl font-bold mb-7 pb-3">5 — Contexto y Conmutación de Procesos</h3>
+
+        <div class="theory rounded-2xl p-6 mb-6">
+            <div class="def-box mb-5">
+                <p class="text-xs font-bold text-amber-800 mb-1">Contexto de un proceso (instante t)</p>
+                <p class="text-xs text-slate-700">El valor de <strong>todos los registros</strong> del procesador, su espacio de trabajo en memoria (Address Space) y sus pilas de ejecución (proceso + sistema).</p>
+            </div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Task Switching (Conmutación de tarea)</p>
+            <div class="grid sm:grid-cols-3 gap-3 mb-5 text-xs">
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
+                    <p class="font-bold text-blue-700 mb-1">1. Salvar contexto</p>
+                    <p class="text-slate-600">Del proceso actual en ejecución, en la pila <em>sistema</em> (no la pila usuario)</p>
+                </div>
+                <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4 text-center">
+                    <p class="font-bold text-indigo-700 mb-1">2. Elegir siguiente</p>
+                    <p class="text-slate-600">El scheduler (<code>schedule()</code>) elige la próxima tarea READY</p>
+                </div>
+                <div class="bg-purple-50 border border-purple-200 rounded-xl p-4 text-center">
+                    <p class="font-bold text-purple-700 mb-1">3. Restaurar contexto</p>
+                    <p class="text-slate-600">Del proceso elegido — registros, stack, address space</p>
+                </div>
+            </div>
+            <div class="warn-box mb-5">
+                <p class="text-xs font-bold text-rose-700 mb-1">¿Por qué Linux no usa las instrucciones hardware especiales para esto?</p>
+                <p class="text-xs text-slate-700">Existen instrucciones de procesador para salvar contexto, pero son <strong>lentas</strong> y no necesariamente salvan todos los registros. Linux usa una solución software: los registros se empujan a la <strong>pila de ejecución sistema</strong> del proceso con instrucciones <code>push</code> normales (macro <code>SAVE_ALL</code>), lo cual es más rápido y completamente controlado por el kernel.</p>
+            </div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Pipeline de <code>schedule()</code> en Linux</p>
+            <div class="flex flex-wrap items-center justify-center gap-2 text-xs">
+                <div class="flow-node bg-emerald-200 text-emerald-900">Quantum ends / Bloqueo</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node bg-sky-200 text-sky-900">schedule()</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node bg-indigo-200 text-indigo-900">pick_next_task()</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node bg-purple-200 text-purple-900">context_switch()</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node bg-pink-200 text-pink-900">switch_to() <span class="font-normal">(dependiente de arquitectura)</span></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node bg-orange-200 text-orange-900">IRET / Return</div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q8',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-indigo-100 text-indigo-800">Contexto</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P8 — En el diagrama de TSS (Task State Segment) visto en clase, ¿qué representa el registro <code>cr3</code>?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q8" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p><code>cr3</code> es el registro de control que apunta a la <strong>tabla de páginas</strong> del proceso actual (<code>task[j]→mm_struct</code> en Linux). Al conmutar de la tarea <em>i</em> a la tarea <em>j</em>, el kernel actualiza <code>cr3</code> para que apunte al espacio de direcciones de <em>j</em> — esto es lo que hace que las mismas direcciones virtuales ahora resuelvan a páginas físicas distintas, dando a cada proceso su propio espacio de memoria de forma transparente.</p>
+                </div>
+            </div>
+
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q9',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-purple-100 text-purple-800">Contexto</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P9 — ¿Cuáles son las tres causas que llevan a llamar a <code>schedule()</code> según el diagrama de flujo?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q9" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <ul class="list-disc pl-5 space-y-2 text-xs text-slate-700">
+                        <li><strong>clock_intr():</strong> el reloj interrumpe y el quantum del proceso actual terminó → se llama a <code>schedule()</code>.</li>
+                        <li><strong>Entra a E/S:</strong> el proceso se bloquea esperando una operación → no puede seguir corriendo, se debe elegir otro.</li>
+                        <li><strong>Otro caso (Other Case):</strong> cualquier otro evento que requiera reevaluar qué proceso debe correr (ej. requisición explícita, señal).</li>
+                    </ul>
+                    <p class="mt-2 text-slate-600">Si el quantum <strong>no</strong> terminó y el proceso <strong>no</strong> está bloqueado, simplemente se retorna sin conmutar (rama "No" del diagrama).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- 6. MODOS DE CONTROL: SYSTEM vs USER                                -->
+    <!-- ================================================================ -->
+    <section id="s-control" class="mb-16">
+        <h3 class="sec-title text-2xl font-bold mb-7 pb-3">6 — Modos de Control: System vs User</h3>
+
+        <div class="theory rounded-2xl p-6 mb-6">
+            <p class="text-sm text-slate-700 leading-relaxed mb-5">
+                Los procesadores modernos (≥ i386) tienen dos modos de funcionamiento. <strong>El proceso no cambia</strong> de un modo a otro — solo cambia el nivel de privilegio con el que el procesador ejecuta sus instrucciones.
+            </p>
+            <div class="card rounded-xl overflow-hidden mb-5">
+                <table class="w-full text-xs">
+                    <thead>
+                        <tr class="bg-slate-800 text-white">
+                            <th class="px-4 py-3 text-left">Capacidad</th>
+                            <th class="px-4 py-3 text-center">System / Real Mode</th>
+                            <th class="px-4 py-3 text-center">User / Protected Mode</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-slate-200 bg-white"><td class="px-4 py-2 font-semibold">Manipular tablas de páginas</td><td class="px-4 py-2 text-center text-green-700 font-bold">Sí</td><td class="px-4 py-2 text-center text-red-600 font-bold">No</td></tr>
+                        <tr class="border-b border-slate-200 bg-slate-50"><td class="px-4 py-2 font-semibold">Modificar registros del procesador (timers...)</td><td class="px-4 py-2 text-center text-green-700 font-bold">Sí</td><td class="px-4 py-2 text-center text-red-600 font-bold">No</td></tr>
+                        <tr class="border-b border-slate-200 bg-white"><td class="px-4 py-2 font-semibold">Modificar tabla de interrupciones</td><td class="px-4 py-2 text-center text-green-700 font-bold">Sí</td><td class="px-4 py-2 text-center text-red-600 font-bold">No</td></tr>
+                        <tr class="border-b border-slate-200 bg-slate-50"><td class="px-4 py-2 font-semibold">Ver direcciones reales de memoria</td><td class="px-4 py-2 text-center text-green-700 font-bold">Sí</td><td class="px-4 py-2 text-center text-red-600 font-bold">No (solo virtuales)</td></tr>
+                        <tr class="bg-white"><td class="px-4 py-2 font-semibold">¿Quién corre en este modo?</td><td class="px-4 py-2 text-center">El sistema operativo (kernel)</td><td class="px-4 py-2 text-center">Un proceso, salvo durante una syscall</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Transiciones entre modos</p>
+            <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                <div class="bg-orange-50 border-l-4 border-orange-400 rounded-r-lg p-4">
+                    <p class="font-bold text-orange-700 mb-2">USER → SYSTEM</p>
+                    <p class="text-slate-700">Por <strong>TRAPS (sincrónicos)</strong> — el proceso mismo invoca una syscall — o por <strong>interrupciones (asincrónicas)</strong> — el hardware avisa de algo externo. Ambas pasan por la misma tabla de interrupciones.</p>
+                </div>
+                <div class="bg-sky-50 border-l-4 border-sky-400 rounded-r-lg p-4">
+                    <p class="font-bold text-sky-700 mb-2">SYSTEM → USER</p>
+                    <p class="text-slate-700">Solo por <strong>creación</strong> de un proceso nuevo o por <strong>retorno</strong> (IRET) tras procesar la interrupción/TRAP — nunca de forma espontánea desde el kernel.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q10',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-orange-100 text-orange-800">Modos</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P10 — En el diagrama de transiciones, ¿por qué SYSTEM MODE tiene un bucle propio para "Todas las instrucciones" pero USER MODE solo para "Instrucciones No Privilegiadas"?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q10" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <p>Esos bucles representan la ejecución <strong>normal</strong>, sin cambio de modo: mientras no ocurra un TRAP ni una interrupción, el procesador sigue ejecutando instrucciones del mismo tipo permitido en ese modo. En SYSTEM MODE el conjunto permitido es <em>todas</em> las instrucciones (privilegiadas y no privilegiadas); en USER MODE el hardware bloquea cualquier instrucción privilegiada — si el proceso intenta una, eso mismo genera un TRAP de protección que lo saca del bucle y lo lleva a SYSTEM MODE (normalmente para terminarlo).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- 7. TRAPS Y SYSTEM CALLS                                            -->
+    <!-- ================================================================ -->
+    <section id="s-traps" class="mb-16">
+        <h3 class="sec-title text-2xl font-bold mb-7 pb-3">7 — TRAPS y System Calls</h3>
+
+        <div class="theory rounded-2xl p-6 mb-6">
+            <div class="def-box mb-5">
+                <p class="text-xs font-bold text-amber-800 mb-1">TRAP</p>
+                <p class="text-xs text-slate-700">Evento <strong>sincrónico</strong> provocado por la ejecución de una instrucción. Dos causas posibles: <strong>(1)</strong> errores (overflow, zero divide, violación de protección) o <strong>(2)</strong> una <strong>llamada de sistema</strong> — el mecanismo que ofrece todos los servicios del SO a los procesos.</p>
+            </div>
+            <p class="text-sm text-slate-700 leading-relaxed mb-5">
+                Una system call es una <strong>interrupción software</strong>: usa la misma tabla de interrupciones que el hardware. El hardware detecta la llamada, pasa el procesador a modo SYSTEM, ejecuta la rutina del kernel, y vuelve a modo USER con una instrucción de retorno (<code>IRET</code>, <code>SYSEXIT</code> o <code>SYSRET</code> según la arquitectura).
+            </p>
+
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">IA-32 vs IA-64: instrucción de entrada y salida</p>
+            <div class="card rounded-xl overflow-hidden mb-5">
+                <table class="w-full text-xs">
+                    <thead>
+                        <tr class="bg-slate-800 text-white">
+                            <th class="px-4 py-3 text-left">Arquitectura / Modo</th>
+                            <th class="px-4 py-3 text-center">Instrucción de entrada</th>
+                            <th class="px-4 py-3 text-center">Instrucción de retorno</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-slate-200 bg-white"><td class="px-4 py-2 font-semibold">IA-32 (todas las arquitecturas 32 bits)</td><td class="px-4 py-2 text-center font-mono">INT 0x80</td><td class="px-4 py-2 text-center font-mono">IRET</td></tr>
+                        <tr class="border-b border-slate-200 bg-slate-50"><td class="px-4 py-2 font-semibold">IA-32 / IA-64 en modo 32 bits (Intel)</td><td class="px-4 py-2 text-center font-mono">SYSENTER</td><td class="px-4 py-2 text-center font-mono">SYSEXIT</td></tr>
+                        <tr class="bg-white"><td class="px-4 py-2 font-semibold">IA-64 en modo 64 bits (AMD/Intel)</td><td class="px-4 py-2 text-center font-mono">SYSCALL</td><td class="px-4 py-2 text-center font-mono">SYSRET</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Mismo "Hello World", dos arquitecturas</p>
+            <div class="grid lg:grid-cols-2 gap-4">
+                <div>
+                    <p class="text-xs font-bold text-sky-700 mb-2">32 bits — <code>INT 0x80</code> (eax/ebx/ecx/edx)</p>
+                    <div class="codebox">
+<span class="cc">; write syscall = 4, exit syscall = 1</span>
+<span class="ck">movl</span> $4, <span class="cf">%eax</span>      <span class="cc">; código de servicio: write</span>
+<span class="ck">movl</span> $1, <span class="cf">%ebx</span>      <span class="cc">; arg1: fd = stdout</span>
+<span class="ck">movl</span> $msg, <span class="cf">%ecx</span>    <span class="cc">; arg2: buffer</span>
+<span class="ck">movl</span> $12, <span class="cf">%edx</span>     <span class="cc">; arg3: largo</span>
+<span class="ck">int</span> $0x80          <span class="cc">; trap al kernel</span>
+
+<span class="ck">movl</span> $1, <span class="cf">%eax</span>      <span class="cc">; código de servicio: _exit</span>
+<span class="ck">movl</span> $0, <span class="cf">%ebx</span>      <span class="cc">; arg1: código de error</span>
+<span class="ck">int</span> $0x80</div>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-orange-700 mb-2">64 bits — <code>SYSCALL</code> (rax/rdi/rsi/rdx)</p>
+                    <div class="codebox">
+<span class="cc">; write syscall = 1, exit syscall = 60</span>
+<span class="ck">movq</span> $1, <span class="cf">%rax</span>      <span class="cc">; código de servicio: write</span>
+<span class="ck">movq</span> $1, <span class="cf">%rdi</span>      <span class="cc">; arg1: fd = stdout</span>
+<span class="ck">movq</span> $msg, <span class="cf">%rsi</span>    <span class="cc">; arg2: buffer</span>
+<span class="ck">movq</span> $12, <span class="cf">%rdx</span>     <span class="cc">; arg3: largo</span>
+<span class="ck">syscall</span>            <span class="cc">; trap al kernel</span>
+
+<span class="ck">movq</span> $60, <span class="cf">%rax</span>     <span class="cc">; código de servicio: _exit</span>
+<span class="ck">movq</span> $0, <span class="cf">%rdi</span>      <span class="cc">; arg1: código de error</span>
+<span class="ck">syscall</span></div>
+                </div>
+            </div>
+            <div class="key-box mt-4">
+                <p class="text-xs text-slate-700"><strong>Nota:</strong> en C nunca se escribe esto a mano — la <code>libc</code> (wrapper) traduce <code>write()</code> / <code>_exit()</code> a la secuencia correcta de registros + instrucción de trap para la arquitectura donde corre el binario.</p>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q11',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-rose-100 text-rose-800">TRAPS</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P11 — Tras un TRAP por error vs un TRAP por system call, ¿a qué instrucción se vuelve?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q11" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-rose-50 border border-rose-200 rounded-lg p-4">
+                            <p class="font-bold text-rose-700 mb-2">TRAP por error</p>
+                            <p class="text-slate-600">En algunos casos se <strong>repite la misma instrucción</strong> que falló, después de que el kernel resolvió el problema (ej. memoria virtual: el kernel trae la página faltante y reintenta el acceso). Si el kernel no puede resolverlo, <strong>termina el proceso</strong>.</p>
+                        </div>
+                        <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                            <p class="font-bold text-emerald-700 mb-2">TRAP por system call</p>
+                            <p class="text-slate-600">Se continúa con la <strong>instrucción siguiente</strong> a la llamada (<code>int $0x80</code> / <code>syscall</code>), normalmente recibiendo el resultado del servicio en el registro de retorno (ej. <code>%eax</code>/<code>%rax</code>).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q12',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-rose-100 text-rose-800">System Calls</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P12 — ¿Qué cambia y qué se mantiene entre la versión de 32 y 64 bits del "Hello World"?</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q12" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                            <p class="font-bold text-slate-700 mb-2">Se mantiene</p>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                                <li>La lógica: registro = código de servicio, otros registros = argumentos</li>
+                                <li>El mismo orden de argumentos (fd, buffer, largo)</li>
+                                <li>Es una interrupción software, vía la tabla de interrupciones</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <p class="font-bold text-blue-800 mb-2">Cambia</p>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                                <li>Instrucción de trap: <code>int $0x80</code> → <code>syscall</code></li>
+                                <li>Registros usados: <code>eax/ebx/ecx/edx</code> → <code>rax/rdi/rsi/rdx</code></li>
+                                <li><strong>Números de syscall distintos</strong>: write es 4 en 32 bits, pero 1 en 64 bits</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-xl overflow-hidden">
+                <button onclick="toggleQ('q13',this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 flex justify-between items-center transition-colors">
+                    <div><span class="cat-pill bg-slate-200 text-slate-700">Repaso global</span>
+                    <p class="font-bold text-sm" style="color:var(--navy)">P13 — Tabla resumen: interrupción de hardware vs TRAP por error vs TRAP por system call.</p></div>
+                    <svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="q13" class="hidden px-6 py-5 bg-white border-t border-slate-100 text-sm text-slate-700 leading-relaxed animate-fadeIn">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs border-collapse min-w-[560px]">
+                            <thead>
+                                <tr class="bg-slate-800 text-white">
+                                    <th class="px-4 py-3 text-left">Característica</th>
+                                    <th class="px-4 py-3 text-center">Interrupción HW</th>
+                                    <th class="px-4 py-3 text-center">TRAP por error</th>
+                                    <th class="px-4 py-3 text-center">TRAP por syscall</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-slate-200 bg-white"><td class="px-4 py-2 font-semibold">¿Quién la genera?</td><td class="px-4 py-2 text-center">Periférico / reloj</td><td class="px-4 py-2 text-center">El procesador, al ejecutar</td><td class="px-4 py-2 text-center">El proceso, a propósito</td></tr>
+                                <tr class="border-b border-slate-200 bg-slate-50"><td class="px-4 py-2 font-semibold">Síncrona / Asíncrona</td><td class="px-4 py-2 text-center">Asíncrona</td><td class="px-4 py-2 text-center">Sincrónica</td><td class="px-4 py-2 text-center">Sincrónica</td></tr>
+                                <tr class="border-b border-slate-200 bg-white"><td class="px-4 py-2 font-semibold">¿Esperada por el SO?</td><td class="px-4 py-2 text-center text-green-700 font-bold">Sí</td><td class="px-4 py-2 text-center text-red-600 font-bold">No</td><td class="px-4 py-2 text-center text-green-700 font-bold">Sí</td></tr>
+                                <tr class="border-b border-slate-200 bg-slate-50"><td class="px-4 py-2 font-semibold">Modo resultante</td><td class="px-4 py-2 text-center">SYSTEM</td><td class="px-4 py-2 text-center">SYSTEM</td><td class="px-4 py-2 text-center">SYSTEM</td></tr>
+                                <tr class="bg-white"><td class="px-4 py-2 font-semibold">¿Cómo retorna?</td><td class="px-4 py-2 text-center">A la instrucción interrumpida</td><td class="px-4 py-2 text-center">Reintenta o termina el proceso</td><td class="px-4 py-2 text-center">A la instrucción siguiente al trap</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="def-box mt-4 text-xs">
+                        <strong>Lo que las une:</strong> las tres pasan por la <em>misma</em> tabla de interrupciones del procesador y obligan el mismo ritual — masking, salvar contexto, ejecutar la rutina del SO, restaurar contexto, unmask, retorno (IRET/SYSEXIT/SYSRET). La diferencia está en <em>quién</em> dispara el evento y <em>qué</em> hace el SO una vez dentro.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer style="background:linear-gradient(120deg,#0f1f33 0%,#002b5c 55%,#8c1d40 100%);color:#e2e8f0;border-top:2px solid rgba(201,163,74,.6);">
+    <div class="container mx-auto px-6 py-6 text-center text-sm font-medium">
+        <p>&copy; 2026 Ayudantía USM — Sistemas Operativos · Interfaces y Procesos </p>
+    </div>
+</footer>
+
+<script>
+    const TOTAL = 13;
+    const opened = new Set();
+
+    function toggleQ(id, btn) {
+        const el   = document.getElementById(id);
+        const icon = btn.querySelector('svg.accordion-icon');
+        const hidden = el.classList.contains('hidden');
+        if (hidden) {
+            el.classList.remove('hidden');
+            btn.classList.add('bg-slate-100');
+            if (icon) icon.style.transform = 'rotate(180deg)';
+            if (!opened.has(id)) { opened.add(id); updateProgress(); }
+        } else {
+            el.classList.add('hidden');
+            btn.classList.remove('bg-slate-100');
+            if (icon) icon.style.transform = 'rotate(0deg)';
+        }
+    }
+
+    function updateProgress() {
+        const c = opened.size, pct = (c / TOTAL) * 100;
+        document.getElementById('progress-text').textContent = `${c} / ${TOTAL}`;
+        document.getElementById('progress-bar').style.width  = `${pct}%`;
+        document.getElementById('final-score').textContent   = `${c} / ${TOTAL}`;
+    }
+</script>
+</body>
+</html>
