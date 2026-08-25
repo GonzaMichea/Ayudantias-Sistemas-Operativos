@@ -573,49 +573,95 @@
                     <button onclick="toggleAnswer('ans2-5', this)" class="bg-blue-600 text-white hover:bg-blue-700 shadow-sm px-4 py-2 rounded-lg text-sm font-medium transition-colors">Mostrar Respuesta</button>
                 </div>
                 <div id="ans2-5" class="hidden p-5 bg-green-50 border-t border-green-100 text-sm">
-                    <p class="mb-2">Aquí el disco y la CPU pueden trabajar al mismo tiempo. T2 puede usar la CPU mientras T1 usa el disco, y viceversa.</p>
-                    <div class="overflow-x-auto bg-white p-2 border rounded">
+                    <p class="mb-2">Aquí el disco y la CPU pueden trabajar al mismo tiempo: mientras una tarea usa la CPU (C), la otra puede estar usando el disco (L o E). Cada vez que un recurso queda libre, se asigna a la primera tarea que lo esté esperando. Como el disco es un único recurso compartido y su carga total (L+E=13ms por ciclo) es mayor que la carga de CPU (C=7ms por ciclo), el <strong>disco es el cuello de botella</strong> del sistema.</p>
+
+                    <p class="font-semibold text-gray-800 mt-4 mb-1">Simulación completa (evento a evento):</p>
+                    <div class="overflow-x-auto bg-white p-3 border rounded">
                       <table class="min-w-full text-xs text-center border-collapse">
                         <thead>
                           <tr class="bg-gray-100">
-                            <th class="border p-1">Tiempo</th>
-                            <th class="border p-1">0-8</th>
-                            <th class="border p-1">8-15</th>
-                            <th class="border p-1">15-20</th>
-                            <th class="border p-1">20-23</th>
-                            <th class="border p-1">23-30</th>
-                            <th class="border p-1">30-35</th>
+                            <th class="border p-1">Intervalo</th>
+                            <th class="border p-1">CPU</th>
+                            <th class="border p-1">Intervalo</th>
+                            <th class="border p-1">Disco</th>
                           </tr>
                         </thead>
-                        <tbody>
-                          <tr>
-                            <td class="border p-1 font-bold">CPU</td>
-                            <td class="border p-1 text-gray-400">IDLE</td>
-                            <td class="border p-1 bg-blue-200">T1 (C:7)</td>
-                            <td class="border p-1 bg-blue-200">T1 (IDLE)</td>
-                            <td class="border p-1 bg-orange-200">T2 (C:3)</td>
-                            <td class="border p-1 bg-orange-200">T2 (C:4)</td>
-                            <td class="border p-1 text-gray-400">...</td>
-                          </tr>
-                          <tr>
-                            <td class="border p-1 font-bold">Disco</td>
-                            <td class="border p-1 bg-green-200">T1 (L:8)</td>
-                            <td class="border p-1 bg-green-200">T2 (L:7)</td>
-                            <td class="border p-1 bg-green-200">T2 (L:1) / T1(E:4)</td>
-                            <td class="border p-1 bg-green-200">T1 (E:1)</td>
-                            <td class="border p-1 bg-green-200">T1 (L:7)</td>
-                            <td class="border p-1 text-gray-400">...</td>
-                          </tr>
+                        <tbody class="font-mono">
+                          <tr><td class="border p-1">0-8</td><td class="border p-1 text-gray-400">IDLE</td><td class="border p-1">0-8</td><td class="border p-1 bg-blue-200">T1 (L1)</td></tr>
+                          <tr><td class="border p-1">8-15</td><td class="border p-1 bg-blue-200">T1 (C1)</td><td class="border p-1">8-16</td><td class="border p-1 bg-orange-200">T2 (L1)</td></tr>
+                          <tr><td class="border p-1">15-16</td><td class="border p-1 text-gray-400">IDLE</td><td class="border p-1">16-21</td><td class="border p-1 bg-blue-200">T1 (E1)</td></tr>
+                          <tr><td class="border p-1">16-23</td><td class="border p-1 bg-orange-200">T2 (C1)</td><td class="border p-1">21-29</td><td class="border p-1 bg-blue-200">T1 (L2)</td></tr>
+                          <tr><td class="border p-1">23-29</td><td class="border p-1 text-gray-400">IDLE</td><td class="border p-1">29-34</td><td class="border p-1 bg-orange-200">T2 (E1)</td></tr>
+                          <tr><td class="border p-1">29-36</td><td class="border p-1 bg-blue-200">T1 (C2)</td><td class="border p-1">34-42</td><td class="border p-1 bg-orange-200">T2 (L2)</td></tr>
+                          <tr><td class="border p-1">36-42</td><td class="border p-1 text-gray-400">IDLE</td><td class="border p-1">42-47</td><td class="border p-1 bg-blue-200">T1 (E2)</td></tr>
+                          <tr><td class="border p-1">42-49</td><td class="border p-1 bg-orange-200">T2 (C2)</td><td class="border p-1">47-55</td><td class="border p-1 bg-blue-200">T1 (L3)</td></tr>
+                          <tr><td class="border p-1">49-55</td><td class="border p-1 text-gray-400">IDLE</td><td class="border p-1">55-60</td><td class="border p-1 bg-orange-200">T2 (E2)</td></tr>
+                          <tr><td class="border p-1">55-62</td><td class="border p-1 bg-blue-200">T1 (C3)</td><td class="border p-1">60-68</td><td class="border p-1 bg-orange-200">T2 (L3)</td></tr>
+                          <tr><td class="border p-1">62-68</td><td class="border p-1 text-gray-400">IDLE</td><td class="border p-1">68-73</td><td class="border p-1 bg-blue-200">T1 (E3)</td></tr>
+                          <tr><td class="border p-1">68-75</td><td class="border p-1 bg-orange-200">T2 (C3)</td><td class="border p-1">73-81</td><td class="border p-1 bg-blue-200">T1 (L4)</td></tr>
+                          <tr><td class="border p-1">75-81</td><td class="border p-1 text-gray-400">IDLE</td><td class="border p-1">81-86</td><td class="border p-1 bg-orange-200">T2 (E3)</td></tr>
+                          <tr><td class="border p-1">81-88</td><td class="border p-1 bg-blue-200">T1 (C4)</td><td class="border p-1">86-94</td><td class="border p-1 bg-orange-200">T2 (L4)</td></tr>
+                          <tr><td class="border p-1">88-94</td><td class="border p-1 text-gray-400">IDLE</td><td class="border p-1">94-99</td><td class="border p-1 bg-blue-200">T1 (E4) → T1 termina</td></tr>
+                          <tr><td class="border p-1">94-101</td><td class="border p-1 bg-orange-200">T2 (C4)</td><td class="border p-1">99-101</td><td class="border p-1 text-gray-400">IDLE</td></tr>
+                          <tr><td class="border p-1">101-106</td><td class="border p-1 text-gray-400">IDLE</td><td class="border p-1">101-106</td><td class="border p-1 bg-orange-200">T2 (E4) → T2 termina</td></tr>
                         </tbody>
                       </table>
                     </div>
-      
+
+                    <p class="font-semibold text-gray-800 mt-4 mb-1">Carta Gantt:</p>
+                    <div class="my-4 p-4 bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
+                        <p class="text-xs font-bold text-gray-500 mb-1">CPU</p>
+                        <div class="flex w-full min-w-[900px] h-9 bg-gray-100 rounded-md overflow-hidden relative mb-3">
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-gray-500 border-r border-white/30 gantt-bar" style="width:7.55%;" title="IDLE 0-8">·</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:6.60%; background-color:#3b82f6;" title="T1 C1 8-15">T1</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-gray-500 border-r border-white/30 gantt-bar" style="width:0.94%;" title="IDLE 15-16"></div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:6.60%; background-color:#10b981;" title="T2 C1 16-23">T2</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-gray-500 border-r border-white/30 gantt-bar" style="width:5.66%;" title="IDLE 23-29">·</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:6.60%; background-color:#3b82f6;" title="T1 C2 29-36">T1</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-gray-500 border-r border-white/30 gantt-bar" style="width:5.66%;" title="IDLE 36-42">·</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:6.60%; background-color:#10b981;" title="T2 C2 42-49">T2</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-gray-500 border-r border-white/30 gantt-bar" style="width:5.66%;" title="IDLE 49-55">·</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:6.60%; background-color:#3b82f6;" title="T1 C3 55-62">T1</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-gray-500 border-r border-white/30 gantt-bar" style="width:5.66%;" title="IDLE 62-68">·</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:6.60%; background-color:#10b981;" title="T2 C3 68-75">T2</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-gray-500 border-r border-white/30 gantt-bar" style="width:5.66%;" title="IDLE 75-81">·</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:6.60%; background-color:#3b82f6;" title="T1 C4 81-88">T1</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-gray-500 border-r border-white/30 gantt-bar" style="width:5.66%;" title="IDLE 88-94">·</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:6.60%; background-color:#10b981;" title="T2 C4 94-101">T2</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-gray-500 gantt-bar" style="width:4.72%;" title="IDLE 101-106">·</div>
+                        </div>
+                        <p class="text-xs font-bold text-gray-500 mb-1">Disco</p>
+                        <div class="flex w-full min-w-[900px] h-9 bg-gray-100 rounded-md overflow-hidden relative">
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:7.55%; background-color:#3b82f6;" title="T1 L1 0-8">T1</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:7.55%; background-color:#10b981;" title="T2 L1 8-16">T2</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:4.72%; background-color:#3b82f6;" title="T1 E1 16-21">T1</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:7.55%; background-color:#3b82f6;" title="T1 L2 21-29">T1</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:4.72%; background-color:#10b981;" title="T2 E1 29-34">T2</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:7.55%; background-color:#10b981;" title="T2 L2 34-42">T2</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:4.72%; background-color:#3b82f6;" title="T1 E2 42-47">T1</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:7.55%; background-color:#3b82f6;" title="T1 L3 47-55">T1</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:4.72%; background-color:#10b981;" title="T2 E2 55-60">T2</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:7.55%; background-color:#10b981;" title="T2 L3 60-68">T2</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:4.72%; background-color:#3b82f6;" title="T1 E3 68-73">T1</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:7.55%; background-color:#3b82f6;" title="T1 L4 73-81">T1</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:4.72%; background-color:#10b981;" title="T2 E3 81-86">T2</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:7.55%; background-color:#10b981;" title="T2 L4 86-94">T2</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white border-r border-white/30 gantt-bar" style="width:4.72%; background-color:#3b82f6;" title="T1 E4 94-99">T1</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-gray-500 border-r border-white/30 gantt-bar" style="width:1.89%;" title="IDLE 99-101">·</div>
+                            <div class="h-full flex items-center justify-center text-[10px] font-bold text-white gantt-bar" style="width:4.72%; background-color:#10b981;" title="T2 E4 101-106">T2</div>
+                        </div>
+                        <div class="flex justify-between w-full min-w-[900px] mt-2 text-xs text-gray-500 font-mono">
+                            <span>0ms</span>
+                            <span>106ms</span>
+                        </div>
+                    </div>
+
                     <div class="bg-gray-50 p-4 rounded mt-4 text-sm font-mono space-y-2">
-                      <p>Al traslapar (pipeline) las operaciones, el tiempo total se reduce drásticamente en comparación a los 160ms de mono-programación.</p>
-                      <p class="mt-2 text-blue-800 font-bold">T (aprox) ≈ 88ms</p>
-                      <p class="text-blue-800 font-bold">Tp = (28 + 28) / 88 = 56 / 88 = 63.6%</p>
-                      <p class="text-blue-800 font-bold">Tu = (52 + 52) / 88 = 104 / 88 = 100% (Saturado)</p>
-                      <p class="text-gray-600 italic mt-2">Comparación: Tp saltó de 35% a 63%, y Tu de 65% a 100%. El sistema es mucho más eficiente.</p>
+                      <p class="text-gray-700 not-italic font-sans mb-2"><strong>Importante:</strong> como solo hay <em>un</em> disco y ambas tareas necesitan 4×(L+E) = 4×13 = 52ms de disco cada una, el trabajo total de disco es <strong>104ms</strong>. Con un solo disco, el tiempo total T nunca puede ser menor que ese valor: el disco es el recurso limitante (cuello de botella), no la CPU.</p>
+                      <p class="mt-2 text-blue-800 font-bold">T = 106ms</p>
+                      <p class="text-blue-800 font-bold">Tp = (28 + 28) / 106 = 56 / 106 ≈ 52.8%</p>
+                      <p class="text-blue-800 font-bold">Tu = (52 + 52) / 106 = 104 / 106 ≈ 98.1%</p>
+                      <p class="text-gray-600 italic mt-2">Comparación: frente a la mono-programación (T=160ms, Tp=35%, Tu=65%), la multiprogramación baja T de 160ms a 106ms y sube fuertemente el uso del disco (65%→98%), que es el recurso más cargado. El uso de CPU también sube (35%→53%), pero como C &lt; L+E, la CPU seguirá teniendo tiempos ociosos aun en el mejor entrelazado posible: el disco satura primero.</p>
                     </div>
                 </div>
             </div>
