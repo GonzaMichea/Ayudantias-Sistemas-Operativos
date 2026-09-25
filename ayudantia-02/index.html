@@ -185,7 +185,7 @@
                         </div>
                     </div>
                     
-                    <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
+                    <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 mb-6">
                         <h4 class="font-bold text-usm-navy mb-2">El rol del Sistema Operativo en el Scheduling</h4>
                         <p class="text-sm text-slate-700 leading-relaxed mb-3">
                             El SO actúa como árbitro de los recursos (CPU, Memoria, E/S). Su objetivo principal al planificar (Scheduling) es encontrar un equilibrio entre:
@@ -194,6 +194,13 @@
                             <li><strong>Satisfacer al usuario:</strong> Tiempos de espera y de respuesta cortos.</li>
                             <li><strong>Eficiencia del sistema (Throughput):</strong> Maximizar el número de tareas terminadas por segundo y minimizar el tiempo ocioso (Idle) del procesador.</li>
                         </ul>
+                    </div>
+
+                    <div class="bg-amber-50 border-l-4 border-usm-gold p-5 rounded-r-lg">
+                        <h4 class="font-bold text-usm-navy mb-2">¿Existe un algoritmo de scheduling óptimo?</h4>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            En teoría sí, pero requiere conocer <strong>de antemano</strong> qué tareas llegarán, cuándo harán E/S y cuánto durará cada una. En la práctica esto es <strong>imposible</strong>: el sistema no puede predecir el futuro, la información que entregan los usuarios no es confiable, y la mayoría de las tareas no son deterministas (hacer estadísticas no sirve). Por eso, todos los algoritmos que siguen son solo <strong>aproximaciones</strong> de ese óptimo inalcanzable.
+                        </p>
                     </div>
                 </div>
 
@@ -230,18 +237,81 @@
                             </h4>
                             <p class="text-xs text-slate-500 mb-3 border-b border-slate-100 pb-2">La CPU puede ser arrebatada a la fuerza si llega una tarea más prioritaria.</p>
                             <ul class="list-disc pl-5 text-sm text-slate-700 space-y-3">
-                                <li><strong>PSJN (Preemptive SJN):</strong> Si llega una tarea nueva y su duración total es menor que la tarea actual, la interrumpe. Problema: puede interrumpir tareas que ya estaban casi terminadas.</li>
-                                <li><strong>SRTF (Shortest Remaining Time First):</strong> Mucho más inteligente que PSJN. Solo interrumpe si la tarea entrante es más corta que <em>lo que le falta por terminar</em> a la tarea actual.</li>
-                                <li><strong>RR (Round Robin):</strong> Reparto por "Quantum" (q). Cada tarea recibe un trozo de tiempo. Es el más justo para usuarios interactivos, pero si <span class="math-inline">q</span> es muy pequeño, el costo de conmutar (overhead) arruina el rendimiento.</li>
+                                <li><strong>PHPN (Preemptive Highest Priority Next):</strong> Generaliza la idea de "requisición" a cualquier prioridad (no solo duración). Si llega una tarea con mejor prioridad que la que está corriendo, la interrumpe de inmediato.</li>
+                                <li><strong>PSJN (Preemptive SJN):</strong> Caso particular de PHPN donde la prioridad es la duración total estimada. Si llega una tarea nueva y su duración total es menor que la tarea actual, la interrumpe. Problema: puede interrumpir tareas que ya estaban casi terminadas.</li>
+                                <li><strong>SRTF / SRTN (Shortest Remaining Time First/Next):</strong> Mucho más inteligente que PSJN. Solo interrumpe si la tarea entrante es más corta que <em>lo que le falta por terminar</em> a la tarea actual, evitando botar tareas casi terminadas.</li>
                             </ul>
+                            <div class="mt-4 bg-slate-100 p-3 rounded text-xs text-slate-600 border border-slate-200">
+                                <strong>Ojo con el detalle fino:</strong> con <em>prioridades simples</em> (sin requisición), una tarea nueva más prioritaria solo se inserta ordenada en la cola de espera, pero NO interrumpe a la tarea en ejecución. Con <em>prioridades con requisición</em>, si llega una tarea más urgente, sí hay interrupción inmediata — en la práctica esto ocurre como máximo el doble de conmutaciones que sin requisición, porque solo puede pasar cuando llega o se desbloquea una tarea.
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 3. Gestión del Tiempo -->
+                <!-- 3. Estrategias con Reciclaje -->
                 <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
                     <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
-                        <span class="text-usm-gold">3.</span> Gestión del Tiempo y Hardware Subyacente
+                        <span class="text-usm-gold">3.</span> Estrategias con Reciclaje (Time Sharing)
+                    </h3>
+                    <p class="text-sm text-slate-700 mb-6">
+                        El <strong>reciclaje</strong> consiste en interrumpir sistemáticamente una tarea después de un <em>quantum</em> de ejecución, sin necesidad de estimar cuánto durará. Es la base de los sistemas interactivos modernos.
+                    </p>
+
+                    <div class="border border-slate-200 rounded-lg p-5 mb-6">
+                        <h4 class="font-bold text-usm-navy mb-2">Round Robin (RR)</h4>
+                        <p class="text-sm text-slate-700 mb-3">La primera tarea de la cola obtiene la CPU por un quantum <span class="math-inline">q</span> y vuelve al final de la cola. Una tarea nueva entra al final; una que hace E/S pasa a bloqueadas y al desbloquearse vuelve al final de la cola.</p>
+                        <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
+                            <li><strong>Ventajas:</strong> no requiere estimar tiempos de ejecución, favorece tareas cortas, sin inanición, bajo costo de gestión.</li>
+                            <li><strong>El quantum es un parámetro clave:</strong> si <span class="math-inline">q → ∞</span>, RR se comporta como FCFS. Si <span class="math-inline">q → 0</span>, el procesador se reparte de forma perfectamente equitativa (pero el overhead de conmutar tiende a infinito).</li>
+                            <li><strong>Desventaja:</strong> con q pequeño hay muchas conmutaciones (overhead); además una tarea corta nueva debe esperar un turno completo de todas las demás tareas en la cola.</li>
+                        </ul>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="border border-slate-200 rounded-lg p-5">
+                            <h4 class="font-bold text-usm-navy mb-2">Procesadores Virtuales (Hiper-Asignación)</h4>
+                            <p class="text-sm text-slate-700 mb-3">Se definen varias <strong>clases de tareas</strong> (Batch, Tiempo Compartido, Tiempo Real...) y se asigna un <em>procesador virtual</em> a cada clase, cada uno con la estrategia de scheduling más adecuada a esa clase (esto es la "hiper-asignación"). Luego, un segundo nivel reparte el procesador <strong>real</strong> entre los procesadores virtuales usando Round Robin entre clases ("asignación real").</p>
+                            <ul class="list-disc pl-5 text-sm text-slate-700 space-y-1">
+                                <li><strong>Ventajas:</strong> poco tiempo de espera para tareas interactivas, estrategia adaptada a cada tipo de tarea, bien adaptado a multiprocesadores.</li>
+                                <li><strong>Desventajas:</strong> más complejo que FCFS/RR, poco adaptado a tareas de duración intermedia.</li>
+                            </ul>
+                        </div>
+                        <div class="border border-slate-200 rounded-lg p-5">
+                            <h4 class="font-bold text-usm-navy mb-2">Multi-Level Queues (MLQ)</h4>
+                            <p class="text-sm text-slate-700 mb-3">Usa el modelo de procesadores virtuales pero con <span class="math-inline">n</span> colas <span class="math-inline">F₁...Fₙ</span> ordenadas por prioridad. Una tarea entra por <span class="math-inline">F₁</span> con quantum <span class="math-inline">q₁</span>; si no termina tras <span class="math-inline">(i+1)qᵢ</span> unidades en la cola <span class="math-inline">Fᵢ</span>, "cae" a la cola <span class="math-inline">Fᵢ₊₁</span> (menor prioridad, quantum más grande). Si llega una tarea a una cola de mayor prioridad mientras corre una de menor prioridad, hay <strong>requisición</strong>.</p>
+                            <ul class="list-disc pl-5 text-sm text-slate-700 space-y-1">
+                                <li><strong>Riesgo de inanición:</strong> si llegan muchas tareas cortas, las largas pueden quedar atrapadas en las últimas colas indefinidamente.</li>
+                                <li><strong>Solución — MLQ Dinámico:</strong> después de un tiempo <span class="math-inline">t ≥ k·qₙ</span> una tarea "envejecida" vuelve a la cola <span class="math-inline">F₁</span> (recupera la mejor prioridad), evitando la inanición.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 text-slate-100 p-8 rounded-xl shadow-inner border-l-4 border-usm-gold">
+                        <h4 class="font-bold text-white text-xl mb-3">Linux CFS — Completely Fair Scheduler</h4>
+                        <p class="text-sm mb-4 text-slate-300">Idea (Kernel &gt; 2.6.22): repartir la CPU <strong>idealmente</strong> entre todas las tareas, como un quantum dinámico que depende de cuántas tareas hay y cuánto han usado el procesador.</p>
+                        <ul class="list-disc pl-5 text-sm space-y-2 text-slate-300 mb-4">
+                            <li>Para cada tarea se guarda <code>t_exec</code> (tiempo total de ejecución acumulado) y <code>t_wait</code> (tiempo total de espera).</li>
+                            <li>El tiempo máximo "justo" que le corresponde a una tarea es <code>t_max = t_wait / N</code>, donde N es la cantidad total de tareas.</li>
+                            <li>Las tareas se ordenan en un <strong>árbol Red-Black</strong> (auto-balanceado) según su <code>t_exec</code>. La tarea con menor <code>t_exec</code> (nodo más a la izquierda) es la que recibe la CPU.</li>
+                            <li>Si la tarea termina antes de <code>t_max</code>, sale del árbol. Si llega a <code>t_max</code> o hace E/S, hay requisición y se reinserta según su nuevo <code>t_exec</code>.</li>
+                        </ul>
+                        <div class="grid sm:grid-cols-2 gap-4 text-sm">
+                            <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                                <p class="text-usm-gold font-bold mb-1">Ventajas</p>
+                                <p class="text-slate-300 text-xs">Reparto realmente equitativo, elegir la próxima tarea cuesta O(1), insertar una tarea en el árbol cuesta O(log N).</p>
+                            </div>
+                            <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                                <p class="text-usm-gold font-bold mb-1">Desventaja</p>
+                                <p class="text-slate-300 text-xs">Más costoso que MLQ cuando hay miles de tareas (aunque Linux lo tiene optimizado).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Gestión del Tiempo -->
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
+                        <span class="text-usm-gold">4.</span> Gestión del Tiempo y Hardware Subyacente
                     </h3>
                     
                     <div class="grid md:grid-cols-2 gap-6 mb-8">
@@ -255,6 +325,10 @@
                                 <li>
                                     <strong class="text-usm-navy block mb-1">Excepción (Software)</strong>
                                     Es un evento <em>síncrono</em> y anormal originado por el código mismo en tiempo de ejecución (ej. División por cero, Fallo de segmento de memoria).
+                                </li>
+                                <li class="pt-2 border-t border-slate-200">
+                                    <strong class="text-slate-700 block mb-1">El IRQ Controller</strong>
+                                    Cada dispositivo (teclado, disco, tarjeta de video, temporizador) está cableado a una línea de interrupción numerada (IRQ). El <em>IRQ Controller</em> mantiene una lista FIFO de interrupciones pendientes ordenadas por prioridad, puede <strong>enmascarar</strong> (bloquear temporalmente) ciertas interrupciones, y entrega a la CPU el número de IRQ para que ésta busque la rutina correspondiente en la <strong>tabla de vectores de interrupción</strong>. El temporizador siempre usa el IRQ 0, la más alta prioridad.
                                 </li>
                             </ul>
                         </div>
@@ -293,6 +367,19 @@
                                 <code class="block text-center text-usm-gold font-mono text-xs bg-slate-900 py-2 rounded">Hora = Hora + TICK - |RTempo|</code>
                                 <p class="text-xs text-slate-400 mt-2">Aun así, pequeñas instrucciones de HW no medibles atrasan el reloj. Por eso se usan protocolos como <strong>NTP (Network Time Protocol)</strong> que ajustan el reloj de a poco (Drifting) en vez de hacerlo saltar de golpe.</p>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6 mt-8">
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-usm-navy mb-2">Lista de Plazos (Timers List) — solución ingenua</h4>
+                            <p class="text-sm text-slate-700 mb-2">El SO necesita ejecutar acciones futuras: despertar una tarea (<code>sleep(t)</code>), alarmas, tareas recurrentes (cron). La solución simple es una <strong>lista enlazada</strong> donde cada nodo guarda el plazo real (absoluto) en que vence.</p>
+                            <p class="text-sm text-slate-700">En cada interrupción del reloj el SO recorre <strong>toda</strong> la lista buscando plazos vencidos: costo <span class="math-inline font-bold">O(N)</span> con N plazos pendientes. Para cada plazo vencido, la tarea asociada pasa de BLOQUEADA a LISTA.</p>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-lg border-t-4 border-usm-gold">
+                            <h4 class="font-bold text-usm-navy mb-2">Lista de Plazos — solución eficiente</h4>
+                            <p class="text-sm text-slate-700 mb-2">En vez de guardar plazos absolutos, cada nodo guarda un plazo <strong>relativo</strong> al nodo anterior (cuánto falta después de que venza el anterior). La lista queda ordenada de menor a mayor plazo restante.</p>
+                            <p class="text-sm text-slate-700">A cada TICK, el SO solo decrementa el <strong>primer nodo</strong>; cuando llega a 0, ese plazo venció y se revisa el siguiente. Esto reduce el costo de <em>búsqueda</em> de plazos vencidos a <span class="math-inline font-bold">O(1)</span> por TICK, muchísimo más eficiente cuando hay muchos timers activos.</p>
                         </div>
                     </div>
                 </div>
@@ -365,6 +452,39 @@
                                 <li><strong>TICK Pequeño:</strong> Aumenta drásticamente la precisión del tiempo y hace el sistema más responsivo. <em>Desventaja:</em> Genera demasiadas interrupciones (IRQ0). El procesador gasta gran parte de su capacidad solo ejecutando las rutinas del SO en vez de procesar tareas de usuario. <strong>Sube el Overhead, baja el rendimiento útil.</strong></li>
                                 <li><strong>TICK Grande:</strong> Minimiza el número de interrupciones. El procesador dedica casi toda su potencia al trabajo útil (Bajo overhead). <em>Desventaja:</em> Se pierde resolución y precisión temporal. Un usuario interactivo sentirá el sistema trabado o lento para responder a eventos inmediatos.</li>
                             </ul>
+                        </div>
+                    </div>
+
+                    <!-- Q6 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden transition-all duration-300">
+                        <button onclick="toggleAccordion('cert6', this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 font-bold text-usm-navy flex justify-between items-center transition-colors">
+                            <span>6. ¿Cómo evita Multi-Level Queues (MLQ) la inanición de las tareas largas, y qué problema soluciona el MLQ dinámico?</span>
+                            <svg class="w-5 h-5 text-slate-400 accordion-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
+                        <div id="cert6" class="hidden px-6 py-5 bg-white border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
+                            <p>En MLQ estático, una tarea que no termina en su cola cae a la siguiente (menor prioridad, mayor quantum). Si llega un flujo constante de tareas cortas por <span class="math-inline">F₁</span>, una tarea que ya cayó a las últimas colas puede no volver a obtener la CPU nunca: eso es inanición. El <strong>MLQ dinámico</strong> soluciona esto haciendo que, tras un tiempo <span class="math-inline">t ≥ k·qₙ</span> sin ejecutarse, la tarea vuelva a la cola de mayor prioridad <span class="math-inline">F₁</span>, garantizando que eventualmente todas las tareas reciban CPU.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q7 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden transition-all duration-300">
+                        <button onclick="toggleAccordion('cert7', this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 font-bold text-usm-navy flex justify-between items-center transition-colors">
+                            <span>7. En Linux CFS, ¿por qué se elige siempre la tarea con menor t_exec, y qué representa t_max?</span>
+                            <svg class="w-5 h-5 text-slate-400 accordion-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
+                        <div id="cert7" class="hidden px-6 py-5 bg-white border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
+                            <p>CFS busca repartir el procesador de forma <strong>perfectamente equitativa</strong>. La tarea con menor tiempo de ejecución acumulado (<code>t_exec</code>) es la que ha recibido <em>menos</em> CPU hasta ahora, así que dársela a ella es lo más justo: por eso siempre se toma el nodo más a la izquierda del árbol Red-Black (ordenado por <code>t_exec</code>). <code>t_max = t_wait / N</code> representa el tiempo máximo que le corresponde a esa tarea para que el reparto siga siendo equitativo respecto a las demás N tareas: si la usa toda sin terminar, hay requisición y se reinserta en el árbol.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q8 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden transition-all duration-300">
+                        <button onclick="toggleAccordion('cert8', this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 font-bold text-usm-navy flex justify-between items-center transition-colors">
+                            <span>8. ¿Por qué la Timers List "ingenua" (plazos absolutos) es ineficiente, y cómo la mejora el uso de plazos relativos?</span>
+                            <svg class="w-5 h-5 text-slate-400 accordion-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
+                        <div id="cert8" class="hidden px-6 py-5 bg-white border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
+                            <p>Con plazos absolutos, cada interrupción del reloj obliga a recorrer <strong>toda</strong> la lista de N timers para ver cuáles ya vencieron: costo O(N) en cada TICK, lo cual es caro si el TICK es muy frecuente y hay muchos timers. Guardando plazos <strong>relativos</strong> (el tiempo que falta respecto al timer anterior) y manteniendo la lista ordenada, en cada TICK basta con decrementar el primer nodo: si llega a 0 ese timer venció y se revisa el siguiente. El costo baja a O(1) por TICK.</p>
                         </div>
                     </div>
                 </div>
@@ -526,6 +646,40 @@
                     </div>
                 </div>
 
+                <!-- Ejercicio NUEVO: Round Robin -->
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <span class="inline-block bg-usm-gold text-white text-xs font-bold px-3 py-1 rounded-full mb-4 shadow-sm">Ejercicio 5: Estrategias con Reciclaje</span>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">3.5 Carta Gantt con Round Robin</h3>
+                    <p class="text-slate-700 text-sm mb-4">Considere las tareas A(llegada 0, duración 6), B(llegada 1, duración 3) y C(llegada 2, duración 4), con un <strong>Quantum q = 2ms</strong> y sin costo de conmutación (s=0). Recuerde que una tarea interrumpida por fin de quantum vuelve al <strong>final</strong> de la cola.</p>
+                    <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1 mb-6">Pregunta: Dibuje la carta Gantt y determine el orden de ejecución.</p>
+
+                    <div class="flex justify-end border-t border-slate-100 pt-4">
+                        <button onclick="toggleAnswer('prac5', this)" class="bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            <span>Mostrar Resolución</span>
+                        </button>
+                    </div>
+
+                    <div id="prac5" class="hidden mt-6 p-6 md:p-8 bg-slate-50 border border-slate-200 rounded-lg animate-fadeIn">
+                        <p class="text-sm text-slate-700 mb-6">
+                            <strong>t=0:</strong> solo está A, corre A por 2ms (le quedan 4). <strong>t=2:</strong> cola = [B, C, A(4)] (B llegó en t=1, C en t=2, A vuelve al final). Corre B por 2ms (le queda 1). <strong>t=4:</strong> cola = [C, A(4), B(1)]. Corre C por 2ms (le quedan 2). <strong>t=6:</strong> cola = [A(4), B(1), C(2)]. Corre A por 2ms (le quedan 2). <strong>t=8:</strong> cola = [B(1), C(2), A(2)]. Corre B, que termina en t=9 (solo necesitaba 1ms). <strong>t=9:</strong> cola=[C(2), A(2)]. Corre C, termina en t=11. <strong>t=11:</strong> corre A, termina en t=13.
+                        </p>
+                        <div class="w-full h-10 flex text-xs font-bold text-white shadow-sm mb-2 overflow-hidden rounded border border-slate-300">
+                            <div style="width: 15.38%" class="bg-usm-navy gantt-bar border-r border-white/20" title="A: 0-2">A</div>
+                            <div style="width: 15.38%" class="bg-usm-burgundy gantt-bar border-r border-white/20" title="B: 2-4">B</div>
+                            <div style="width: 15.38%" class="bg-usm-gold gantt-bar border-r border-white/20" title="C: 4-6">C</div>
+                            <div style="width: 15.38%" class="bg-usm-navy gantt-bar border-r border-white/20" title="A: 6-8">A</div>
+                            <div style="width: 7.69%" class="bg-usm-burgundy gantt-bar border-r border-white/20" title="B: 8-9">B</div>
+                            <div style="width: 15.38%" class="bg-usm-gold gantt-bar border-r border-white/20" title="C: 9-11">C</div>
+                            <div style="width: 15.38%" class="bg-usm-navy gantt-bar" title="A: 11-13">A</div>
+                        </div>
+                        <div class="flex justify-between text-xs text-slate-500 font-mono mb-4 font-semibold"><span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span>9</span><span>11</span><span>13</span></div>
+                        <div class="bg-usm-gold/10 text-usm-navy p-3 rounded text-sm border border-usm-gold/30">
+                            <strong>💡 Clave del ejercicio:</strong> cada vez que una tarea consume su quantum completo (sin terminar), se reinserta al <em>final</em> de la cola de espera, detrás de las tareas que llegaron mientras tanto. Solo si termina antes del quantum (como B en t=9) sale del sistema sin volver a la cola.
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Ejercicio 3: Hardware (TICK y RTEMPO) -->
                 <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
                     <span class="inline-block bg-usm-gold text-white text-xs font-bold px-3 py-1 rounded-full mb-4 shadow-sm">Ejercicio 3: Ayudantía 3 (Arquitectura)</span>
@@ -604,7 +758,7 @@
 
     <footer class="mt-10" style="background: linear-gradient(120deg, #0f1f33 0%, #002b5c 55%, #8c1d40 100%); color: #e2e8f0; border-top: 2px solid rgba(201,163,74,0.6);">
         <div class="container mx-auto px-6 py-8 text-center text-sm font-medium">
-            <p>&copy; 2026 Ayudantía USM - Sistemas Operativos. Material de estudio refactorizado.</p>
+            <p>&copy; 2026 Ayudantía USM - Sistemas Operativos. Material de estudio.</p>
         </div>
     </footer>
 
