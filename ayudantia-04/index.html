@@ -32,9 +32,11 @@
             border-bottom: 2px solid rgba(201,163,74,0.65);
             backdrop-filter: blur(10px);
         }
+        .nav-scroll { overflow-x:auto; scrollbar-width:none; }
+        .nav-scroll::-webkit-scrollbar { display:none; }
         .nav-link {
-            color: #f1f5f9; padding: 0.4rem 0.8rem; border-radius: 9999px;
-            transition: all 0.25s ease; border: 1px solid transparent; font-size: 0.82rem;
+            color: #f1f5f9; padding: 0.4rem 0.8rem; border-radius: 9999px; white-space:nowrap;
+            transition: all 0.25s ease; border: 1px solid transparent; font-size: 0.8rem;
         }
         .nav-link:hover { color:#fff; background:rgba(255,255,255,0.12); border-color:rgba(201,163,74,0.55); }
         .hero-title {
@@ -46,54 +48,40 @@
         .card { background:rgba(255,255,255,0.92); border:1px solid rgba(0,43,92,0.09);
             box-shadow:0 14px 28px rgba(15,31,51,0.09); border-radius:1rem;
             transition:transform 0.25s ease, box-shadow 0.25s ease; }
-        .card:hover { transform:translateY(-3px); box-shadow:0 22px 36px rgba(15,31,51,0.15); }
+        .card:hover { transform:translateY(-2px); box-shadow:0 22px 36px rgba(15,31,51,0.13); }
         .badge { display:inline-flex; align-items:center; padding:0.2rem 0.75rem; border-radius:9999px; font-size:0.73rem; font-weight:700; letter-spacing:.04em; }
         .badge-navy { background:rgba(0,43,92,0.1); color:var(--usm-navy); }
         .badge-gold { background:rgba(201,163,74,0.15); color:#7d611d; }
         .badge-burgundy { background:rgba(140,29,64,0.1); color:var(--usm-burgundy); }
         .badge-green { background:rgba(22,163,74,0.1); color:#15803d; }
 
-        /* accordion */
         .acc-btn { cursor:pointer; width:100%; text-align:left; }
         .acc-content { display:none; }
         .acc-content.open { display:block; animation:fadeIn 0.3s ease; }
         .acc-icon { transition:transform 0.3s; display:inline-block; }
         .acc-icon.rotated { transform:rotate(180deg); }
-
         @keyframes fadeIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
 
-        /* table */
         table { border-collapse:collapse; width:100%; font-size:0.85rem; }
         th { background:var(--usm-navy); color:white; padding:0.55rem 0.9rem; text-align:center; }
         td { padding:0.5rem 0.9rem; text-align:center; border:1px solid #e2e8f0; }
         tr:nth-child(even) td { background:#f8fafc; }
         tr:hover td { background:#e8f0fb; }
+        .text-xs th, .text-xs td { padding:0.4rem 0.6rem; }
 
-        /* page replacement simulator */
-        .frame-box {
-            width:54px; height:54px; display:flex; align-items:center; justify-content:center;
-            border-radius:0.5rem; font-weight:700; font-size:1rem; border:2px solid #cbd5e1;
-            background:#f8fafc; transition:all 0.3s;
-        }
-        .frame-box.hit { background:#dcfce7; border-color:#16a34a; color:#15803d; }
-        .frame-box.fault { background:#fee2e2; border-color:#dc2626; color:#b91c1c; }
-        .frame-box.victim { background:#fef9c3; border-color:#ca8a04; color:#854d0e; }
-        .frame-box.empty { background:#f1f5f9; border-color:#cbd5e1; color:#94a3b8; }
-
-        .step-cell { width:36px; text-align:center; }
-        .hit-dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
-
-        /* progress bar for timer */
-        .timing-bar { height:6px; border-radius:3px; background:#e2e8f0; overflow:hidden; margin-bottom:0.5rem; }
-        .timing-fill { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--usm-navy),var(--usm-burgundy)); transition:width 0.3s; }
-
-        /* highlight box */
         .highlight { border-left:4px solid var(--usm-gold); background:rgba(201,163,74,0.07); padding:1rem 1.25rem; border-radius:0.5rem; }
         .highlight-navy { border-left:4px solid var(--usm-navy); background:rgba(0,43,92,0.05); padding:1rem 1.25rem; border-radius:0.5rem; }
         .highlight-burgundy { border-left:4px solid var(--usm-burgundy); background:rgba(140,29,64,0.05); padding:1rem 1.25rem; border-radius:0.5rem; }
+        .ojo { border:1px dashed #dc2626; background:#fff5f5; padding:0.8rem 1rem; border-radius:0.5rem; }
 
-        /* timeline */
         .timeline-dot { width:14px; height:14px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+
+        .flow { display:grid; gap:0.6rem; }
+        @media (min-width:640px){ .flow { grid-template-columns:repeat(4,1fr); } .flow.flow-3 { grid-template-columns:repeat(3,1fr); } }
+        .flow-step { background:#eef4fc; border:1.5px solid #9cc0e8; border-radius:0.6rem; padding:0.7rem; text-align:center; }
+        .flow-q { font-weight:700; color:var(--usm-navy); font-size:0.82rem; }
+        .flow-no { margin-top:0.45rem; font-size:0.72rem; background:#fee2e2; color:#b91c1c; border-radius:0.4rem; padding:0.25rem 0.4rem; font-weight:700; }
+        .flow-ok { margin-top:0.7rem; background:#dcfce7; color:#15803d; border:1.5px solid #16a34a; border-radius:0.6rem; padding:0.6rem; text-align:center; font-weight:700; font-size:0.85rem; }
 
         .text-usm-navy { color:var(--usm-navy); }
         .text-usm-burgundy { color:var(--usm-burgundy); }
@@ -101,30 +89,29 @@
         .bg-usm-navy { background-color:var(--usm-navy); }
         .bg-usm-burgundy { background-color:var(--usm-burgundy); }
         .bg-usm-gold { background-color:var(--usm-gold); }
-        .border-usm-navy { border-color:var(--usm-navy); }
-        .border-usm-gold { border-color:var(--usm-gold); }
-        .border-usm-burgundy { border-color:var(--usm-burgundy); }
 
-        /* Animated page fault indicator */
-        @keyframes pulse-fault { 0%,100%{opacity:1} 50%{opacity:0.5} }
-        .fault-indicator { animation:pulse-fault 1s ease-in-out; }
-
-        /* Code style */
         code { font-family: 'Courier New', monospace; background:#1e2d40; color:#7dd3fc; padding:0.1rem 0.4rem; border-radius:4px; font-size:0.82rem; }
+        sup { font-size:0.65em; color:#64748b; }
+        .btn { font-weight:700; padding:0.6rem 1.3rem; border-radius:0.5rem; font-size:0.85rem; transition:all .2s; }
+        .btn-navy { background:var(--usm-navy); color:#fff; } .btn-navy:hover { background:#063a78; }
+        .btn-outline { border:1.5px solid var(--usm-navy); color:var(--usm-navy); background:#fff; } .btn-outline:hover { background:#eef4fc; }
     </style>
 </head>
 <body class="text-slate-800">
 
 <!-- ====== TOPBAR ====== -->
 <header class="topbar sticky top-0 z-50">
-    <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-        <h1 class="text-xl font-bold text-white">Ayudantía — SO</h1>
-        <div class="flex flex-wrap gap-1 sm:gap-2">
-            <a href="#teoria" class="nav-link font-medium">Teoría</a>
+    <nav class="container mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row gap-2 sm:justify-between sm:items-center">
+        <h1 class="text-lg sm:text-xl font-bold text-white">Ayudantía — INF-246</h1>
+        <div class="nav-scroll flex gap-1">
+            <a href="#teoria" class="nav-link font-medium">Objetivos</a>
+            <a href="#segmentacion" class="nav-link font-medium">Segmentación</a>
             <a href="#paginacion" class="nav-link font-medium">Paginación</a>
             <a href="#reemplazo" class="nav-link font-medium">Reemplazo</a>
+            <a href="#multiprog" class="nav-link font-medium">Multiprog.</a>
             <a href="#simulador" class="nav-link font-medium">Simulador</a>
-            <a href="#practica" class="nav-link font-medium">Práctica</a>
+            <a href="#practica" class="nav-link font-medium">Ejercicios</a>
+            <a href="#comparacion" class="nav-link font-medium">Resumen</a>
         </div>
     </nav>
 </header>
@@ -133,49 +120,51 @@
 
     <!-- ====== HERO ====== -->
     <section class="text-center mb-14">
-        <div class="mb-3">
+        <div class="mb-3 flex flex-wrap justify-center gap-2">
             <span class="badge badge-gold">Sistemas Operativos · UTFSM</span>
+            <span class="badge badge-navy">INF-246 · 2026-2</span>
         </div>
-        <h2 class="hero-title font-bold mb-3">Memoria Virtual &amp;<br>Reemplazo de Páginas</h2>
+        <h2 class="hero-title font-bold mb-4">Memoria Virtual &amp;<br>Reemplazo de Páginas</h2>
+        <p class="text-sm text-slate-500 max-w-2xl mx-auto">Material de apoyo alineado con las clases <em>Memoria Virtual</em> y <em>Reemplazo de Páginas</em> (Prof. X. Bonnaire). Incluye teoría, simulador interactivo y ejercicios resueltos.</p>
     </section>
 
-
-
     <!-- ========================================================= -->
-    <!-- PARTE 1: TEORÍA – OBJETIVOS DE MEMORIA VIRTUAL             -->
+    <!-- PARTE 1: OBJETIVOS                                          -->
     <!-- ========================================================= -->
-    <section id="teoria" class="mb-16">
+    <section id="teoria" class="mb-16 scroll-mt-28">
         <h3 class="section-title text-3xl font-bold mb-8 pb-3">Parte 1 · Objetivos de la Memoria Virtual</h3>
 
-        <!-- Card: ¿Por qué? -->
         <div class="card p-8 mb-6">
             <h4 class="text-xl font-bold text-usm-navy mb-4 flex items-center gap-2">
                 <span class="text-usm-gold">1.1</span> ¿Por qué Memoria Virtual?
             </h4>
             <p class="text-slate-700 leading-relaxed mb-5">
-                En la gestión de memoria <em>lineal</em>, el proceso completo debe cargarse en RAM para ejecutar. Esto genera tres problemas principales:
+                En la gestión de memoria <em>lineal</em>, el espacio de trabajo de cada proceso es <strong>monolítico</strong> y debe cargarse completo en RAM. Eso trae varios problemas:
             </p>
-            <div class="grid sm:grid-cols-3 gap-4 mb-6">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <div class="highlight-burgundy">
-                    <p class="font-bold text-usm-burgundy text-sm mb-1">Espacios monolíticos</p>
-                    <p class="text-xs text-slate-600">No hay separación código/datos/pila. Sin estructuración → difícil de proteger.</p>
+                    <p class="font-bold text-usm-burgundy text-sm mb-1">Sin estructura</p>
+                    <p class="text-xs text-slate-600">No separa código, pila y memoria dinámica (<code>malloc()</code>). Difícil de proteger y compartir.</p>
                 </div>
                 <div class="highlight-burgundy">
                     <p class="font-bold text-usm-burgundy text-sm mb-1">Saturación rápida</p>
-                    <p class="text-xs text-slate-600">Cargar todo el proceso tiene un costo enorme en memoria cuando el espacio de trabajo es dinámico y grande.</p>
+                    <p class="text-xs text-slate-600">Cargar el proceso entero sobrecarga la RAM; el espacio puede ser incluso más grande que la memoria.</p>
                 </div>
                 <div class="highlight-burgundy">
-                    <p class="font-bold text-usm-burgundy text-sm mb-1">Swapping costoso</p>
-                    <p class="text-xs text-slate-600">El intercambio completo proceso↔disco es muy lento. Compactar también tiene un alto costo de tiempo.</p>
+                    <p class="font-bold text-usm-burgundy text-sm mb-1">Ubicación difícil</p>
+                    <p class="text-xs text-slate-600">Cuesta encontrar un hueco contiguo; compactar o hacer swapping de procesos completos es caro.</p>
+                </div>
+                <div class="highlight-burgundy">
+                    <p class="font-bold text-usm-burgundy text-sm mb-1">Cooperación ineficiente</p>
+                    <p class="text-xs text-slate-600">El intercambio de mensajes es lento: es mejor <strong>compartir</strong> partes del espacio de trabajo.</p>
                 </div>
             </div>
-            <div class="highlight mb-0">
+            <div class="highlight">
                 <p class="font-bold text-usm-gold text-sm mb-1">Solución: Memoria Virtual</p>
-                <p class="text-sm text-slate-700">Usar <strong>direcciones virtuales</strong> relativas al espacio de trabajo de cada proceso, cargar sólo las partes necesarias, y verificar mediante hardware (MMU) que el proceso no salga de su espacio virtual.</p>
+                <p class="text-sm text-slate-700">Espacios de trabajo <strong>no monolíticos</strong>, <strong>direcciones virtuales</strong> relativas al espacio de cada proceso, y verificación por hardware de que el proceso no salga de su espacio ni acceda sin derecho. Todo acceso no autorizado se rechaza con un <strong>TRAP</strong>.</p>
             </div>
         </div>
 
-        <!-- Card: Objetivos -->
         <div class="card p-8 mb-6">
             <h4 class="text-xl font-bold text-usm-navy mb-5 flex items-center gap-2">
                 <span class="text-usm-gold">1.2</span> Objetivos Principales
@@ -183,24 +172,26 @@
             <div class="grid sm:grid-cols-2 gap-5">
                 <div class="bg-slate-50 rounded-lg p-5 border border-slate-200">
                     <p class="font-bold text-usm-navy mb-2">Transparencia</p>
-                    <p class="text-sm text-slate-600">El proceso no sabe en qué dirección física está cargado. La MMU traduce automáticamente cada acceso virtual → físico. El programador trabaja sólo con el espacio virtual.</p>
+                    <p class="text-sm text-slate-600">El proceso no sabe en qué dirección física está cargado. La MMU traduce cada acceso virtual → físico.</p>
                 </div>
                 <div class="bg-slate-50 rounded-lg p-5 border border-slate-200">
                     <p class="font-bold text-usm-navy mb-2">Protección</p>
-                    <p class="text-sm text-slate-600">Cada proceso tiene su propio espacio virtual. La MMU verifica que no acceda fuera de él. Si lo hace, genera un <code>Segmentation Fault</code> o <code>Page Fault</code>.</p>
+                    <p class="text-sm text-slate-600">Protege los espacios de los procesos <em>y del SO</em>. Salir del espacio virtual → <strong>Segmentation Violation / Memory Fault</strong>; acceder sin derecho R/W/X → <strong>Permission Denied</strong>.</p>
                 </div>
                 <div class="bg-slate-50 rounded-lg p-5 border border-slate-200">
                     <p class="font-bold text-usm-navy mb-2">Compartición</p>
-                    <p class="text-sm text-slate-600">Varios procesos pueden compartir segmentos (ej. biblioteca <code>libc</code>) cargados una sola vez en memoria física, apuntados desde tablas locales de distintos procesos.</p>
+                    <p class="text-sm text-slate-600">Varios procesos apuntan al mismo segmento o frame: código del mismo programa, datos de procesos cooperativos o tras <code>fork()</code>, bibliotecas como <code>libc</code>.</p>
                 </div>
                 <div class="bg-slate-50 rounded-lg p-5 border border-slate-200">
                     <p class="font-bold text-usm-navy mb-2">Eficiencia (On Demand)</p>
-                    <p class="text-sm text-slate-600">Se carga una página sólo cuando hay un acceso a ella. El principio de <strong>localidad</strong> garantiza que normalmente basta cargar pocas páginas para ejecutar bien.</p>
+                    <p class="text-sm text-slate-600">Se cargan sólo las partes útiles, cuando se accede a ellas. La <strong>localidad</strong> hace que basten pocas páginas.</p>
                 </div>
+            </div>
+            <div class="ojo mt-5">
+                <p class="text-xs text-slate-700"><strong class="text-red-700">Ojo con los nombres:</strong> un <em>Page Fault</em> (o <em>Segment Fault</em> en la clase) <strong>no es un error</strong>: significa que la página/segmento existe pero no está en RAM (V=0); el SO la carga y la instrucción se reintenta. Acceder <em>fuera</em> del espacio sí es un error (Segmentation Violation / Memory Fault).</p>
             </div>
         </div>
 
-        <!-- Card: MMU -->
         <div class="card p-8 mb-6">
             <h4 class="text-xl font-bold text-usm-navy mb-4 flex items-center gap-2">
                 <span class="text-usm-gold">1.3</span> La MMU — Memory Management Unit
@@ -208,218 +199,308 @@
             <div class="grid sm:grid-cols-2 gap-6 items-center">
                 <div>
                     <p class="text-slate-700 text-sm leading-relaxed mb-4">
-                        La MMU es el componente de <strong>hardware</strong> del procesador que intercepta cada acceso a memoria y realiza:
+                        Componente de <strong>hardware</strong> que transforma y verifica cada dirección <em>antes</em> del acceso a la RAM (en cada FETCH, lectura y escritura). Debe ser mucho más rápido que el acceso a memoria; transformación y verificación se hacen en paralelo.
                     </p>
                     <ol class="text-sm text-slate-700 space-y-2 list-decimal pl-5">
-                        <li><strong>Traducción:</strong> Dirección virtual → Dirección física (usando tabla de páginas/segmentos).</li>
-                        <li><strong>Verificación de permisos:</strong> ¿Tiene el proceso derecho R/W/X sobre este segmento/página?</li>
-                        <li><strong>Generación de excepciones:</strong> Page Fault, Segment Fault, Protection Fault.</li>
-                        <li><strong>Actualización de bits:</strong> Bit U (Used) y bit D (Dirty) en la tabla.</li>
+                        <li><strong>Traducción:</strong> dirección virtual → física.</li>
+                        <li><strong>Verificación:</strong> presencia (bit V), límites y derechos R/W/X.</li>
+                        <li><strong>TRAPs:</strong> Page/Segment Fault, Violation, Permission Denied.</li>
+                        <li><strong>Bits U y D:</strong> los actualiza en cada acceso / escritura.</li>
                     </ol>
                 </div>
-                <!-- Diagrama MMU SVG -->
                 <div class="flex justify-center">
                     <svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-xs">
+                        <defs>
+                            <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#002b5c"/></marker>
+                            <marker id="arr2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#16a34a"/></marker>
+                            <marker id="arr3" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#dc2626"/></marker>
+                        </defs>
                         <rect x="10" y="70" width="80" height="60" rx="8" fill="#e8f0fb" stroke="#002b5c" stroke-width="1.5"/>
                         <text x="50" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#002b5c">CPU</text>
                         <text x="50" y="115" text-anchor="middle" font-size="9" fill="#334155">Dir. Virtual</text>
-
                         <rect x="130" y="55" width="80" height="90" rx="8" fill="#fef9c3" stroke="#c9a34a" stroke-width="2"/>
                         <text x="170" y="85" text-anchor="middle" font-size="11" font-weight="bold" fill="#7d611d">MMU</text>
                         <text x="170" y="100" text-anchor="middle" font-size="8" fill="#7d611d">Traduce</text>
                         <text x="170" y="113" text-anchor="middle" font-size="8" fill="#7d611d">Verifica</text>
-                        <text x="170" y="126" text-anchor="middle" font-size="8" fill="#7d611d">Actualiza bits</text>
-
+                        <text x="170" y="126" text-anchor="middle" font-size="8" fill="#7d611d">Actualiza U, D</text>
                         <rect x="255" y="70" width="75" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
                         <text x="292" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">RAM</text>
                         <text x="292" y="115" text-anchor="middle" font-size="9" fill="#334155">Dir. Física</text>
-
-                        <line x1="90" y1="100" x2="130" y2="100" stroke="#002b5c" stroke-width="2" marker-end="url(#arr)"/>
-                        <line x1="210" y1="100" x2="255" y2="100" stroke="#16a34a" stroke-width="2" marker-end="url(#arr2)"/>
-
-                        <rect x="120" y="155" width="100" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
-                        <text x="170" y="174" text-anchor="middle" font-size="9" fill="#b91c1c">Page Fault / Exception</text>
-                        <line x1="170" y1="145" x2="170" y2="155" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr3)"/>
-
-                        <defs>
-                            <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-                                <path d="M0,0 L0,6 L6,3 z" fill="#002b5c"/>
-                            </marker>
-                            <marker id="arr2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-                                <path d="M0,0 L0,6 L6,3 z" fill="#16a34a"/>
-                            </marker>
-                            <marker id="arr3" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-                                <path d="M0,0 L0,6 L6,3 z" fill="#dc2626"/>
-                            </marker>
-                        </defs>
+                        <line x1="90" y1="100" x2="128" y2="100" stroke="#002b5c" stroke-width="2" marker-end="url(#arr)"/>
+                        <line x1="210" y1="100" x2="253" y2="100" stroke="#16a34a" stroke-width="2" marker-end="url(#arr2)"/>
+                        <rect x="120" y="160" width="100" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+                        <text x="170" y="179" text-anchor="middle" font-size="9" fill="#b91c1c">TRAP → Sistema Operativo</text>
+                        <line x1="170" y1="145" x2="170" y2="158" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr3)"/>
                     </svg>
                 </div>
             </div>
         </div>
 
-        <!-- Card: Localidad -->
         <div class="card p-8">
             <h4 class="text-xl font-bold text-usm-navy mb-4 flex items-center gap-2">
                 <span class="text-usm-gold">1.4</span> Principio de Localidad
             </h4>
-            <p class="text-sm text-slate-600 mb-4">El uso de las páginas NO es uniforme: sigue patrones que justifican el On Demand Paging.</p>
+            <p class="text-sm text-slate-600 mb-4">El uso de los espacios de trabajo es <strong>irregular</strong>: muchas direcciones usadas son adyacentes (código secuencial, iteraciones, variables globales y locales, arreglos, strings, listas).</p>
             <div class="grid sm:grid-cols-2 gap-4">
                 <div class="highlight-navy">
                     <p class="font-bold text-usm-navy text-sm mb-1">Localidad Temporal</p>
-                    <p class="text-xs text-slate-600">Un elemento recientemente usado tiene <strong>alta probabilidad de ser accedido nuevamente muy pronto</strong>. Ejemplos: variables de loop, contadores, funciones recursivas.</p>
+                    <p class="text-xs text-slate-600">Un elemento usado tiene alta probabilidad de volver a usarse <strong>muy pronto</strong> (contadores, variables de loop).</p>
                 </div>
                 <div class="highlight-navy">
                     <p class="font-bold text-usm-navy text-sm mb-1">Localidad Espacial</p>
-                    <p class="text-xs text-slate-600">Los elementos <strong>adyacentes al elemento accedido</strong> también tienen alta probabilidad de ser usados. Ejemplos: arreglos, structs, código secuencial, strings.</p>
+                    <p class="text-xs text-slate-600">Los elementos <strong>adyacentes</strong> también tienen alta probabilidad de usarse (arreglos, structs, código secuencial).</p>
+                </div>
+            </div>
+            <div class="grid sm:grid-cols-3 gap-3 mt-4 text-center">
+                <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <p class="text-3xl font-bold text-usm-burgundy">80 / 20</p>
+                    <p class="text-xs text-slate-600 mt-1">El 80% de los accesos involucra sólo el 20% de las páginas.</p>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <p class="text-3xl font-bold text-usm-burgundy">×5</p>
+                    <p class="text-xs text-slate-600 mt-1">Hay 5 veces más instrucciones en secuencia que saltos (ocasionales y cortos).</p>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <p class="text-3xl font-bold text-usm-burgundy">Δt</p>
+                    <p class="text-xs text-slate-600 mt-1">En un periodo corto sólo una pequeña parte del código y de los datos es útil.</p>
                 </div>
             </div>
             <div class="highlight mt-4">
-                <p class="text-sm text-slate-700">⇒ Gracias a la localidad, mantener en RAM sólo las páginas del "Working Set" activo es suficiente para una buena performance. No es necesario cargar todo el proceso.</p>
+                <p class="text-sm text-slate-700">⇒ Cargar todo el espacio de trabajo es inútil y costoso. Idea: cargar sólo las partes necesarias → <strong>On Demand Paging</strong>.</p>
             </div>
         </div>
     </section>
 
     <!-- ========================================================= -->
-    <!-- PARTE 2: PAGINACIÓN                                        -->
+    <!-- PARTE 2: SEGMENTACIÓN                                       -->
     <!-- ========================================================= -->
-    <section id="paginacion" class="mb-16">
-        <h3 class="section-title text-3xl font-bold mb-8 pb-3">Parte 2 · Paginación y Tabla de Páginas</h3>
+    <section id="segmentacion" class="mb-16 scroll-mt-28">
+        <h3 class="section-title text-3xl font-bold mb-8 pb-3">Parte 2 · Segmentación</h3>
 
-        <!-- Card: Conceptos básicos -->
         <div class="card p-8 mb-6">
             <h4 class="text-xl font-bold text-usm-navy mb-4 flex items-center gap-2">
-                <span class="text-usm-gold">2.1</span> Conceptos Fundamentales
+                <span class="text-usm-gold">2.1</span> Definición
+            </h4>
+            <div class="grid sm:grid-cols-2 gap-5 items-center">
+                <div>
+                    <p class="text-sm text-slate-700 mb-3">Un <strong>segmento</strong> se define por una <strong>Base</strong> (dirección donde empieza en RAM) y un <strong>Límite</strong> (tamaño en bytes). El espacio de un proceso es un conjunto de segmentos; en UNIX/Linux:</p>
+                    <ul class="text-sm text-slate-600 list-disc pl-5 space-y-1">
+                        <li>Segmento de <strong>código</strong> ejecutable</li>
+                        <li>Segmento de <strong>datos</strong> (variables estáticas)</li>
+                        <li>Segmento de <strong>pila y asignación dinámica</strong> (Stack/Heap)</li>
+                    </ul>
+                </div>
+                <div class="highlight-navy text-center">
+                    <p class="text-xs text-slate-500 mb-1">Dirección virtual segmentada</p>
+                    <p class="font-mono text-lg font-bold text-usm-navy">@(s, d)</p>
+                    <p class="font-mono text-sm text-usm-navy mt-2">@Real = Base[s] + d &nbsp;&nbsp;si&nbsp; d &lt; Límite[s]</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-8 mb-6">
+            <h4 class="text-xl font-bold text-usm-navy mb-4 flex items-center gap-2">
+                <span class="text-usm-gold">2.2</span> Tabla global y tabla por proceso
+            </h4>
+            <p class="text-sm text-slate-600 mb-4">El sistema mantiene una <strong>tabla global de segmentos</strong> (con V, Base, Límite, U, D) y una <strong>tabla local por proceso</strong> que apunta a la global y guarda los derechos R W X. Si dos tablas locales apuntan al mismo segmento global, el segmento está <strong>compartido</strong>.</p>
+            <div class="grid sm:grid-cols-2 gap-4">
+                <div class="overflow-x-auto">
+                    <table class="text-xs">
+                        <thead><tr><th colspan="3">Proceso P0 (tabla local)</th></tr><tr><th>Seg.</th><th>R W X</th><th>Global</th></tr></thead>
+                        <tbody>
+                            <tr><td>0</td><td>1 1 1</td><td>S1</td></tr>
+                            <tr><td>1</td><td>1 1 0</td><td>S3</td></tr>
+                            <tr><td>2</td><td>1 0 0</td><td>S2</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="text-xs">
+                        <thead><tr><th colspan="6">Tabla global de segmentos</th></tr><tr><th>Seg.</th><th>V</th><th>Base</th><th>Límite</th><th>U</th><th>D</th></tr></thead>
+                        <tbody>
+                            <tr><td>S0</td><td>1</td><td>B0</td><td>L0</td><td>1</td><td>1</td></tr>
+                            <tr><td>S1</td><td>1</td><td>B1</td><td>L1</td><td>1</td><td>0</td></tr>
+                            <tr><td>S2</td><td class="text-red-600 font-bold">0</td><td>B2</td><td>L2</td><td>0</td><td>0</td></tr>
+                            <tr><td>S3</td><td>1</td><td>B3</td><td>L3</td><td>0</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="grid sm:grid-cols-3 gap-3 mt-5">
+                <div class="highlight-navy"><p class="text-sm font-bold text-usm-navy">V (Valid)</p><p class="text-xs text-slate-600">1 = cargado. 0 = existe pero no está en RAM → <strong>Segment Fault</strong> (TRAP, el SO lo carga, RETURN y se reintenta).</p></div>
+                <div class="highlight-navy"><p class="text-sm font-bold text-usm-navy">U (Used)</p><p class="text-xs text-slate-600">El SO lo pone en 0 al cargar; la MMU en 1 en cada acceso. U=0 → buen candidato a Swap-Out.</p></div>
+                <div class="highlight-navy"><p class="text-sm font-bold text-usm-navy">D (Dirty)</p><p class="text-xs text-slate-600">0 al cargar; la MMU lo pone en 1 al escribir. D=1 obliga a escribirlo en swap al descargarlo (más caro).</p></div>
+            </div>
+        </div>
+
+        <div class="card p-8">
+            <h4 class="text-xl font-bold text-usm-navy mb-4 flex items-center gap-2">
+                <span class="text-usm-gold">2.3</span> Verificaciones de la MMU (orden)
+            </h4>
+            <div class="flow">
+                <div class="flow-step"><p class="flow-q">① ¿s está en la tabla?</p><p class="flow-no">NO → Segmentation Violation</p></div>
+                <div class="flow-step"><p class="flow-q">② ¿V = 1?</p><p class="flow-no" style="background:#fef3c7;color:#92400e">NO → Segment Fault → Swap In y reintento</p></div>
+                <div class="flow-step"><p class="flow-q">③ ¿d &lt; Límite?</p><p class="flow-no">NO → Segmentation Violation</p></div>
+                <div class="flow-step"><p class="flow-q">④ ¿Derechos RWX?</p><p class="flow-no">NO → Permission Denied</p></div>
+            </div>
+            <div class="flow-ok">✔ Acceso a @Real = Base + d</div>
+            <div class="highlight-burgundy mt-5">
+                <p class="text-sm font-bold text-usm-burgundy mb-1">Problemas de la segmentación sola</p>
+                <p class="text-xs text-slate-700">Segmentos grandes → asignación difícil (buscar huecos grandes) y transferencias al disco caras; no se pueden manejar segmentos más grandes que la RAM. <strong>Solución:</strong> cortar los espacios en partes de igual tamaño → <strong>páginas</strong>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- PARTE 3: PAGINACIÓN                                         -->
+    <!-- ========================================================= -->
+    <section id="paginacion" class="mb-16 scroll-mt-28">
+        <h3 class="section-title text-3xl font-bold mb-8 pb-3">Parte 3 · Paginación</h3>
+
+        <div class="card p-8 mb-6">
+            <h4 class="text-xl font-bold text-usm-navy mb-4 flex items-center gap-2">
+                <span class="text-usm-gold">3.1</span> Conceptos Fundamentales
             </h4>
             <div class="grid sm:grid-cols-3 gap-4 mb-5">
                 <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 text-center">
                     <p class="text-2xl font-bold text-blue-700 mb-1">Página</p>
-                    <p class="text-xs text-slate-600">Unidad del <strong>espacio virtual</strong> del proceso. Tamaño fijo (ej. 4KB, 32KB). Índice: número de página virtual <strong>p</strong>.</p>
+                    <p class="text-xs text-slate-600">Unidad del <strong>espacio virtual</strong>. Tamaño fijo 2<sup>K</sup> bytes. Índice <strong>p</strong>.</p>
                 </div>
                 <div class="bg-green-50 p-4 rounded-lg border border-green-200 text-center">
                     <p class="text-2xl font-bold text-green-700 mb-1">Frame</p>
-                    <p class="text-xs text-slate-600">Unidad de la <strong>memoria física</strong> (RAM). Mismo tamaño que la página. Índice: número de frame <strong>f</strong>.</p>
+                    <p class="text-xs text-slate-600">Página real (marco) de la <strong>RAM</strong>, mismo tamaño. Índice <strong>f</strong>.</p>
                 </div>
                 <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 text-center">
                     <p class="text-2xl font-bold text-amber-700 mb-1">Offset</p>
-                    <p class="text-xs text-slate-600">Desplazamiento <strong>d</strong> dentro de la página/frame. Se mantiene igual en la traducción virtual→física.</p>
+                    <p class="text-xs text-slate-600">Desplazamiento <strong>d</strong> (los K bits bajos). No cambia en la traducción.</p>
                 </div>
             </div>
-            <div class="highlight-navy">
-                <p class="font-mono text-sm font-bold text-usm-navy">Dirección Virtual = (p, d) &nbsp;→&nbsp; @Física = frame[p] × TamañoPágina + d</p>
+            <div class="highlight-navy mb-4">
+                <p class="font-mono text-sm font-bold text-usm-navy">@v = (p, d) &nbsp;→&nbsp; p = ⌊@v / 2<sup>K</sup>⌋, &nbsp;d = @v mod 2<sup>K</sup> &nbsp;→&nbsp; @Física = frame[p] × 2<sup>K</sup> + d</p>
             </div>
+            <p class="text-sm text-slate-600">La asignación de frames es <strong>discontinua</strong>: las páginas de un proceso no tienen que quedar contiguas ni en orden. Consecuencia: <strong>no hay fragmentación externa</strong> (sólo interna, en la última página de cada sección).</p>
         </div>
 
-        <!-- Card: Tabla de Páginas -->
         <div class="card p-8 mb-6">
             <h4 class="text-xl font-bold text-usm-navy mb-5 flex items-center gap-2">
-                <span class="text-usm-gold">2.2</span> Tabla de Páginas — Bits de Control
+                <span class="text-usm-gold">3.2</span> Tabla de Páginas — Bits de Control
             </h4>
             <div class="overflow-x-auto mb-5">
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Bit</th><th>Nombre</th><th>Significado</th><th>Quién lo gestiona</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Bit</th><th>Nombre</th><th>Significado</th><th>Quién lo escribe</th></tr></thead>
                     <tbody>
-                        <tr>
-                            <td><strong>V</strong></td><td>Valid (Válido)</td>
-                            <td class="text-left">1 = página en RAM, 0 = no está cargada → Page Fault</td>
-                            <td>SO al cargar/descargar</td>
-                        </tr>
-                        <tr>
-                            <td><strong>U</strong></td><td>Used (Usado)</td>
-                            <td class="text-left">1 = tuvo acceso (lectura o escritura), 0 = no accedida</td>
-                            <td>MMU (hardware)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>D</strong></td><td>Dirty (Modificada)</td>
-                            <td class="text-left">1 = fue escrita (hay que guardarla al descargar)</td>
-                            <td>MMU (hardware)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>R</strong></td><td>Read</td>
-                            <td class="text-left">Proceso tiene permiso de lectura</td>
-                            <td>SO al crear el proceso</td>
-                        </tr>
-                        <tr>
-                            <td><strong>W</strong></td><td>Write</td>
-                            <td class="text-left">Proceso tiene permiso de escritura</td>
-                            <td>SO al crear el proceso</td>
-                        </tr>
-                        <tr>
-                            <td><strong>X</strong></td><td>eXecute</td>
-                            <td class="text-left">Proceso puede ejecutar instrucciones de esta página</td>
-                            <td>SO al crear el proceso</td>
-                        </tr>
+                        <tr><td><strong>V</strong></td><td>Valid</td><td class="text-left">1 = página en RAM; 0 = ausente → Page Fault</td><td>SO (al cargar/descargar)</td></tr>
+                        <tr><td><strong>U</strong></td><td>Used</td><td class="text-left">1 = tuvo acceso (lectura o escritura)</td><td>SO lo inicializa en 0 · MMU lo pone en 1</td></tr>
+                        <tr><td><strong>D</strong></td><td>Dirty</td><td class="text-left">1 = fue escrita → hay que guardarla al descargarla</td><td>SO lo pone en 0 · MMU en 1 al escribir</td></tr>
+                        <tr><td><strong>R</strong></td><td>Refer</td><td class="text-left">1 = hubo acceso desde el último reset</td><td>MMU · SO lo resetea a 0 cada TICK (frecuencia F)</td></tr>
+                        <tr><td><strong>COW</strong></td><td>Copy On Write</td><td class="text-left">Copiar la página en la primera escritura (ej. tras <code>fork()</code>)</td><td>SO</td></tr>
+                        <tr><td><strong>R W X</strong></td><td>Derechos</td><td class="text-left">Permisos de lectura, escritura y ejecución</td><td>SO</td></tr>
                     </tbody>
                 </table>
             </div>
-            <!-- Ejemplo tabla páginas -->
-            <h5 class="font-bold text-usm-burgundy text-sm mb-3">Ejemplo de Tabla de Páginas del proceso P0:</h5>
+            <div class="ojo mb-5">
+                <p class="text-xs text-slate-700"><strong class="text-red-700">Detalle de las clases:</strong> en general el SO inicializa <strong>U = 0</strong> al cargar una página, pero en el algoritmo <strong>NFU (segunda oportunidad)</strong> la página recién cargada se marca <strong>V = 1 y U = 1</strong>. En los ejercicios de NFU usen la convención de NFU.</p>
+            </div>
+            <h5 class="font-bold text-usm-burgundy text-sm mb-3">Ejemplo de tabla del proceso P0 (31 páginas: código 0–3, datos 4–28, stack 29–30):</h5>
             <div class="overflow-x-auto">
                 <table>
-                    <thead>
-                        <tr><th>Página Virtual</th><th>V</th><th>U</th><th>D</th><th>R</th><th>W</th><th>X</th><th>Frame</th><th>Observación</th></tr>
-                    </thead>
+                    <thead><tr><th>Pág.</th><th>V</th><th>U</th><th>D</th><th>COW</th><th>R</th><th>W</th><th>X</th><th>Frame</th><th>Observación</th></tr></thead>
                     <tbody>
-                        <tr><td>0 (código)</td><td class="text-green-700 font-bold">1</td><td class="text-green-700 font-bold">1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td class="text-left text-xs">Código → ejecutable, no escritura. Ya usado.</td></tr>
-                        <tr><td>7 (datos)</td><td class="text-green-700 font-bold">1</td><td class="text-green-700 font-bold">1</td><td class="text-red-600 font-bold">1</td><td>1</td><td>1</td><td>0</td><td>f₁</td><td class="text-left text-xs">Datos → leída y escrita. Dirty = 1.</td></tr>
-                        <tr><td>15 (no cargada)</td><td class="text-red-600 font-bold">0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>—</td><td class="text-left text-xs">Acceso → Page Fault. SO la cargará.</td></tr>
-                        <tr><td>29 (stack)</td><td class="text-green-700 font-bold">1</td><td class="text-green-700 font-bold">1</td><td class="text-red-600 font-bold">1</td><td>1</td><td>1</td><td>1</td><td>1</td><td class="text-left text-xs">Stack/heap → escritura al iniciar main().</td></tr>
+                        <tr><td>0 (código)</td><td class="text-green-700 font-bold">1</td><td class="text-green-700 font-bold">1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>4</td><td class="text-left text-xs">Código: ejecutable, sin escritura → nunca Dirty.</td></tr>
+                        <tr><td>7 (datos)</td><td class="text-green-700 font-bold">1</td><td class="text-green-700 font-bold">1</td><td class="text-red-600 font-bold">1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>20</td><td class="text-left text-xs">Escrita: al descargarla hay que escribirla en swap.</td></tr>
+                        <tr><td>15 (datos)</td><td class="text-red-600 font-bold">0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>—</td><td class="text-left text-xs">Ausente: un acceso provoca Page Fault.</td></tr>
+                        <tr><td>29 (stack)</td><td class="text-green-700 font-bold">1</td><td class="text-green-700 font-bold">1</td><td class="text-red-600 font-bold">1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>6</td><td class="text-left text-xs">Stack: lectura/escritura, <strong>no</strong> ejecutable.</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Card: Page Fault -->
         <div class="card p-8 mb-6">
             <h4 class="text-xl font-bold text-usm-navy mb-4 flex items-center gap-2">
-                <span class="text-usm-gold">2.3</span> Page Fault — Ciclo Completo
+                <span class="text-usm-gold">3.3</span> Conversión con control y ciclo del Page Fault
             </h4>
+            <div class="flow flow-3 mb-1">
+                <div class="flow-step"><p class="flow-q">① ¿La página existe en el espacio del proceso?</p><p class="flow-no">NO → Memory Violation / Fault</p></div>
+                <div class="flow-step"><p class="flow-q">② ¿Presente (V = 1)?</p><p class="flow-no" style="background:#fef3c7;color:#92400e">NO → Page Fault</p></div>
+                <div class="flow-step"><p class="flow-q">③ ¿Derechos OK?</p><p class="flow-no">NO → Permission Denied</p></div>
+            </div>
+            <div class="flow-ok mb-6">✔ HIT: @Física = frame × 2<sup>K</sup> + offset</div>
             <div class="flex flex-col gap-3">
-                <div class="flex items-start gap-3">
-                    <div class="timeline-dot bg-usm-burgundy mt-1"></div>
-                    <p class="text-sm text-slate-700"><strong>1. Acceso:</strong> La CPU genera una dirección virtual <code>(p, d)</code>. La MMU consulta la tabla de páginas.</p>
+                <div class="flex items-start gap-3"><div class="timeline-dot bg-usm-burgundy"></div><p class="text-sm text-slate-700"><strong>1. MISS:</strong> V = 0 → la MMU genera un <strong>TRAP</strong> (Page Fault).</p></div>
+                <div class="flex items-start gap-3"><div class="timeline-dot bg-usm-burgundy"></div><p class="text-sm text-slate-700"><strong>2. Verificación:</strong> el SO comprueba que la página pertenece al espacio del proceso; si no, <strong>Memory Fault</strong>.</p></div>
+                <div class="flex items-start gap-3"><div class="timeline-dot bg-usm-gold"></div><p class="text-sm text-slate-700"><strong>3. Frame:</strong> si hay un frame libre (lista de frames libres) lo usa; si no, el <strong>algoritmo de reemplazo</strong> elige una víctima.</p></div>
+                <div class="flex items-start gap-3"><div class="timeline-dot bg-usm-gold"></div><p class="text-sm text-slate-700"><strong>4. Swap Out:</strong> sólo si la víctima tiene D = 1 se escribe en disco (D = 0 ahorra una escritura). Su V pasa a 0.</p></div>
+                <div class="flex items-start gap-3"><div class="timeline-dot bg-green-500"></div><p class="text-sm text-slate-700"><strong>5. Swap In + Task Switch:</strong> mientras se lee la página del disco, el <strong>scheduler elige otro proceso</strong>. Al terminar: V = 1, frame = f.</p></div>
+                <div class="flex items-start gap-3"><div class="timeline-dot bg-green-500"></div><p class="text-sm text-slate-700"><strong>6. Reintento:</strong> cuando el proceso recupera la CPU vuelve a ejecutar <em>la misma instrucción</em>, que ahora es un HIT.</p></div>
+            </div>
+        </div>
+
+        <div class="card p-8 mb-6">
+            <h4 class="text-xl font-bold text-usm-navy mb-4 flex items-center gap-2">
+                <span class="text-usm-gold">3.4</span> Tipos de Tablas de Páginas
+            </h4>
+            <p class="text-sm text-slate-600 mb-4">Hay un acceso a la tabla en <strong>cada</strong> acceso a memoria, así que su ubicación importa: en registros (tamaño limitado), en RAM (demasiado lenta, se usan caches) o en una memoria especial muy rápida, el <strong>TLB</strong> (compromiso).</p>
+            <div class="grid sm:grid-cols-2 gap-4">
+                <div class="bg-slate-50 rounded-lg p-5 border border-slate-200">
+                    <p class="font-bold text-usm-navy mb-1">1. Indexada</p>
+                    <p class="text-xs text-slate-600 mb-2">Índice = número de página virtual → acceso directo al descriptor (frame, V, U, D, COW, RWX). Fácil y natural, pero <strong>contiene todas las páginas virtuales</strong>.</p>
+                    <p class="text-xs text-slate-500">Ej.: 32 bits y páginas de 4 KB → 2<sup>20</sup> entradas por proceso (con 4 B c/u: 4 MB por proceso).</p>
                 </div>
-                <div class="flex items-start gap-3">
-                    <div class="timeline-dot bg-usm-burgundy mt-1"></div>
-                    <p class="text-sm text-slate-700"><strong>2. Bit V=0:</strong> La MMU detecta que la página no está en RAM → lanza excepción <strong>Page Fault</strong> (trap al SO).</p>
+                <div class="bg-slate-50 rounded-lg p-5 border border-slate-200">
+                    <p class="font-bold text-usm-navy mb-1">2. Asociativa (TLB)</p>
+                    <p class="text-xs text-slate-600 mb-2">Memoria asociativa con <strong>hash</strong>, acceso ~1 ns. Cara → pequeña, no cabe la tabla completa: se usa como <strong>cache gestionado con LRU</strong>.</p>
+                    <p class="text-xs text-slate-500">HIT → verifica permisos y accede. MISS → busca en la tabla indexada y la entrada entra al TLB.</p>
                 </div>
-                <div class="flex items-start gap-3">
-                    <div class="timeline-dot bg-usm-gold mt-1"></div>
-                    <p class="text-sm text-slate-700"><strong>3. SO interviene:</strong> Busca la página en disco (swap). Si hay un frame libre, lo usa. Si no hay frames libres → ejecuta el <strong>algoritmo de reemplazo</strong> para elegir víctima.</p>
+                <div class="bg-slate-50 rounded-lg p-5 border border-slate-200">
+                    <p class="font-bold text-usm-navy mb-1">3. Jerárquica</p>
+                    <p class="text-xs text-slate-600 mb-2">@v = (X, Y, Z, offset). X indexa la tabla primaria → Tp[X] apunta a una secundaria indexada por Y → Ts[Y] apunta a una terciaria donde Z da el frame.</p>
+                    <p class="text-xs text-slate-500">La primaria está siempre cargada; las otras no → puede ocurrir un <strong>Table Fault</strong> (el SO carga la tabla que falta).</p>
                 </div>
-                <div class="flex items-start gap-3">
-                    <div class="timeline-dot bg-usm-gold mt-1"></div>
-                    <p class="text-sm text-slate-700"><strong>4. Swap Out (víctima):</strong> Si la página víctima tiene D=1 (Dirty), el SO la escribe en disco antes de liberar el frame.</p>
+                <div class="bg-slate-50 rounded-lg p-5 border border-slate-200">
+                    <p class="font-bold text-usm-navy mb-1">4. Invertida</p>
+                    <p class="text-xs text-slate-600 mb-2">Indexada por <strong>número de frame</strong>: una sola tabla de tamaño fijo para todo el sistema. Cada entrada: PID(s), página virtual p, U, D, COW, RWX.</p>
+                    <p class="text-xs text-slate-500">Se busca la entrada c con (PID, p) → @ = c × 2<sup>K</sup> + offset. Evita una tabla por proceso y cambiarla en cada conmutación.</p>
                 </div>
-                <div class="flex items-start gap-3">
-                    <div class="timeline-dot bg-green-500 mt-1"></div>
-                    <p class="text-sm text-slate-700"><strong>5. Carga:</strong> El SO carga la página requerida en el frame liberado. Actualiza tabla: V=1, frame=f.</p>
+            </div>
+            <div class="highlight mt-5">
+                <p class="text-sm font-bold text-usm-gold mb-1">Tamaño de página: un compromiso</p>
+                <p class="text-xs text-slate-700">Páginas <strong>pequeñas</strong> limitan la fragmentación interna; páginas <strong>grandes</strong> reducen el costo de los accesos a disco y el tamaño de la tabla. Casi siempre el tamaño es fijo (Intel/AMD permiten elegir entre varios).</p>
+            </div>
+        </div>
+
+        <div class="card p-8 mb-6">
+            <h4 class="text-xl font-bold text-usm-navy mb-4 flex items-center gap-2">
+                <span class="text-usm-gold">3.5</span> Segmentación Paginada
+            </h4>
+            <div class="grid sm:grid-cols-2 gap-5 items-center">
+                <div>
+                    <p class="text-sm text-slate-700 mb-2">Combina lo mejor de ambas: la <strong>segmentación estructura</strong> el espacio (código, datos, pila) y la <strong>paginación asigna</strong> la RAM sin fragmentación externa.</p>
+                    <ul class="text-sm text-slate-600 list-disc pl-5 space-y-1">
+                        <li>Cada segmento se divide en páginas y tiene su propia tabla de páginas.</li>
+                        <li>La tabla global de segmentos permite mapear el segmento de un proceso a uno ya existente (compartir).</li>
+                    </ul>
                 </div>
-                <div class="flex items-start gap-3">
-                    <div class="timeline-dot bg-green-500 mt-1"></div>
-                    <p class="text-sm text-slate-700"><strong>6. Reanuda:</strong> El SO retoma la instrucción que falló. Ahora la MMU puede completar la traducción correctamente.</p>
+                <div class="highlight-navy">
+                    <p class="font-mono text-sm text-usm-navy">@ = (seg, offset)</p>
+                    <p class="font-mono text-sm text-usm-navy">i = ⌊offset / 2<sup>K</sup>⌋ &nbsp;(página dentro del segmento)</p>
+                    <p class="font-mono text-sm text-usm-navy">o = offset mod 2<sup>K</sup></p>
+                    <p class="text-xs text-slate-500 mt-2">Ej.: offset 10 000 con páginas de 4 KB → i = 2, o = 10 000 − 8 192 = 1 808.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Card: Cálculo páginas virtuales -->
         <div class="card p-8">
             <h4 class="text-xl font-bold text-usm-navy mb-4 flex items-center gap-2">
-                <span class="text-usm-gold">2.4</span> Cálculo del Número de Páginas Virtuales
+                <span class="text-usm-gold">3.6</span> Cálculo del Número de Páginas Virtuales
             </h4>
-            <p class="text-sm text-slate-600 mb-4">Para saber cuántas páginas necesita un proceso, se divide cada sección por el tamaño de página (redondeando <em>al entero superior</em>):</p>
-            <div class="highlight-navy mb-4">
-                <p class="font-mono text-sm text-usm-navy">N° páginas = ⌈ Tamaño_sección / Tamaño_página ⌉</p>
-            </div>
+            <p class="text-sm text-slate-600 mb-4">Cada sección ocupa páginas completas, así que se redondea <em>hacia arriba</em>:</p>
+            <div class="highlight-navy mb-4"><p class="font-mono text-sm text-usm-navy">N° páginas = ⌈ Tamaño_sección / Tamaño_página ⌉</p></div>
             <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
                 <p class="font-bold text-slate-700 text-sm mb-3">Ejemplo — Proceso P0, páginas de 32 KB = 32 768 bytes:</p>
                 <div class="space-y-2 text-sm font-mono text-slate-700">
-                    <p>• Código: 124 800 B ÷ 32 768 = 3,81 → <strong class="text-usm-navy">4 páginas</strong></p>
-                    <p>• Datos: 200 000 × 4 B = 800 000 B ÷ 32 768 = 24,41 → <strong class="text-usm-navy">25 páginas</strong></p>
-                    <p>• Stack/Heap: 64 KB ÷ 32 KB = 2,00 → <strong class="text-usm-navy">2 páginas</strong></p>
+                    <p>• Código: 124 800 B ÷ 32 768 = 3,81 → <strong class="text-usm-navy">4 páginas</strong> (virtuales 0–3)</p>
+                    <p>• Datos: 200 000 × 4 B = 800 000 B ÷ 32 768 = 24,41 → <strong class="text-usm-navy">25 páginas</strong> (4–28)</p>
+                    <p>• Stack/Heap: 64 KB ÷ 32 KB = 2,00 → <strong class="text-usm-navy">2 páginas</strong> (29–30)</p>
                     <p class="border-t border-slate-300 pt-2 mt-2">Total: 4 + 25 + 2 = <strong class="text-usm-burgundy text-base">31 páginas virtuales</strong></p>
                 </div>
             </div>
@@ -427,75 +508,80 @@
     </section>
 
     <!-- ========================================================= -->
-    <!-- PARTE 3: ALGORITMOS DE REEMPLAZO                           -->
+    <!-- PARTE 4: REEMPLAZO                                          -->
     <!-- ========================================================= -->
-    <section id="reemplazo" class="mb-16">
-        <h3 class="section-title text-3xl font-bold mb-8 pb-3">Parte 3 · Algoritmos de Reemplazo de Páginas</h3>
+    <section id="reemplazo" class="mb-16 scroll-mt-28">
+        <h3 class="section-title text-3xl font-bold mb-8 pb-3">Parte 4 · Algoritmos de Reemplazo de Páginas</h3>
 
-        <div class="card p-6 mb-6">
-            <p class="text-sm text-slate-600 leading-relaxed">
-                Cuando la memoria está saturada (todos los frames ocupados) y ocurre un Page Fault, el SO debe elegir qué página descargar (<strong>página víctima</strong>).
-                El objetivo: minimizar los Page Faults futuros. Los algoritmos que veremos son aproximaciones del óptimo teórico (que requiere conocer el futuro).
+        <div class="card p-8 mb-6">
+            <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                Cuando la memoria está <strong>saturada</strong> y ocurre un Page Fault, el algoritmo de reemplazo elige la <strong>página víctima</strong>, sobre la que el SO hace un <strong>Swap Out</strong>. Objetivos: minimizar el costo de descarga (preferir D = 0) y <strong>evitar volver a cargar la misma página justo después</strong>.
             </p>
+            <div class="grid sm:grid-cols-3 gap-4">
+                <div class="highlight-navy">
+                    <p class="text-sm font-bold text-usm-navy mb-1">¿Existe el óptimo (OPT)?</p>
+                    <p class="text-xs text-slate-600">Sí: expulsar la página que se usará más tarde. Pero exige conocer el futuro y hay procesos no deterministas → <strong>imposible</strong>. Sólo se aplican aproximaciones.</p>
+                </div>
+                <div class="highlight-navy">
+                    <p class="text-sm font-bold text-usm-navy mb-1">Hipótesis de evaluación</p>
+                    <p class="text-xs text-slate-600">N frames fijos; estado estable con los N ya asignados (al inicio el número crece hacia N).</p>
+                </div>
+                <div class="highlight-navy">
+                    <p class="text-sm font-bold text-usm-navy mb-1">Criterios</p>
+                    <p class="text-xs text-slate-600">Calidad de las páginas que quedan, costo en espacio/tiempo del algoritmo, carga extra del disco. Se comparan con simulaciones y modelos.</p>
+                </div>
+            </div>
         </div>
 
         <!-- FIFO -->
         <div class="card p-8 mb-6">
             <div class="acc-btn" onclick="toggle('fifo')">
                 <div class="flex justify-between items-center">
-                    <h4 class="text-xl font-bold text-usm-navy flex items-center gap-2">
-                        <span class="badge badge-navy">FIFO</span> First In, First Out
-                    </h4>
+                    <h4 class="text-xl font-bold text-usm-navy flex items-center gap-2"><span class="badge badge-navy">FIFO</span> First In, First Out</h4>
                     <span class="acc-icon text-2xl text-usm-gold" id="fifo-icon">▼</span>
                 </div>
-                <p class="text-sm text-slate-500 mt-1">La página que lleva más tiempo en memoria es la primera en salir.</p>
+                <p class="text-sm text-slate-500 mt-1">El reemplazo ocurre sistemáticamente en orden de carga.</p>
             </div>
             <div class="acc-content mt-5" id="fifo">
                 <div class="grid sm:grid-cols-2 gap-5 mb-5">
                     <div>
                         <p class="font-bold text-sm text-usm-navy mb-2">Funcionamiento</p>
                         <ul class="text-sm text-slate-600 space-y-1 list-disc pl-4">
-                            <li>El SO mantiene una <strong>cola FIFO</strong> (lista ordenada por hora de carga).</li>
-                            <li>Al necesitar reemplazar, la víctima es la <strong>cabeza de la cola</strong> (la más antigua).</li>
-                            <li>La nueva página entra al <strong>final de la cola</strong>.</li>
-                            <li>Los frames se reciclan en orden circular (Round Robin).</li>
+                            <li>Lista de páginas en <strong>orden de carga</strong>.</li>
+                            <li>Víctima = la <strong>primera</strong> de la lista (la más antigua).</li>
+                            <li>La página cargada entra al <strong>final</strong>.</li>
+                            <li>Un HIT <strong>no</strong> cambia el orden.</li>
+                            <li>Los frames se reemplazan por turno (<strong>Round Robin</strong>).</li>
                         </ul>
                     </div>
                     <div>
                         <p class="font-bold text-sm text-usm-navy mb-2">Evaluación</p>
                         <div class="space-y-2">
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-green">OK</span> Muy simple de implementar, sin hardware especial.</div>
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-green">OK</span> Bajo costo computacional.</div>
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-burgundy">NO</span> No considera si la página sigue siendo útil.</div>
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-burgundy">NO</span> Sufre la <strong>Anomalía de Belady</strong>: más frames puede producir <em>más</em> Page Faults.</div>
+                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-green">OK</span> Muy simple, sin hardware especial.</div>
+                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-burgundy">NO</span> Ignora si la página sigue siendo útil.</div>
+                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-burgundy">NO</span> Sufre la <strong>Anomalía de Belady</strong> (ver Ej. 2).</div>
                         </div>
                     </div>
                 </div>
-                <div class="highlight mb-4">
-                    <p class="text-sm font-bold text-usm-gold mb-2">Anomalía de Belady</p>
-                    <p class="text-xs text-slate-700">Con la secuencia 1,2,3,4,1,2,5,1,2,3,4,5 y 3 frames → 9 Page Faults. Con 4 frames → ¡10 Page Faults! Esto no pasa en LRU ni en OPT.</p>
-                </div>
-                <!-- Ejemplo paso a paso FIFO -->
-                <p class="font-bold text-sm text-usm-navy mb-3">Ejemplo FIFO — 3 frames, secuencia: 1, 2, 3, 4, 1, 2, 5</p>
+                <p class="font-bold text-sm text-usm-navy mb-3">Ejemplo de la clase — 4 frames, secuencia 1, 2, 3, 4, 1, 2, 5, 1, 2, 3</p>
                 <div class="overflow-x-auto">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Paso</th><th>Ref.</th><th>Frame 0</th><th>Frame 1</th><th>Frame 2</th><th>Resultado</th>
-                            </tr>
-                        </thead>
+                    <table class="text-xs">
+                        <thead><tr><th>Ref.</th><th>F0</th><th>F1</th><th>F2</th><th>F3</th><th>Cola (cabeza → final)</th><th>Resultado</th></tr></thead>
                         <tbody>
-                            <tr><td>1</td><td>1</td><td class="text-blue-700 font-bold">1</td><td>—</td><td>—</td><td><span class="badge badge-burgundy">FALLO</span></td></tr>
-                            <tr><td>2</td><td>2</td><td class="text-blue-700 font-bold">1</td><td class="text-blue-700 font-bold">2</td><td>—</td><td><span class="badge badge-burgundy">FALLO</span></td></tr>
-                            <tr><td>3</td><td>3</td><td class="text-blue-700 font-bold">1</td><td class="text-blue-700 font-bold">2</td><td class="text-blue-700 font-bold">3</td><td><span class="badge badge-burgundy">FALLO</span></td></tr>
-                            <tr><td>4</td><td>4</td><td class="text-green-700 font-bold">4</td><td class="text-blue-700">2</td><td class="text-blue-700">3</td><td><span class="badge badge-burgundy">FALLO</span> víctima: 1</td></tr>
-                            <tr><td>5</td><td>1</td><td class="text-blue-700">4</td><td class="text-green-700 font-bold">1</td><td class="text-blue-700">3</td><td><span class="badge badge-burgundy">FALLO</span> víctima: 2</td></tr>
-                            <tr><td>6</td><td>2</td><td class="text-blue-700">4</td><td class="text-blue-700">1</td><td class="text-green-700 font-bold">2</td><td><span class="badge badge-burgundy">FALLO</span> víctima: 3</td></tr>
-                            <tr><td>7</td><td>5</td><td class="text-green-700 font-bold">5</td><td class="text-blue-700">1</td><td class="text-blue-700">2</td><td><span class="badge badge-burgundy">FALLO</span> víctima: 4</td></tr>
+                            <tr><td>1</td><td class="text-blue-700 font-bold">1</td><td>—</td><td>—</td><td>—</td><td>1</td><td><span class="badge badge-burgundy">FALLO</span></td></tr>
+                            <tr><td>2</td><td>1</td><td class="text-blue-700 font-bold">2</td><td>—</td><td>—</td><td>1, 2</td><td><span class="badge badge-burgundy">FALLO</span></td></tr>
+                            <tr><td>3</td><td>1</td><td>2</td><td class="text-blue-700 font-bold">3</td><td>—</td><td>1, 2, 3</td><td><span class="badge badge-burgundy">FALLO</span></td></tr>
+                            <tr><td>4</td><td>1</td><td>2</td><td>3</td><td class="text-blue-700 font-bold">4</td><td>1, 2, 3, 4</td><td><span class="badge badge-burgundy">FALLO</span></td></tr>
+                            <tr><td>1</td><td>1</td><td>2</td><td>3</td><td>4</td><td>1, 2, 3, 4</td><td><span class="badge badge-green">HIT</span></td></tr>
+                            <tr><td>2</td><td>1</td><td>2</td><td>3</td><td>4</td><td>1, 2, 3, 4</td><td><span class="badge badge-green">HIT</span></td></tr>
+                            <tr><td>5</td><td class="text-green-700 font-bold">5</td><td>2</td><td>3</td><td>4</td><td>2, 3, 4, 5</td><td><span class="badge badge-burgundy">FALLO</span> víctima 1</td></tr>
+                            <tr><td>1</td><td>5</td><td class="text-green-700 font-bold">1</td><td>3</td><td>4</td><td>3, 4, 5, 1</td><td><span class="badge badge-burgundy">FALLO</span> víctima 2</td></tr>
+                            <tr><td>2</td><td>5</td><td>1</td><td class="text-green-700 font-bold">2</td><td>4</td><td>4, 5, 1, 2</td><td><span class="badge badge-burgundy">FALLO</span> víctima 3</td></tr>
+                            <tr><td>3</td><td>5</td><td>1</td><td>2</td><td class="text-green-700 font-bold">3</td><td>5, 1, 2, 3</td><td><span class="badge badge-burgundy">FALLO</span> víctima 4</td></tr>
                         </tbody>
                     </table>
                 </div>
-                <p class="text-xs text-slate-500 mt-2">Total: 7 Page Faults de 7 accesos (estado inicial vacío).</p>
+                <p class="text-xs text-slate-500 mt-2"><strong>Total: 8 Page Faults</strong> en 10 accesos. Fíjate que expulsa 1 y 2 aunque se acababan de usar.</p>
             </div>
         </div>
 
@@ -503,53 +589,51 @@
         <div class="card p-8 mb-6">
             <div class="acc-btn" onclick="toggle('lru')">
                 <div class="flex justify-between items-center">
-                    <h4 class="text-xl font-bold text-usm-navy flex items-center gap-2">
-                        <span class="badge badge-burgundy">LRU</span> Least Recently Used
-                    </h4>
+                    <h4 class="text-xl font-bold text-usm-navy flex items-center gap-2"><span class="badge badge-burgundy">LRU</span> Least Recently Used</h4>
                     <span class="acc-icon text-2xl text-usm-gold" id="lru-icon">▼</span>
                 </div>
-                <p class="text-sm text-slate-500 mt-1">La página que hace más tiempo que no se usa es la víctima.</p>
+                <p class="text-sm text-slate-500 mt-1">La víctima es la página usada hace más tiempo.</p>
             </div>
             <div class="acc-content mt-5" id="lru">
                 <div class="grid sm:grid-cols-2 gap-5 mb-5">
                     <div>
                         <p class="font-bold text-sm text-usm-navy mb-2">Funcionamiento</p>
                         <ul class="text-sm text-slate-600 space-y-1 list-disc pl-4">
-                            <li>Mantiene una <strong>lista ordenada por último acceso</strong>.</li>
-                            <li>Cada acceso mueve la página al <strong>frente de la lista</strong>.</li>
-                            <li>La víctima es la que está al <strong>final</strong> (menor uso reciente).</li>
-                            <li>Requiere soporte hardware (<strong>TLB con timestamps</strong>) para ser eficiente.</li>
+                            <li>Lista (pila) ordenada por uso: arriba <strong>R−1</strong> = la más reciente, <strong>R−i</strong> = la i-ésima más reciente.</li>
+                            <li>Un acceso a R−i provoca una <strong>rotación</strong> entre R−1 y R−i (la página sube al tope), <strong>también en un HIT</strong>.</li>
+                            <li>Con k frames están cargadas R−1 … R−k; en un Page Fault la víctima es <strong>R−k</strong>.</li>
                         </ul>
                     </div>
                     <div>
                         <p class="font-bold text-sm text-usm-navy mb-2">Evaluación</p>
                         <div class="space-y-2">
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-green">OK</span> Toma en cuenta la utilidad reciente de las páginas.</div>
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-green">OK</span> No sufre la Anomalía de Belady.</div>
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-green">OK</span> Muy buena aproximación al algoritmo óptimo.</div>
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-burgundy">NO</span> Requiere hardware especial (TLB) → costoso.</div>
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-burgundy">NO</span> En práctica se usa aproximación FINUFO.</div>
+                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-green">OK</span> Toma en cuenta la utilidad de las páginas.</div>
+                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-green">OK</span> No hay anomalía de Belady.</div>
+                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-burgundy">NO</span> Rotar la lista en cada acceso exige hardware: un <strong>TLB ordenado</strong>.</div>
+                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-burgundy">NO</span> Sin ese hardware se usan aproximaciones por software (FINUFO, Working Set).</div>
                         </div>
+                        <p class="text-xs text-slate-500 mt-3">LRU sí se usa para objetos del sistema con tiempos de uso más largos (ms), como el <strong>buffer del disco</strong>, y para gestionar el propio TLB.</p>
                     </div>
                 </div>
-                <p class="font-bold text-sm text-usm-navy mb-3">Ejemplo LRU — 3 frames, secuencia: 1, 2, 3, 4, 1, 2, 5</p>
+                <p class="font-bold text-sm text-usm-navy mb-3">Ejemplo de la clase — 4 frames, secuencia 1, 2, 3, 4, 1, 2, 5, 1, 2, 3</p>
                 <div class="overflow-x-auto">
-                    <table>
-                        <thead>
-                            <tr><th>Paso</th><th>Ref.</th><th>Frame 0</th><th>Frame 1</th><th>Frame 2</th><th>LRU order (→ víctima)</th><th>Resultado</th></tr>
-                        </thead>
+                    <table class="text-xs">
+                        <thead><tr><th>Ref.</th><th>F0</th><th>F1</th><th>F2</th><th>F3</th><th>Pila (tope = más reciente)</th><th>Resultado</th></tr></thead>
                         <tbody>
-                            <tr><td>1</td><td>1</td><td class="text-blue-700 font-bold">1</td><td>—</td><td>—</td><td>[1]</td><td><span class="badge badge-burgundy">FALLO</span></td></tr>
-                            <tr><td>2</td><td>2</td><td>1</td><td class="text-blue-700 font-bold">2</td><td>—</td><td>[1,2]</td><td><span class="badge badge-burgundy">FALLO</span></td></tr>
-                            <tr><td>3</td><td>3</td><td>1</td><td>2</td><td class="text-blue-700 font-bold">3</td><td>[1,2,3]</td><td><span class="badge badge-burgundy">FALLO</span></td></tr>
-                            <tr><td>4</td><td>4</td><td class="text-green-700 font-bold">4</td><td>2</td><td>3</td><td>[2,3,4]</td><td><span class="badge badge-burgundy">FALLO</span> víctima: 1</td></tr>
-                            <tr><td>5</td><td>1</td><td>4</td><td class="text-green-700 font-bold">1</td><td>3</td><td>[3,4,1]</td><td><span class="badge badge-burgundy">FALLO</span> víctima: 2</td></tr>
-                            <tr><td>6</td><td>2</td><td>4</td><td>1</td><td class="text-green-700 font-bold">2</td><td>[4,1,2]</td><td><span class="badge badge-burgundy">FALLO</span> víctima: 3</td></tr>
-                            <tr><td>7</td><td>5</td><td class="text-green-700 font-bold">5</td><td>1</td><td>2</td><td>[1,2,5]</td><td><span class="badge badge-burgundy">FALLO</span> víctima: 4</td></tr>
+                            <tr><td>1</td><td class="text-blue-700 font-bold">1</td><td>—</td><td>—</td><td>—</td><td>1</td><td><span class="badge badge-burgundy">FALLO</span></td></tr>
+                            <tr><td>2</td><td>1</td><td class="text-blue-700 font-bold">2</td><td>—</td><td>—</td><td>2, 1</td><td><span class="badge badge-burgundy">FALLO</span></td></tr>
+                            <tr><td>3</td><td>1</td><td>2</td><td class="text-blue-700 font-bold">3</td><td>—</td><td>3, 2, 1</td><td><span class="badge badge-burgundy">FALLO</span></td></tr>
+                            <tr><td>4</td><td>1</td><td>2</td><td>3</td><td class="text-blue-700 font-bold">4</td><td>4, 3, 2, 1</td><td><span class="badge badge-burgundy">FALLO</span></td></tr>
+                            <tr><td>1</td><td>1</td><td>2</td><td>3</td><td>4</td><td>1, 4, 3, 2</td><td><span class="badge badge-green">HIT</span></td></tr>
+                            <tr><td>2</td><td>1</td><td>2</td><td>3</td><td>4</td><td>2, 1, 4, 3</td><td><span class="badge badge-green">HIT</span></td></tr>
+                            <tr><td>5</td><td>1</td><td>2</td><td class="text-green-700 font-bold">5</td><td>4</td><td>5, 2, 1, 4</td><td><span class="badge badge-burgundy">FALLO</span> víctima 3</td></tr>
+                            <tr><td>1</td><td>1</td><td>2</td><td>5</td><td>4</td><td>1, 5, 2, 4</td><td><span class="badge badge-green">HIT</span></td></tr>
+                            <tr><td>2</td><td>1</td><td>2</td><td>5</td><td>4</td><td>2, 1, 5, 4</td><td><span class="badge badge-green">HIT</span></td></tr>
+                            <tr><td>3</td><td>1</td><td>2</td><td>5</td><td class="text-green-700 font-bold">3</td><td>3, 2, 1, 5</td><td><span class="badge badge-burgundy">FALLO</span> víctima 4</td></tr>
                         </tbody>
                     </table>
                 </div>
-                <p class="text-xs text-slate-500 mt-2">Total: 7 Page Faults (misma secuencia que FIFO en este caso particular, pero generalmente LRU produce menos fallos).</p>
+                <p class="text-xs text-slate-500 mt-2"><strong>Total: 6 Page Faults</strong> vs 8 de FIFO con la misma secuencia y los mismos 4 frames.</p>
             </div>
         </div>
 
@@ -557,43 +641,44 @@
         <div class="card p-8 mb-6">
             <div class="acc-btn" onclick="toggle('nfu')">
                 <div class="flex justify-between items-center">
-                    <h4 class="text-xl font-bold text-usm-navy flex items-center gap-2">
-                        <span class="badge badge-gold">NFU</span> Not Frequently Used (Second Chance)
-                    </h4>
+                    <h4 class="text-xl font-bold text-usm-navy flex items-center gap-2"><span class="badge badge-gold">NFU</span> Not Frequently Used (Second Chance)</h4>
                     <span class="acc-icon text-2xl text-usm-gold" id="nfu-icon">▼</span>
                 </div>
-                <p class="text-sm text-slate-500 mt-1">Aproximación de LRU usando el bit U. La página con U=0 es candidata.</p>
+                <p class="text-sm text-slate-500 mt-1">Algoritmo de la segunda oportunidad: aproxima LRU usando sólo los bits V y U.</p>
             </div>
             <div class="acc-content mt-5" id="nfu">
                 <div class="grid sm:grid-cols-2 gap-5 mb-5">
                     <div>
-                        <p class="font-bold text-sm text-usm-navy mb-2">Funcionamiento (Second Chance)</p>
+                        <p class="font-bold text-sm text-usm-navy mb-2">Funcionamiento</p>
                         <ul class="text-sm text-slate-600 space-y-1 list-disc pl-4">
-                            <li>Usa los bits <strong>V (Valid)</strong> y <strong>U (Used)</strong> de cada página.</li>
-                            <li>Recorre la cola en orden FIFO.</li>
-                            <li>Si la cabeza tiene <strong>U=0</strong> → es la <strong>víctima</strong>.</li>
-                            <li>Si la cabeza tiene <strong>U=1</strong> → le da una <em>segunda oportunidad</em>: pone U=0 y la mueve al final de la cola.</li>
-                            <li>Si todas tienen U=1 → hace una vuelta completa y resetea todos los U. La primera en la cola es víctima.</li>
+                            <li>Al <strong>cargar</strong> la página i: <strong>V = 1 y U = 1</strong>.</li>
+                            <li>En cada acceso la MMU pone U = 1.</li>
+                            <li>En un Page Fault se hace un <strong>examen circular</strong> desde la posición actual:
+                                <ul class="list-[circle] pl-4 mt-1">
+                                    <li>U = 1 → <em>segunda oportunidad</em>: U = 0 y pasa a la siguiente.</li>
+                                    <li>U = 0 → <strong>víctima</strong>: se descarga y V = 0.</li>
+                                </ul>
+                            </li>
+                            <li>Si todas tenían U = 1, se vuelve a la primera que recibió su segunda oportunidad (ahora U = 0) y es la víctima.</li>
                         </ul>
                     </div>
                     <div>
                         <p class="font-bold text-sm text-usm-navy mb-2">Evaluación</p>
                         <div class="space-y-2">
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-green">OK</span> Compromiso entre FIFO y LRU.</div>
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-green">OK</span> Sin hardware especial (sólo bits U y V).</div>
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-green">OK</span> Costo sólo en Page Fault y carga inicial.</div>
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-burgundy">NO</span> Mayor costo que FIFO puro.</div>
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-burgundy">NO</span> No distingue el orden de acceso dentro de las páginas con U=1.</div>
+                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-green">OK</span> Buen compromiso entre FIFO y LRU.</div>
+                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-green">OK</span> Sin hardware especial (sólo U y V).</div>
+                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-green">OK</span> Costo sólo en Page Fault + primera carga; no observa todos los accesos.</div>
+                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-burgundy">NO</span> Más costoso que FIFO.</div>
+                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-burgundy">NO</span> No toma bien en cuenta el <em>orden</em> de uso.</div>
                         </div>
                     </div>
                 </div>
-                <!-- NFU visual diagram -->
                 <div class="highlight">
-                    <p class="font-bold text-sm text-usm-navy mb-3">Diagrama NFU (Second Chance):</p>
+                    <p class="font-bold text-sm text-usm-navy mb-3">Diagrama (segunda oportunidad):</p>
                     <div class="overflow-x-auto">
                         <svg viewBox="0 0 520 130" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-lg">
-                            <!-- Cola original -->
-                            <text x="10" y="18" font-size="10" fill="#334155" font-weight="bold">Cola original:</text>
+                            <defs><marker id="a1" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L0,5 L5,2.5 z" fill="#64748b"/></marker></defs>
+                            <text x="10" y="18" font-size="10" fill="#334155" font-weight="bold">Antes del Page Fault (recorrido circular →):</text>
                             <rect x="10" y="25" width="70" height="40" rx="5" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.5"/>
                             <text x="45" y="43" text-anchor="middle" font-size="10" font-weight="bold" fill="#7d611d">Pág 0</text>
                             <text x="45" y="57" text-anchor="middle" font-size="9" fill="#7d611d">V=1, U=1</text>
@@ -606,27 +691,22 @@
                             <rect x="250" y="25" width="70" height="40" rx="5" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.5"/>
                             <text x="285" y="43" text-anchor="middle" font-size="10" font-weight="bold" fill="#7d611d">Pág N</text>
                             <text x="285" y="57" text-anchor="middle" font-size="9" fill="#7d611d">V=1, U=1</text>
-                            <!-- Flechas -->
-                            <line x1="80" y1="45" x2="90" y2="45" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
-                            <line x1="160" y1="45" x2="170" y2="45" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
-                            <line x1="240" y1="45" x2="250" y2="45" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
-                            <!-- Cola resultante -->
-                            <text x="10" y="95" font-size="10" fill="#334155" font-weight="bold">Resultado (2nd chance):</text>
+                            <line x1="80" y1="45" x2="88" y2="45" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
+                            <line x1="160" y1="45" x2="168" y2="45" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
+                            <line x1="240" y1="45" x2="248" y2="45" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
+                            <text x="10" y="95" font-size="10" fill="#334155" font-weight="bold">Después:</text>
                             <rect x="10" y="103" width="70" height="22" rx="4" fill="#e0f2fe" stroke="#0284c7" stroke-width="1"/>
                             <text x="45" y="118" text-anchor="middle" font-size="9" fill="#0c4a6e">Pág 0 U=0</text>
                             <rect x="90" y="103" width="70" height="22" rx="4" fill="#e0f2fe" stroke="#0284c7" stroke-width="1"/>
                             <text x="125" y="118" text-anchor="middle" font-size="9" fill="#0c4a6e">Pág i U=0</text>
                             <rect x="170" y="103" width="70" height="22" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="1"/>
-                            <text x="205" y="118" text-anchor="middle" font-size="9" fill="#15803d">NUEVA pág</text>
+                            <text x="205" y="118" text-anchor="middle" font-size="9" fill="#15803d">NUEVA U=1</text>
                             <rect x="250" y="103" width="70" height="22" rx="4" fill="#e0f2fe" stroke="#0284c7" stroke-width="1"/>
                             <text x="285" y="118" text-anchor="middle" font-size="9" fill="#0c4a6e">Pág N U=1</text>
-                            <!-- Víctima label -->
-                            <text x="205" y="80" text-anchor="middle" font-size="9" fill="#dc2626" font-weight="bold">↓ Víctima (U=0)</text>
-                            <defs>
-                                <marker id="a1" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto">
-                                    <path d="M0,0 L0,5 L5,2.5 z" fill="#64748b"/>
-                                </marker>
-                            </defs>
+                            <text x="205" y="82" text-anchor="middle" font-size="9" fill="#dc2626" font-weight="bold">↓ Víctima (U=0)</text>
+                            <text x="345" y="45" font-size="9" fill="#334155">0 e i reciben su 2ª oportunidad;</text>
+                            <text x="345" y="58" font-size="9" fill="#334155">k (U=0) se descarga en su frame;</text>
+                            <text x="345" y="71" font-size="9" fill="#334155">N no se alcanzó a examinar.</text>
                         </svg>
                     </div>
                 </div>
@@ -637,65 +717,118 @@
         <div class="card p-8 mb-6">
             <div class="acc-btn" onclick="toggle('lfu')">
                 <div class="flex justify-between items-center">
-                    <h4 class="text-xl font-bold text-usm-navy flex items-center gap-2">
-                        <span class="badge badge-green">LFU</span> Least Frequently Used
-                    </h4>
+                    <h4 class="text-xl font-bold text-usm-navy flex items-center gap-2"><span class="badge badge-green">LFU</span> Least Frequently Used</h4>
                     <span class="acc-icon text-2xl text-usm-gold" id="lfu-icon">▼</span>
                 </div>
-                <p class="text-sm text-slate-500 mt-1">La página con menor frecuencia de uso acumulado es la víctima.</p>
+                <p class="text-sm text-slate-500 mt-1">Víctima: la página menos frecuentemente usada durante N × Δt.</p>
             </div>
             <div class="acc-content mt-5" id="lfu">
-                <div class="grid sm:grid-cols-2 gap-5">
+                <div class="grid sm:grid-cols-2 gap-5 mb-5">
                     <div>
-                        <p class="font-bold text-sm text-usm-navy mb-2">Funcionamiento</p>
+                        <p class="font-bold text-sm text-usm-navy mb-2">Idea</p>
                         <ul class="text-sm text-slate-600 space-y-1 list-disc pl-4">
-                            <li>Cada página tiene un <strong>contador de accesos</strong>.</li>
-                            <li>La víctima es la página con el <strong>contador más bajo</strong>.</li>
-                            <li>En empate, se puede usar FIFO como desempate.</li>
-                            <li>Implementado con un <strong>contador de 8 bits</strong> que se desplaza (shift right) periódicamente.</li>
+                            <li>Guardar la lista completa de accesos ocupa mucho espacio y se actualiza en cada acceso; contar todos los accesos es muy caro.</li>
+                            <li>LFU cuenta, con el <strong>bit U</strong>, en cuántos <strong>periodos Δt</strong> hubo al menos un acceso.</li>
+                            <li>Mantiene <strong>N vectores</strong> (Vec 0 … Vec N−1): historial discreto de los bits U de cada página en cada Δt.</li>
+                            <li>Cada Δt hace un <strong>SHIFT derecho</strong> de todos los vectores (ventana deslizante): Vec 0 es el periodo más reciente.</li>
                         </ul>
                     </div>
                     <div>
-                        <p class="font-bold text-sm text-usm-navy mb-2">Evaluación</p>
-                        <div class="space-y-2">
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-green">OK</span> Considera la frecuencia de uso a largo plazo.</div>
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-burgundy">NO</span> Una página muy usada en el pasado pero no en el presente puede "acumular crédito" falso.</div>
-                            <div class="flex items-center gap-2 text-xs"><span class="badge badge-burgundy">NO</span> Necesita más memoria para los contadores.</div>
+                        <p class="font-bold text-sm text-usm-navy mb-2">Utilidad de la página p</p>
+                        <div class="highlight-navy text-center mb-3">
+                            <p class="font-mono text-base text-usm-navy">P<sub>u</sub><sup>p</sup> = Σ<sub>i=0</sub><sup>N−1</sup> V<sub>i,p</sub> × 1/2<sup>i</sup></p>
                         </div>
+                        <p class="text-xs text-slate-600">Los periodos recientes pesan más (1, ½, ¼, …). La <strong>víctima</strong> es la página con el P<sub>u</sub> <strong>más pequeño</strong>.</p>
+                        <p class="text-xs text-slate-500 mt-2">Gracias a los pesos decrecientes, una página muy usada hace mucho tiempo va perdiendo valor y no "acumula crédito" para siempre.</p>
                     </div>
+                </div>
+                <p class="text-xs text-slate-500">Ejercicio resuelto en <a href="#ej-lfu" class="text-usm-burgundy font-bold underline">Ej. 6</a>.</p>
+            </div>
+        </div>
+
+        <!-- Local / global -->
+        <div class="card p-8 mb-6">
+            <h4 class="text-xl font-bold text-usm-navy mb-4">Reemplazo local vs global y comportamiento dinámico</h4>
+            <div class="grid sm:grid-cols-2 gap-5">
+                <div>
+                    <p class="text-sm text-slate-700 mb-2">En FIFO, LRU, NFU y LFU el reemplazo ocurre sólo entre las páginas <strong>del mismo proceso</strong> (<em>reemplazo local</em>). Buscar víctima entre <strong>todas</strong> las páginas (<em>global</em>) sería demasiado caro.</p>
+                    <p class="text-sm text-slate-700"><strong>Solución: gestión jerárquica</strong> → controlar dinámicamente cuántos frames tiene cada proceso (estimados a partir de sus Page Faults) y, dentro de ellos, qué páginas se cargan.</p>
+                </div>
+                <div>
+                    <svg viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg" class="w-full">
+                        <line x1="25" y1="130" x2="310" y2="130" stroke="#334155" stroke-width="1.5"/>
+                        <line x1="25" y1="130" x2="25" y2="10" stroke="#334155" stroke-width="1.5"/>
+                        <text x="30" y="18" font-size="9" fill="#334155" font-weight="bold">N° páginas útiles</text>
+                        <text x="300" y="145" font-size="10" fill="#334155" font-weight="bold">t</text>
+                        <line x1="95" y1="20" x2="95" y2="130" stroke="#0f172a" stroke-dasharray="5,4"/>
+                        <line x1="115" y1="20" x2="115" y2="130" stroke="#0f172a" stroke-dasharray="5,4"/>
+                        <line x1="215" y1="20" x2="215" y2="130" stroke="#0f172a" stroke-dasharray="5,4"/>
+                        <line x1="240" y1="20" x2="240" y2="130" stroke="#0f172a" stroke-dasharray="5,4"/>
+                        <polyline fill="none" stroke="#dc2626" stroke-width="2.5" points="25,70 35,70 45,75 55,68 62,73 72,62 82,67 95,60 102,45 108,38 115,58 125,68 135,82 150,78 165,85 180,78 195,84 205,78 215,78 222,58 230,48 240,62 245,85 260,92 275,88 290,88 305,84"/>
+                        <text x="55" y="45" font-size="12" fill="#dc2626" font-weight="bold">φ1</text>
+                        <text x="160" y="45" font-size="12" fill="#dc2626" font-weight="bold">φ2</text>
+                        <text x="268" y="45" font-size="12" fill="#dc2626" font-weight="bold">φ3</text>
+                    </svg>
+                    <p class="text-xs text-slate-500">Un proceso pasa por <strong>fases</strong>: el número de páginas útiles cambia en el tiempo (picos en las transiciones).</p>
                 </div>
             </div>
         </div>
 
         <!-- Working Set -->
-        <div class="card p-8">
+        <div class="card p-8 mb-6">
             <div class="acc-btn" onclick="toggle('ws')">
                 <div class="flex justify-between items-center">
-                    <h4 class="text-xl font-bold text-usm-navy flex items-center gap-2">
-                        <span class="badge badge-navy">WS</span> Working Set
-                    </h4>
+                    <h4 class="text-xl font-bold text-usm-navy flex items-center gap-2"><span class="badge badge-navy">WS</span> Working Set (Conjunto de Trabajo)</h4>
                     <span class="acc-icon text-2xl text-usm-gold" id="ws-icon">▼</span>
                 </div>
-                <p class="text-sm text-slate-500 mt-1">Mantener en RAM el conjunto activo de páginas de cada proceso.</p>
+                <p class="text-sm text-slate-500 mt-1">Sólo las páginas útiles en una ventana se quedan en memoria durante la ventana siguiente.</p>
             </div>
             <div class="acc-content mt-5" id="ws">
-                <p class="text-sm text-slate-700 mb-4">El <strong>Working Set W(t, Δt)</strong> es el conjunto de páginas accedidas por el proceso en los últimos Δt instantes de tiempo.</p>
                 <div class="highlight-navy mb-4">
-                    <p class="text-sm font-bold text-usm-navy">W(t, Δt) = {páginas accedidas en el intervalo (t−Δt, t]}</p>
+                    <p class="text-sm font-bold text-usm-navy">WS(t, Δt) = conjunto de páginas usadas durante la ventana [t, t + Δt[ &nbsp;·&nbsp; tamaño |WS(t, Δt)|</p>
                 </div>
-                <div class="grid sm:grid-cols-2 gap-4">
-                    <div class="highlight">
-                        <p class="font-bold text-usm-gold text-sm mb-2">Thrashing</p>
-                        <p class="text-xs text-slate-700">Si los frames asignados a un proceso son <strong>menores que el tamaño de su Working Set</strong>, el proceso genera Page Faults constantemente. El SO dedica más tiempo gestionando fallos que ejecutando procesos → <strong>thrashing</strong> (colapso).</p>
+                <div class="grid sm:grid-cols-3 gap-4 mb-5">
+                    <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                        <p class="font-bold text-sm text-usm-navy mb-1">Al inicio de la ventana</p>
+                        <p class="text-xs text-slate-600">U[p] = 0 para cada página del proceso; el SO arma un temporizador T<sub>WS</sub> = Δt.</p>
                     </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                        <p class="font-bold text-sm text-usm-navy mb-1">Durante la ventana</p>
+                        <p class="text-xs text-slate-600">La MMU actualiza U[p]. El WS <strong>crece en cada Page Fault</strong>: si hay frames libres se asigna uno; si no, el SO elige un proceso al que quitarle páginas (requisición).</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                        <p class="font-bold text-sm text-usm-navy mb-1">Fin del temporizador (interrupción)</p>
+                        <p class="text-xs text-slate-600">WS = páginas con U[p] = 1. Las páginas con U[p] = 0 son <strong>víctimas</strong> y sus frames se liberan; las que tienen D[p] = 1 se escriben en disco.</p>
+                    </div>
+                </div>
+                <p class="font-bold text-sm text-usm-navy mb-2">Efecto del tamaño de ventana — secuencia 1,2,3,4,1,2,5,1,2,3,4,5</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="text-xs">
+                        <thead><tr><th>Δt</th><th>Ventanas</th><th>|WS| por ventana</th></tr></thead>
+                        <tbody>
+                            <tr><td>4</td><td class="text-left">[1,2,3,4] · [1,2,5,1] · [2,3,4,5]</td><td>4 · 3 · 4</td></tr>
+                            <tr><td>6</td><td class="text-left">[1,2,3,4,1,2] · [5,1,2,3,4,5]</td><td>4 · 5</td></tr>
+                            <tr><td>12</td><td class="text-left">[toda la secuencia]</td><td>5</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-xs text-slate-600 mb-4">La ventana debe ser <strong>suficientemente grande</strong> para no generar inestabilidad y <strong>suficientemente pequeña</strong> para dar una idea realista de lo que el proceso usa.</p>
+                <div class="grid sm:grid-cols-2 gap-4">
                     <div>
-                        <p class="font-bold text-sm text-usm-navy mb-2">PFF — Page Fault Frequency</p>
-                        <p class="text-xs text-slate-600 mb-2">Controla dinámicamente los frames asignados según la tasa de fallos:</p>
+                        <p class="font-bold text-sm text-usm-navy mb-2">Ventajas</p>
                         <ul class="text-xs text-slate-600 list-disc pl-4 space-y-1">
-                            <li>Si tasa &gt; umbral_alto → asignar más frames al proceso.</li>
-                            <li>Si tasa &lt; umbral_bajo → liberar frames del proceso.</li>
-                            <li>Objetivos: minimizar Page Faults sin desperdiciar memoria.</li>
+                            <li>Toma en cuenta la utilidad de cada página.</li>
+                            <li>Prácticamente igual a LRU o FINUFO (en algunos casos más Page Faults).</li>
+                            <li>Adapta dinámicamente el número de frames a cada proceso.</li>
+                            <li>Implementación bastante fácil.</li>
+                            <li>Optimiza el Swap Out: varias páginas de una sola vez.</li>
                         </ul>
+                        <p class="text-xs text-slate-500 mt-2">Desventajas según la clase: ¡no hay!</p>
+                    </div>
+                    <div class="highlight">
+                        <p class="font-bold text-usm-gold text-sm mb-2">Thrashing (hiper-paginación)</p>
+                        <p class="text-xs text-slate-700">Si un proceso tiene menos frames que su WS, cada fallo expulsa una página que se necesitará enseguida: el sistema pasa más tiempo trayendo páginas del disco que ejecutando y puede colapsar. <strong>Hay que limitar la frecuencia de Page Faults</strong>.</p>
+                        <p class="text-xs text-slate-700 mt-2"><strong>PFF (Page Fault Frequency):</strong> si la tasa de fallos de un proceso supera un umbral alto se le dan más frames; si baja de un umbral bajo se le quitan.</p>
                     </div>
                 </div>
             </div>
@@ -703,103 +836,162 @@
     </section>
 
     <!-- ========================================================= -->
-    <!-- PARTE 4: SIMULADOR INTERACTIVO                             -->
+    <!-- PARTE 5: MULTIPROGRAMACIÓN                                  -->
     <!-- ========================================================= -->
-    <section id="simulador" class="mb-16">
-        <h3 class="section-title text-3xl font-bold mb-8 pb-3">Parte 4 · Simulador Interactivo</h3>
-
+    <section id="multiprog" class="mb-16 scroll-mt-28">
+        <h3 class="section-title text-3xl font-bold mb-8 pb-3">Parte 5 · Multiprogramación y Caída del Sistema</h3>
         <div class="card p-8">
-            <p class="text-sm text-slate-600 mb-6">Ingresa la secuencia de referencias a páginas, el número de frames disponibles, y elige el algoritmo para ver la simulación paso a paso.</p>
+            <div class="grid sm:grid-cols-2 gap-6 items-center">
+                <div class="space-y-3">
+                    <div class="highlight-navy">
+                        <p class="text-sm font-bold text-usm-navy">Tasa de multiprogramación baja</p>
+                        <p class="text-xs text-slate-600">Pocos procesos en memoria → CPU IDLE a menudo si hay mucha E/S.</p>
+                    </div>
+                    <div class="highlight-burgundy">
+                        <p class="text-sm font-bold text-usm-burgundy">Tasa demasiado alta</p>
+                        <p class="text-xs text-slate-600">Menos frames por proceso → aumento explosivo de Page Faults → esperas prohibitivas del disco que perjudican a todos (más aún a los que fallan más) → <strong>caída brusca</strong> de la ocupación de la CPU.</p>
+                    </div>
+                    <div class="highlight">
+                        <p class="text-sm font-bold text-usm-gold">Hay que distinguir</p>
+                        <p class="text-xs text-slate-600">CPU IDLE porque <strong>no hay procesos listos</strong> (subir multiprogramación) vs CPU IDLE porque hay <strong>sobrecarga de idas y vueltas de páginas</strong> con el disco (bajarla).</p>
+                    </div>
+                </div>
+                <div>
+                    <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg" class="w-full">
+                        <defs><marker id="ax" markerWidth="7" markerHeight="7" refX="3" refY="3.5" orient="auto"><path d="M0,0 L0,7 L7,3.5 z" fill="#2563eb"/></marker>
+                        <marker id="rd" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#dc2626"/></marker></defs>
+                        <rect x="120" y="25" width="60" height="195" fill="#38bdf8" opacity="0.35"/>
+                        <line x1="45" y1="220" x2="385" y2="220" stroke="#2563eb" stroke-width="1.5" marker-end="url(#ax)"/>
+                        <line x1="45" y1="220" x2="45" y2="15" stroke="#2563eb" stroke-width="1.5" marker-end="url(#ax)"/>
+                        <line x1="45" y1="50" x2="380" y2="50" stroke="#64748b" stroke-dasharray="2,3"/>
+                        <line x1="45" y1="101" x2="380" y2="101" stroke="#64748b" stroke-dasharray="2,3"/>
+                        <text x="32" y="54" font-size="11" fill="#334155">1</text>
+                        <text x="20" y="105" font-size="11" fill="#334155">0,7</text>
+                        <path d="M50,205 C110,140 180,70 360,52" fill="none" stroke="#0f172a" stroke-dasharray="7,4" stroke-width="1.2"/>
+                        <path d="M50,205 C100,150 130,110 160,100 C180,94 190,120 205,150 C225,195 270,210 380,215" fill="none" stroke="#4c1d95" stroke-width="2.5"/>
+                        <line x1="215" y1="100" x2="245" y2="160" stroke="#dc2626" stroke-width="5" marker-end="url(#rd)"/>
+                        <text x="250" y="140" font-size="11" fill="#dc2626" font-weight="bold">Thrashing</text>
+                        <text x="150" y="242" font-size="10" fill="#0f172a" text-anchor="middle">Zona óptima</text>
+                        <text x="380" y="242" font-size="10" fill="#0f172a" text-anchor="end">N° de procesos</text>
+                        <text x="50" y="12" font-size="10" fill="#0f172a">Ocupación del procesador</text>
+                    </svg>
+                    <p class="text-xs text-slate-500">Línea punteada: lo que se esperaría sin paginación excesiva. Curva real: alcanza su máximo (~0,7) en la zona óptima y luego se desploma.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            <!-- Inputs -->
-            <div class="grid sm:grid-cols-3 gap-4 mb-6">
+    <!-- ========================================================= -->
+    <!-- PARTE 6: SIMULADOR                                          -->
+    <!-- ========================================================= -->
+    <section id="simulador" class="mb-16 scroll-mt-28">
+        <h3 class="section-title text-3xl font-bold mb-8 pb-3">Parte 6 · Simulador Interactivo</h3>
+
+        <div class="card p-8 mb-6">
+            <p class="text-sm text-slate-600 mb-6">Ingresa una secuencia de referencias, el número de frames y el algoritmo. Úsalo para verificar tus soluciones paso a paso.</p>
+            <div class="grid sm:grid-cols-3 gap-4 mb-5">
                 <div>
-                    <label class="block text-xs font-bold text-usm-navy mb-1">Secuencia de páginas <span class="text-slate-400 font-normal">(separadas por coma o espacio)</span></label>
-                    <input id="seq-input" type="text" value="1,2,3,4,1,2,5,1,2,3,4,5"
-                        class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-usm-navy"
-                        placeholder="ej: 1,2,3,4,1,2,5">
+                    <label for="seq-input" class="block text-xs font-bold text-usm-navy mb-1">Secuencia <span class="text-slate-400 font-normal">(coma o espacio)</span></label>
+                    <input id="seq-input" type="text" value="1,2,3,4,1,2,5,1,2,3,4,5" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-900">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-usm-navy mb-1">Número de Frames</label>
-                    <input id="frames-input" type="number" value="3" min="1" max="8"
-                        class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-usm-navy">
+                    <label for="frames-input" class="block text-xs font-bold text-usm-navy mb-1">Número de frames</label>
+                    <input id="frames-input" type="number" value="3" min="1" max="10" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-900">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-usm-navy mb-1">Algoritmo</label>
-                    <select id="algo-select" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-usm-navy">
+                    <label for="algo-select" class="block text-xs font-bold text-usm-navy mb-1">Algoritmo</label>
+                    <select id="algo-select" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-900">
                         <option value="fifo">FIFO — First In First Out</option>
                         <option value="lru">LRU — Least Recently Used</option>
                         <option value="nfu">NFU — Second Chance</option>
+                        <option value="opt">OPT — Óptimo (referencia teórica)</option>
                     </select>
                 </div>
             </div>
-            <button onclick="simulate()" class="bg-usm-navy text-white font-bold px-6 py-2.5 rounded-lg hover:bg-blue-900 transition text-sm mb-6">
-                ▶ Simular
-            </button>
+            <div class="flex flex-wrap gap-2 mb-6">
+                <button onclick="simulate()" class="btn btn-navy">▶ Simular</button>
+                <button onclick="compareAll()" class="btn btn-outline">Comparar algoritmos (1–7 frames)</button>
+            </div>
 
-            <!-- Output -->
-            <div id="sim-output" class="hidden">
-                <div class="flex items-center justify-between mb-4">
-                    <h5 class="font-bold text-usm-navy">Resultado de la Simulación</h5>
-                    <div id="sim-stats" class="text-sm"></div>
+            <div id="sim-output" class="hidden mb-6">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                    <h5 class="font-bold text-usm-navy" id="sim-title">Resultado</h5>
+                    <div id="sim-stats" class="text-sm flex flex-wrap gap-2"></div>
                 </div>
-                <div class="overflow-x-auto mb-4">
-                    <table id="sim-table" class="text-xs"></table>
+                <div class="overflow-x-auto mb-3"><table id="sim-table" class="text-xs"></table></div>
+                <div class="flex gap-4 text-xs text-slate-600 flex-wrap">
+                    <span class="flex items-center gap-1"><span style="display:inline-block;width:14px;height:14px;background:#fee2e2;border:1px solid #dc2626;border-radius:3px;"></span> Página cargada por un fallo</span>
+                    <span class="flex items-center gap-1"><span style="display:inline-block;width:14px;height:14px;background:#dcfce7;border:1px solid #16a34a;border-radius:3px;"></span> Hit</span>
+                    <span>En NFU, el superíndice es el bit U.</span>
                 </div>
-                <div id="sim-legend" class="flex gap-4 text-xs text-slate-600 flex-wrap">
-                    <span class="flex items-center gap-1"><span style="display:inline-block;width:14px;height:14px;background:#fee2e2;border:1px solid #dc2626;border-radius:3px;"></span> Page Fault (nuevo)</span>
-                    <span class="flex items-center gap-1"><span style="display:inline-block;width:14px;height:14px;background:#dcfce7;border:1px solid #16a34a;border-radius:3px;"></span> Hit (ya en memoria)</span>
-                    <span class="flex items-center gap-1"><span style="display:inline-block;width:14px;height:14px;background:#fef9c3;border:1px solid #ca8a04;border-radius:3px;"></span> Página víctima (desalojada)</span>
+            </div>
+
+            <div id="cmp-output" class="hidden">
+                <h5 class="font-bold text-usm-navy mb-2">Page Faults según número de frames</h5>
+                <div class="overflow-x-auto mb-2"><table id="cmp-table" class="text-xs"></table></div>
+                <p class="text-xs text-slate-500">Celdas en rojo: más frames produjeron <strong>más</strong> fallos (Anomalía de Belady). Prueba con la secuencia por defecto.</p>
+            </div>
+        </div>
+
+        <div class="card p-8">
+            <h5 class="font-bold text-usm-navy mb-3">Calculadora de Working Set</h5>
+            <p class="text-sm text-slate-600 mb-4">Usa la secuencia de arriba. Divide la ejecución en ventanas de Δt referencias; al final de cada ventana se liberan las páginas que no se usaron.</p>
+            <div class="flex flex-wrap items-end gap-3 mb-4">
+                <div>
+                    <label for="dt-input" class="block text-xs font-bold text-usm-navy mb-1">Δt (referencias por ventana)</label>
+                    <input id="dt-input" type="number" value="4" min="1" max="50" class="w-36 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-900">
                 </div>
+                <button onclick="simulateWS()" class="btn btn-navy">▶ Calcular WS</button>
+            </div>
+            <div id="ws-output" class="hidden">
+                <div id="ws-stats" class="text-sm flex flex-wrap gap-2 mb-3"></div>
+                <div class="overflow-x-auto"><table id="ws-table" class="text-xs"></table></div>
             </div>
         </div>
     </section>
 
     <!-- ========================================================= -->
-    <!-- PARTE 5: EJERCICIOS RESUELTOS                              -->
+    <!-- PARTE 7: EJERCICIOS                                         -->
     <!-- ========================================================= -->
-    <section id="practica" class="mb-16">
-        <h3 class="section-title text-3xl font-bold mb-8 pb-3">Parte 5 · Ejercicios Resueltos</h3>
+    <section id="practica" class="mb-16 scroll-mt-28">
+        <h3 class="section-title text-3xl font-bold mb-8 pb-3">Parte 7 · Ejercicios Resueltos</h3>
 
         <!-- EJ 1 -->
         <div class="card p-8 mb-6">
             <div class="flex items-start gap-3 mb-4">
                 <span class="badge badge-navy text-base px-3 py-1">Ej. 1</span>
-                <div>
-                    <h4 class="font-bold text-usm-navy text-base">Cálculo de páginas y Page Faults en un loop</h4>
-                    <span class="badge badge-gold mt-1">Paginación</span>
-                </div>
+                <div><h4 class="font-bold text-usm-navy text-base">Páginas y Page Faults en un loop</h4><span class="badge badge-gold mt-1">Paginación</span></div>
             </div>
             <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 mb-4">
-                <p class="text-sm text-slate-700 mb-3">Procesador 32 bits. RAM 4GB. Páginas de 32 KB. Un <code>int</code> ocupa 4 bytes.</p>
-                <p class="text-sm text-slate-700 mb-2">El proceso P0 tiene: Código = 124 800 B, Stack = 64 KB, Datos = <code>int tab[200000]</code>.</p>
-                <p class="text-sm font-bold text-usm-navy">El proceso ejecuta: <code>for(int i=0; i&lt;200000; i+=40000) tab[i]=i;</code></p>
-                <p class="text-sm text-slate-700 mt-2">¿Cuántos Page Faults provoca este loop?</p>
+                <p class="text-sm text-slate-700 mb-3">Procesador de 32 bits, RAM de 4 GB, páginas de 32 KB, <code>int</code> de 4 bytes.</p>
+                <p class="text-sm text-slate-700 mb-2">P0 tiene: código = 124 800 B, stack = 64 KB, datos = <code>int tab[200000]</code>. Cada sección empieza en un borde de página (código, luego datos, luego stack).</p>
+                <p class="text-sm font-bold text-usm-navy">P0 ejecuta: <code>for(int i=0; i&lt;200000; i+=40000) tab[i]=i;</code></p>
+                <p class="text-sm text-slate-700 mt-2">a) ¿Cuántas páginas virtuales tiene P0? &nbsp;b) ¿Cuántos Page Faults provoca el loop y en qué páginas? Suponga que la página de código del loop y la del stack (donde vive <code>i</code>) ya están cargadas, y ninguna de datos.</p>
             </div>
-            <div class="acc-btn cursor-pointer" onclick="toggle('ej1')">
-                <div class="flex items-center gap-2 text-usm-burgundy font-bold text-sm">
-                    <span>Ver Solución</span> <span class="acc-icon" id="ej1-icon">▼</span>
-                </div>
-            </div>
+            <div class="acc-btn" onclick="toggle('ej1')"><div class="flex items-center gap-2 text-usm-burgundy font-bold text-sm"><span>Ver Solución</span> <span class="acc-icon" id="ej1-icon">▼</span></div></div>
             <div class="acc-content mt-4" id="ej1">
                 <div class="highlight-navy mb-4">
-                    <p class="text-sm font-bold text-usm-navy mb-2">Paso 1: ¿Dónde queda cada elemento del arreglo?</p>
-                    <p class="text-xs text-slate-700 mb-1">Tamaño total de datos = 200 000 × 4 B = 800 000 B.</p>
-                    <p class="text-xs text-slate-700">Las páginas de datos empiezan después de las 4 páginas de código. La página virtual de datos #0 empieza en el byte 0 del segmento de datos.</p>
+                    <p class="text-sm font-bold text-usm-navy mb-1">a) 31 páginas virtuales</p>
+                    <p class="text-xs text-slate-700">4 de código (0–3) + 25 de datos (4–28) + 2 de stack (29–30). Ver cálculo en <a href="#paginacion" class="underline">3.6</a>.</p>
                 </div>
                 <div class="highlight mb-4">
-                    <p class="text-sm font-bold text-usm-gold mb-2">Paso 2: Dirección de cada acceso del loop</p>
-                    <div class="font-mono text-xs text-slate-700 space-y-1">
-                        <p>i=0:      tab[0]      → byte 0       → página datos #0  (0 ÷ 32768 = 0)</p>
-                        <p>i=40000:  tab[40000]  → byte 160000  → página datos #4  (160000 ÷ 32768 = 4,88 → pág 4)</p>
-                        <p>i=80000:  tab[80000]  → byte 320000  → página datos #9  (320000 ÷ 32768 = 9,76 → pág 9)</p>
-                        <p>i=120000: tab[120000] → byte 480000  → página datos #14 (480000 ÷ 32768 = 14,6 → pág 14)</p>
-                        <p>i=160000: tab[160000] → byte 640000  → página datos #19 (640000 ÷ 32768 = 19,5 → pág 19)</p>
+                    <p class="text-sm font-bold text-usm-gold mb-2">b) Página de cada acceso (byte = i × 4, página de datos = ⌊byte / 32 768⌋)</p>
+                    <div class="overflow-x-auto">
+                        <table class="text-xs">
+                            <thead><tr><th>i</th><th>Byte en datos</th><th>Pág. dentro de datos</th><th>Pág. virtual de P0</th></tr></thead>
+                            <tbody>
+                                <tr><td>0</td><td>0</td><td>0</td><td>4</td></tr>
+                                <tr><td>40 000</td><td>160 000</td><td>⌊4,88⌋ = 4</td><td>8</td></tr>
+                                <tr><td>80 000</td><td>320 000</td><td>⌊9,77⌋ = 9</td><td>13</td></tr>
+                                <tr><td>120 000</td><td>480 000</td><td>⌊14,65⌋ = 14</td><td>18</td></tr>
+                                <tr><td>160 000</td><td>640 000</td><td>⌊19,53⌋ = 19</td><td>23</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="highlight-burgundy">
                     <p class="text-sm font-bold text-usm-burgundy">Resultado: <span class="text-lg">5 Page Faults</span></p>
-                    <p class="text-xs text-slate-700 mt-1">El loop accede a 5 páginas virtuales distintas (páginas 0, 4, 9, 14, 19 relativas al inicio de datos). Cada primera vez en una página genera un Page Fault.</p>
+                    <p class="text-xs text-slate-700 mt-1">Cada iteración toca una página de datos distinta (virtuales 4, 8, 13, 18 y 23). Con On Demand Paging sólo se cargan esas 5 de las 25 páginas de datos: la mayoría del arreglo nunca entra a RAM.</p>
                 </div>
             </div>
         </div>
@@ -808,20 +1000,13 @@
         <div class="card p-8 mb-6">
             <div class="flex items-start gap-3 mb-4">
                 <span class="badge badge-burgundy text-base px-3 py-1">Ej. 2</span>
-                <div>
-                    <h4 class="font-bold text-usm-navy text-base">Comparación FIFO vs LRU — Anomalía de Belady</h4>
-                    <span class="badge badge-gold mt-1">Reemplazo</span>
-                </div>
+                <div><h4 class="font-bold text-usm-navy text-base">FIFO con 3 y 4 frames — Anomalía de Belady</h4><span class="badge badge-gold mt-1">Reemplazo</span></div>
             </div>
             <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 mb-4">
-                <p class="text-sm text-slate-700 mb-2">Secuencia de referencias: <strong>1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5</strong></p>
-                <p class="text-sm text-slate-700">Compara FIFO con <strong>3 frames</strong> y con <strong>4 frames</strong>. ¿Qué observas?</p>
+                <p class="text-sm text-slate-700 mb-2">Secuencia: <strong>1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5</strong></p>
+                <p class="text-sm text-slate-700">Simule FIFO con <strong>3</strong> y con <strong>4 frames</strong>. ¿Qué observa? ¿Pasaría lo mismo con LRU?</p>
             </div>
-            <div class="acc-btn cursor-pointer" onclick="toggle('ej2')">
-                <div class="flex items-center gap-2 text-usm-burgundy font-bold text-sm">
-                    <span>Ver Solución</span> <span class="acc-icon" id="ej2-icon">▼</span>
-                </div>
-            </div>
+            <div class="acc-btn" onclick="toggle('ej2')"><div class="flex items-center gap-2 text-usm-burgundy font-bold text-sm"><span>Ver Solución</span> <span class="acc-icon" id="ej2-icon">▼</span></div></div>
             <div class="acc-content mt-4" id="ej2">
                 <div class="grid sm:grid-cols-2 gap-5 mb-4">
                     <div>
@@ -872,8 +1057,8 @@
                     </div>
                 </div>
                 <div class="highlight-burgundy">
-                    <p class="text-sm font-bold text-usm-burgundy mb-1">Anomalía de Belady detectada</p>
-                    <p class="text-xs text-slate-700">Con <strong>3 frames → 9 fallos</strong> y con <strong>4 frames → 10 fallos</strong>. ¡Más memoria produce más Page Faults! Esto sólo ocurre en FIFO. LRU y el algoritmo óptimo son monótonos: más frames → ≤ fallos.</p>
+                    <p class="text-sm font-bold text-usm-burgundy mb-1">Anomalía de Belady</p>
+                    <p class="text-xs text-slate-700">3 frames → 9 fallos; 4 frames → 10 fallos: ¡más memoria, más Page Faults! Con LRU no ocurre (la clase lo destaca como ventaja): con esta secuencia LRU da 10 fallos con 3 frames y 8 con 4. Compruébalo con el botón <em>Comparar algoritmos</em> del simulador.</p>
                 </div>
             </div>
         </div>
@@ -882,48 +1067,51 @@
         <div class="card p-8 mb-6">
             <div class="flex items-start gap-3 mb-4">
                 <span class="badge badge-gold text-base px-3 py-1">Ej. 3</span>
-                <div>
-                    <h4 class="font-bold text-usm-navy text-base">Tabla de Páginas — Traducción de Dirección</h4>
-                    <span class="badge badge-navy mt-1">Tabla de Páginas</span>
-                </div>
+                <div><h4 class="font-bold text-usm-navy text-base">Traducción de direcciones paginadas</h4><span class="badge badge-navy mt-1">Tabla de Páginas</span></div>
             </div>
             <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 mb-4">
-                <p class="text-sm text-slate-700 mb-3">Tabla de páginas del proceso P0 (páginas de 4 KB = 4096 B):</p>
-                <div class="overflow-x-auto mb-3">
+                <p class="text-sm text-slate-700 mb-3">Tabla de páginas de P0 (páginas de 4 KB = 4096 B; el espacio de P0 tiene sólo las páginas 0–3):</p>
+                <div class="overflow-x-auto mb-3 max-w-md">
                     <table class="text-xs">
-                        <thead><tr><th>Pág. Virtual</th><th>V</th><th>Frame</th></tr></thead>
+                        <thead><tr><th>Pág.</th><th>V</th><th>R W X</th><th>Frame</th></tr></thead>
                         <tbody>
-                            <tr><td>0</td><td class="text-green-700">1</td><td>5</td></tr>
-                            <tr><td>1</td><td class="text-red-600">0</td><td>—</td></tr>
-                            <tr><td>2</td><td class="text-green-700">1</td><td>3</td></tr>
-                            <tr><td>3</td><td class="text-green-700">1</td><td>7</td></tr>
+                            <tr><td>0</td><td class="text-green-700">1</td><td>1 0 1</td><td>5</td></tr>
+                            <tr><td>1</td><td class="text-red-600">0</td><td>1 1 0</td><td>—</td></tr>
+                            <tr><td>2</td><td class="text-green-700">1</td><td>1 1 0</td><td>3</td></tr>
+                            <tr><td>3</td><td class="text-green-700">1</td><td>1 1 0</td><td>7</td></tr>
                         </tbody>
                     </table>
                 </div>
-                <p class="text-sm font-bold text-usm-navy">Traduce la dirección virtual 8200 y la virtual 5000.</p>
+                <p class="text-sm font-bold text-usm-navy">¿Qué pasa con: a) lectura de 8200, b) lectura de 5000, c) escritura en 100, d) lectura de 20000?</p>
             </div>
-            <div class="acc-btn cursor-pointer" onclick="toggle('ej3')">
-                <div class="flex items-center gap-2 text-usm-burgundy font-bold text-sm">
-                    <span>Ver Solución</span> <span class="acc-icon" id="ej3-icon">▼</span>
-                </div>
-            </div>
+            <div class="acc-btn" onclick="toggle('ej3')"><div class="flex items-center gap-2 text-usm-burgundy font-bold text-sm"><span>Ver Solución</span> <span class="acc-icon" id="ej3-icon">▼</span></div></div>
             <div class="acc-content mt-4" id="ej3">
-                <div class="space-y-4">
+                <div class="grid sm:grid-cols-2 gap-4">
                     <div class="highlight-navy">
-                        <p class="font-bold text-usm-navy text-sm mb-2">Dir. virtual 8200</p>
+                        <p class="font-bold text-usm-navy text-sm mb-2">a) 8200 → HIT</p>
                         <div class="font-mono text-xs text-slate-700 space-y-1">
-                            <p>Número de página: p = ⌊8200 ÷ 4096⌋ = ⌊2.002⌋ = <strong>2</strong></p>
-                            <p>Offset: d = 8200 − 2×4096 = 8200 − 8192 = <strong>8</strong></p>
-                            <p>Tabla: pág 2 → V=1, frame=<strong>3</strong></p>
-                            <p class="text-usm-navy font-bold">Dir. Física = 3 × 4096 + 8 = 12288 + 8 = <strong>12 296</strong></p>
+                            <p>p = ⌊8200/4096⌋ = 2 ; d = 8200 − 8192 = 8</p>
+                            <p>Pág 2: V=1, R=1, frame 3</p>
+                            <p class="font-bold text-usm-navy">@F = 3 × 4096 + 8 = 12 296</p>
+                        </div>
+                    </div>
+                    <div class="highlight">
+                        <p class="font-bold text-usm-gold text-sm mb-2">b) 5000 → PAGE FAULT</p>
+                        <div class="font-mono text-xs text-slate-700 space-y-1">
+                            <p>p = ⌊5000/4096⌋ = 1 ; d = 904</p>
+                            <p>Pág 1 existe pero V=0 → TRAP; el SO la carga (Swap In) y la instrucción se reintenta.</p>
                         </div>
                     </div>
                     <div class="highlight-burgundy">
-                        <p class="font-bold text-usm-burgundy text-sm mb-2">Dir. virtual 5000</p>
+                        <p class="font-bold text-usm-burgundy text-sm mb-2">c) Escritura en 100 → PERMISSION DENIED</p>
                         <div class="font-mono text-xs text-slate-700 space-y-1">
-                            <p>Número de página: p = ⌊5000 ÷ 4096⌋ = ⌊1.22⌋ = <strong>1</strong></p>
-                            <p>Tabla: pág 1 → V=<strong>0</strong></p>
-                            <p class="text-usm-burgundy font-bold">→ <strong>PAGE FAULT</strong>: la página 1 no está en memoria. El SO debe cargarla.</p>
+                            <p>p = 0 ; d = 100. Pág 0 presente, pero W=0 (es código).</p>
+                        </div>
+                    </div>
+                    <div class="highlight-burgundy">
+                        <p class="font-bold text-usm-burgundy text-sm mb-2">d) 20000 → MEMORY FAULT</p>
+                        <div class="font-mono text-xs text-slate-700 space-y-1">
+                            <p>p = ⌊20000/4096⌋ = 4 → no pertenece al espacio de P0. No es un Page Fault: es un error del proceso.</p>
                         </div>
                     </div>
                 </div>
@@ -931,118 +1119,181 @@
         </div>
 
         <!-- EJ 4 -->
-        <div class="card p-8">
+        <div class="card p-8 mb-6">
             <div class="flex items-start gap-3 mb-4">
-                <span class="badge badge-green text-base px-3 py-1">Ej. 4</span>
-                <div>
-                    <h4 class="font-bold text-usm-navy text-base">NFU Second Chance — Paso a paso</h4>
-                    <span class="badge badge-burgundy mt-1">Algoritmo NFU</span>
-                </div>
+                <span class="badge badge-navy text-base px-3 py-1">Ej. 4</span>
+                <div><h4 class="font-bold text-usm-navy text-base">Traducción de direcciones segmentadas</h4><span class="badge badge-burgundy mt-1">Segmentación</span></div>
             </div>
             <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 mb-4">
-                <p class="text-sm text-slate-700 mb-2">Frames disponibles: <strong>3</strong>. Secuencia: <strong>1, 2, 3, 1, 4, 3, 5</strong>.</p>
-                <p class="text-sm text-slate-700">El SO usa NFU (Second Chance). Al producirse un Page Fault cuando los 3 frames están ocupados, el SO recorre la cola en orden de llegada y aplica la política de segunda oportunidad.</p>
-            </div>
-            <div class="acc-btn cursor-pointer" onclick="toggle('ej4')">
-                <div class="flex items-center gap-2 text-usm-burgundy font-bold text-sm">
-                    <span>Ver Solución</span> <span class="acc-icon" id="ej4-icon">▼</span>
+                <div class="grid sm:grid-cols-2 gap-4 mb-3">
+                    <div class="overflow-x-auto">
+                        <table class="text-xs">
+                            <thead><tr><th colspan="3">Tabla local de P0</th></tr><tr><th>Seg.</th><th>R W X</th><th>Global</th></tr></thead>
+                            <tbody><tr><td>0</td><td>1 1 1</td><td>S1</td></tr><tr><td>1</td><td>1 1 0</td><td>S3</td></tr><tr><td>2</td><td>1 0 0</td><td>S2</td></tr></tbody>
+                        </table>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="text-xs">
+                            <thead><tr><th colspan="4">Tabla global</th></tr><tr><th>Seg.</th><th>V</th><th>Base</th><th>Límite</th></tr></thead>
+                            <tbody><tr><td>S1</td><td>1</td><td>4000</td><td>1000</td></tr><tr><td>S2</td><td class="text-red-600 font-bold">0</td><td>9000*</td><td>500</td></tr><tr><td>S3</td><td>1</td><td>12000</td><td>2000</td></tr></tbody>
+                        </table>
+                    </div>
                 </div>
+                <p class="text-xs text-slate-500 mb-2">* Base que tendrá S2 cuando el SO lo cargue.</p>
+                <p class="text-sm font-bold text-usm-navy">Indique el resultado de: a) lectura (0, 250) · b) escritura (1, 1500) · c) lectura (1, 2300) · d) lectura (2, 100) · e) escritura (2, 100) · f) lectura (3, 10)</p>
             </div>
+            <div class="acc-btn" onclick="toggle('ej4')"><div class="flex items-center gap-2 text-usm-burgundy font-bold text-sm"><span>Ver Solución</span> <span class="acc-icon" id="ej4-icon">▼</span></div></div>
             <div class="acc-content mt-4" id="ej4">
                 <div class="overflow-x-auto">
                     <table class="text-xs">
-                        <thead><tr><th>Ref.</th><th>Cola (FIFO)</th><th>F0</th><th>F1</th><th>F2</th><th>Bits U</th><th>Acción</th></tr></thead>
+                        <thead><tr><th>Acceso</th><th>¿En tabla?</th><th>¿V=1?</th><th>¿d &lt; Límite?</th><th>¿Derecho?</th><th>Resultado</th></tr></thead>
                         <tbody>
-                            <tr><td>1</td><td>[1]</td><td class="text-blue-700 font-bold">1</td><td>—</td><td>—</td><td>U[1]=1</td><td><span class="badge badge-burgundy">Fallo</span> Carga pág 1</td></tr>
-                            <tr><td>2</td><td>[1,2]</td><td>1</td><td class="text-blue-700 font-bold">2</td><td>—</td><td>U[1]=1, U[2]=1</td><td><span class="badge badge-burgundy">Fallo</span> Carga pág 2</td></tr>
-                            <tr><td>3</td><td>[1,2,3]</td><td>1</td><td>2</td><td class="text-blue-700 font-bold">3</td><td>U[1]=1, U[2]=1, U[3]=1</td><td><span class="badge badge-burgundy">Fallo</span> Carga pág 3</td></tr>
-                            <tr><td>1</td><td>[1,2,3]</td><td>1</td><td>2</td><td>3</td><td>U[1]=1</td><td><span class="badge badge-green">Hit</span> bit U[1] ya=1</td></tr>
-                            <tr><td>4</td><td>[2,3,4]</td><td>4</td><td>2</td><td>3</td><td>U[2]=1, U[3]=1, U[4]=1</td><td><span class="badge badge-burgundy">Fallo</span> Cola=[1,2,3]. U[1]=1→2nd chance, U=0→fin; U[2]=1→2nd; U[3]=1→2nd; Vuelta: víctima=pág 1</td></tr>
-                            <tr><td>3</td><td>[2,3,4]</td><td>4</td><td>2</td><td>3</td><td>U[3]=1</td><td><span class="badge badge-green">Hit</span></td></tr>
-                            <tr><td>5</td><td>[3,4,5]</td><td>4</td><td class="text-green-700 font-bold">5</td><td>3</td><td>U[3]=1, U[4]=?, U[5]=1</td><td><span class="badge badge-burgundy">Fallo</span> Víctima: pág 2 (U=0 tras reset)</td></tr>
+                            <tr><td>a) R (0, 250)</td><td>✔ S1</td><td>✔</td><td>250 &lt; 1000 ✔</td><td>R ✔</td><td class="text-left"><span class="badge badge-green">OK</span> @ = 4000 + 250 = <strong>4250</strong></td></tr>
+                            <tr><td>b) W (1, 1500)</td><td>✔ S3</td><td>✔</td><td>1500 &lt; 2000 ✔</td><td>W ✔</td><td class="text-left"><span class="badge badge-green">OK</span> @ = 12000 + 1500 = <strong>13500</strong></td></tr>
+                            <tr><td>c) R (1, 2300)</td><td>✔ S3</td><td>✔</td><td>2300 ≥ 2000 ✘</td><td>—</td><td class="text-left"><span class="badge badge-burgundy">Segmentation Violation</span></td></tr>
+                            <tr><td>d) R (2, 100)</td><td>✔ S2</td><td>✘ → Segment Fault</td><td>100 &lt; 500 ✔</td><td>R ✔</td><td class="text-left">Swap In de S2 y reintento → <strong>9100</strong></td></tr>
+                            <tr><td>e) W (2, 100)</td><td>✔ S2</td><td>(tras cargarlo) ✔</td><td>✔</td><td>W = 0 ✘</td><td class="text-left"><span class="badge badge-burgundy">Permission Denied</span></td></tr>
+                            <tr><td>f) R (3, 10)</td><td>✘</td><td>—</td><td>—</td><td>—</td><td class="text-left"><span class="badge badge-burgundy">Segmentation Violation</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-xs text-slate-500 mt-2">El orden de las verificaciones es el del diagrama de la MMU: tabla → presencia → límite → derechos. En (e), si S2 no estaba cargado, primero ocurre el Segment Fault y después el rechazo por permisos.</p>
+            </div>
+        </div>
+
+        <!-- EJ 5 NFU -->
+        <div class="card p-8 mb-6">
+            <div class="flex items-start gap-3 mb-4">
+                <span class="badge badge-green text-base px-3 py-1">Ej. 5</span>
+                <div><h4 class="font-bold text-usm-navy text-base">NFU (Second Chance) paso a paso</h4><span class="badge badge-burgundy mt-1">Algoritmo NFU</span></div>
+            </div>
+            <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 mb-4">
+                <p class="text-sm text-slate-700 mb-2">3 frames, secuencia: <strong>1, 2, 3, 1, 4, 3, 5</strong>. Al cargar una página: V=1, U=1. En cada HIT, U=1.</p>
+                <p class="text-sm text-slate-700">Indique la víctima de cada fallo y el estado de los bits U.</p>
+            </div>
+            <div class="acc-btn" onclick="toggle('ej5n')"><div class="flex items-center gap-2 text-usm-burgundy font-bold text-sm"><span>Ver Solución</span> <span class="acc-icon" id="ej5n-icon">▼</span></div></div>
+            <div class="acc-content mt-4" id="ej5n">
+                <div class="overflow-x-auto">
+                    <table class="text-xs">
+                        <thead><tr><th>Ref.</th><th>F0</th><th>F1</th><th>F2</th><th>Recorrido (orden) con bits U</th><th>Acción</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td class="text-blue-700 font-bold">1</td><td>—</td><td>—</td><td>1<sup>1</sup></td><td class="text-left"><span class="badge badge-burgundy">Fallo</span> carga 1</td></tr>
+                            <tr><td>2</td><td>1</td><td class="text-blue-700 font-bold">2</td><td>—</td><td>1<sup>1</sup> 2<sup>1</sup></td><td class="text-left"><span class="badge badge-burgundy">Fallo</span> carga 2</td></tr>
+                            <tr><td>3</td><td>1</td><td>2</td><td class="text-blue-700 font-bold">3</td><td>1<sup>1</sup> 2<sup>1</sup> 3<sup>1</sup></td><td class="text-left"><span class="badge badge-burgundy">Fallo</span> carga 3</td></tr>
+                            <tr><td>1</td><td>1</td><td>2</td><td>3</td><td>1<sup>1</sup> 2<sup>1</sup> 3<sup>1</sup></td><td class="text-left"><span class="badge badge-green">Hit</span> U[1] ya era 1</td></tr>
+                            <tr><td>4</td><td class="text-green-700 font-bold">4</td><td>2</td><td>3</td><td>2<sup>0</sup> 3<sup>0</sup> 4<sup>1</sup></td><td class="text-left"><span class="badge badge-burgundy">Fallo</span> 1, 2 y 3 tienen U=1 → todas reciben 2ª oportunidad (U=0). Se vuelve a la primera: <strong>víctima 1</strong>.</td></tr>
+                            <tr><td>3</td><td>4</td><td>2</td><td>3</td><td>2<sup>0</sup> 3<sup>1</sup> 4<sup>1</sup></td><td class="text-left"><span class="badge badge-green">Hit</span> U[3] = 1</td></tr>
+                            <tr><td>5</td><td>4</td><td class="text-green-700 font-bold">5</td><td>3</td><td>3<sup>1</sup> 4<sup>1</sup> 5<sup>1</sup></td><td class="text-left"><span class="badge badge-burgundy">Fallo</span> la primera examinada es 2 con U=0 → <strong>víctima 2</strong>.</td></tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="highlight mt-4">
-                    <p class="text-xs text-slate-700"><strong>Total: 5 Page Faults, 2 Hits.</strong> La segunda oportunidad protege de desalojar páginas recientemente usadas (bit U=1), dándoles una chance antes de ser víctimas.</p>
+                    <p class="text-xs text-slate-700"><strong>Total: 5 Page Faults, 2 Hits.</strong> Nota cómo el HIT a 3 le "recarga" U=1 y lo salva en el último fallo; la página 2, que no se volvió a usar, es la expulsada. Con FIFO la última víctima habría sido también 2, pero NFU llega ahí <em>por utilidad</em>, no por antigüedad.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- EJ 6 LFU -->
+        <div class="card p-8 mb-6 scroll-mt-28" id="ej-lfu">
+            <div class="flex items-start gap-3 mb-4">
+                <span class="badge badge-gold text-base px-3 py-1">Ej. 6</span>
+                <div><h4 class="font-bold text-usm-navy text-base">LFU con vectores de bits U</h4><span class="badge badge-green mt-1">Algoritmo LFU</span></div>
+            </div>
+            <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 mb-4">
+                <p class="text-sm text-slate-700 mb-3">LFU guarda N = 5 vectores (Vec 0 = periodo más reciente). Los bits U registrados son:</p>
+                <div class="overflow-x-auto mb-3 max-w-lg">
+                    <table class="text-xs">
+                        <thead><tr><th>Página</th><th>Vec 0</th><th>Vec 1</th><th>Vec 2</th><th>Vec 3</th><th>Vec 4</th></tr></thead>
+                        <tbody>
+                            <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+                            <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+                            <tr><td>p</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                            <tr><td>q</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                            <tr><td>P−1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-sm font-bold text-usm-navy">Calcule P<sub>u</sub> de cada página e indique la víctima. ¿Qué pasaría si se contara sólo el número de periodos con U=1?</p>
+            </div>
+            <div class="acc-btn" onclick="toggle('ej6')"><div class="flex items-center gap-2 text-usm-burgundy font-bold text-sm"><span>Ver Solución</span> <span class="acc-icon" id="ej6-icon">▼</span></div></div>
+            <div class="acc-content mt-4" id="ej6">
+                <div class="overflow-x-auto mb-4">
+                    <table class="text-xs">
+                        <thead><tr><th>Página</th><th>Cálculo (pesos 1, ½, ¼, ⅛, 1/16)</th><th>P<sub>u</sub></th><th>N° periodos con U=1</th></tr></thead>
+                        <tbody>
+                            <tr><td>0</td><td class="text-left">1 + 0 + 0 + 0,125 + 0,0625</td><td>1,1875</td><td>3</td></tr>
+                            <tr><td>1</td><td class="text-left">0 + 0,5 + 0,25 + 0 + 0</td><td>0,75</td><td>2</td></tr>
+                            <tr class="font-bold"><td>p</td><td class="text-left">0 + 0 + 0,25 + 0 + 0</td><td class="text-red-600">0,25</td><td>1</td></tr>
+                            <tr><td>q</td><td class="text-left">1 + 0,5 + 0,25 + 0,125 + 0,0625</td><td>1,9375</td><td>5</td></tr>
+                            <tr><td>P−1</td><td class="text-left">0 + 0,5 + 0 + 0 + 0,0625</td><td>0,5625</td><td>2</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="highlight-burgundy">
+                    <p class="text-sm font-bold text-usm-burgundy">Víctima: página p (P<sub>u</sub> = 0,25)</p>
+                    <p class="text-xs text-slate-700 mt-1">Contando sólo periodos, las páginas 1 y P−1 empatan con 2; con los pesos, P−1 (0,5625) vale menos que 1 (0,75) porque su uso es más antiguo. Los pesos son los que hacen que lo reciente importe más.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- EJ 7 WS -->
+        <div class="card p-8">
+            <div class="flex items-start gap-3 mb-4">
+                <span class="badge badge-navy text-base px-3 py-1">Ej. 7</span>
+                <div><h4 class="font-bold text-usm-navy text-base">Working Set con Δt = 4</h4><span class="badge badge-gold mt-1">Working Set</span></div>
+            </div>
+            <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 mb-4">
+                <p class="text-sm text-slate-700 mb-2">Secuencia: <strong>1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5</strong>, una referencia por unidad de tiempo, Δt = 4. Memoria inicialmente vacía y con frames libres suficientes.</p>
+                <p class="text-sm text-slate-700">Para cada ventana indique: Page Faults, WS al final de la ventana y páginas liberadas. ¿Cuántos fallos hay en total?</p>
+            </div>
+            <div class="acc-btn" onclick="toggle('ej7')"><div class="flex items-center gap-2 text-usm-burgundy font-bold text-sm"><span>Ver Solución</span> <span class="acc-icon" id="ej7-icon">▼</span></div></div>
+            <div class="acc-content mt-4" id="ej7">
+                <div class="overflow-x-auto mb-4">
+                    <table class="text-xs">
+                        <thead><tr><th>Ventana</th><th>Referencias</th><th>Page Faults</th><th>WS (U=1)</th><th>|WS|</th><th>Liberadas (U=0)</th></tr></thead>
+                        <tbody>
+                            <tr><td>t = 1–4</td><td>1, 2, 3, 4</td><td>1, 2, 3, 4 (4)</td><td>{1, 2, 3, 4}</td><td>4</td><td>—</td></tr>
+                            <tr><td>t = 5–8</td><td>1, 2, 5, 1</td><td>5 (1)</td><td>{1, 2, 5}</td><td>3</td><td>3, 4</td></tr>
+                            <tr><td>t = 9–12</td><td>2, 3, 4, 5</td><td>3, 4 (2)</td><td>{2, 3, 4, 5}</td><td>4</td><td>1</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="highlight-navy">
+                    <p class="text-sm font-bold text-usm-navy">Total: 7 Page Faults</p>
+                    <p class="text-xs text-slate-700 mt-1">El número de frames del proceso varía (hasta 5 durante la 2ª ventana). Compárese con FIFO (9 con 3 frames, 10 con 4) y LRU (8 con 4 frames) en la misma secuencia. Puedes reproducirlo con la calculadora de WS del simulador.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ========================================================= -->
-    <!-- PARTE 6: COMPARACIÓN                                       -->
+    <!-- PARTE 8: RESUMEN                                            -->
     <!-- ========================================================= -->
-    <section id="comparacion" class="mb-16">
-        <h3 class="section-title text-3xl font-bold mb-8 pb-3">Parte 6 · Comparación de Algoritmos</h3>
+    <section id="comparacion" class="mb-16 scroll-mt-28">
+        <h3 class="section-title text-3xl font-bold mb-8 pb-3">Parte 8 · Comparación de Algoritmos</h3>
         <div class="card p-8">
             <div class="overflow-x-auto">
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Algoritmo</th>
-                            <th>Política</th>
-                            <th>Hardware</th>
-                            <th>Costo</th>
-                            <th>Anomalía Belady</th>
-                            <th>Calidad</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Algoritmo</th><th>Víctima</th><th>Hardware</th><th>Costo</th><th>Belady</th><th>Calidad</th></tr></thead>
                     <tbody>
-                        <tr>
-                            <td class="font-bold">FIFO</td>
-                            <td class="text-left text-xs">Más antiguo en memoria</td>
-                            <td class="text-xs">Ninguno</td>
-                            <td><span class="badge badge-green">Muy bajo</span></td>
-                            <td class="text-red-600 font-bold">Sí</td>
-                            <td><span class="badge badge-burgundy">Baja</span></td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">LRU</td>
-                            <td class="text-left text-xs">Menos recientemente usado</td>
-                            <td class="text-xs">TLB + timestamps</td>
-                            <td><span class="badge badge-burgundy">Alto</span></td>
-                            <td class="text-green-700 font-bold">No</td>
-                            <td><span class="badge badge-green">Muy alta</span></td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">NFU</td>
-                            <td class="text-left text-xs">Primera con U=0 (2nd chance)</td>
-                            <td class="text-xs">Bits U y V</td>
-                            <td><span class="badge badge-gold">Medio</span></td>
-                            <td class="text-green-700 font-bold">No</td>
-                            <td><span class="badge badge-gold">Buena</span></td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">LFU</td>
-                            <td class="text-left text-xs">Menor frecuencia acumulada</td>
-                            <td class="text-xs">Contadores</td>
-                            <td><span class="badge badge-gold">Medio</span></td>
-                            <td class="text-green-700 font-bold">No</td>
-                            <td><span class="badge badge-gold">Buena</span></td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">OPT</td>
-                            <td class="text-left text-xs">No usada por más tiempo</td>
-                            <td class="text-xs">Requiere futuro</td>
-                            <td>Imposible</td>
-                            <td class="text-green-700 font-bold">No</td>
-                            <td><span class="badge badge-green">Óptima</span></td>
-                        </tr>
+                        <tr><td class="font-bold">FIFO</td><td class="text-left text-xs">La más antigua en memoria</td><td class="text-xs">Ninguno</td><td><span class="badge badge-green">Muy bajo</span></td><td class="text-red-600 font-bold">Sí</td><td><span class="badge badge-burgundy">Baja</span></td></tr>
+                        <tr><td class="font-bold">LRU</td><td class="text-left text-xs">La menos recientemente usada</td><td class="text-xs">TLB ordenado</td><td><span class="badge badge-burgundy">Alto</span></td><td class="text-green-700 font-bold">No</td><td><span class="badge badge-green">Muy alta</span></td></tr>
+                        <tr><td class="font-bold">NFU</td><td class="text-left text-xs">Primera con U=0 (2ª oportunidad)</td><td class="text-xs">Bits U y V</td><td><span class="badge badge-gold">Medio</span></td><td class="text-amber-700 font-bold">No garantizado</td><td><span class="badge badge-gold">Buena</span></td></tr>
+                        <tr><td class="font-bold">LFU</td><td class="text-left text-xs">Menor P<sub>u</sub> (historial ponderado de U)</td><td class="text-xs">Bit U + N vectores</td><td><span class="badge badge-gold">Medio</span></td><td class="text-amber-700 font-bold">No garantizado</td><td><span class="badge badge-gold">Buena</span></td></tr>
+                        <tr><td class="font-bold">WS</td><td class="text-left text-xs">Las que no se usaron en la ventana Δt</td><td class="text-xs">Bit U + temporizador</td><td><span class="badge badge-gold">Medio</span></td><td class="text-xs">N/A (frames variables)</td><td><span class="badge badge-green">≈ LRU</span></td></tr>
+                        <tr><td class="font-bold">OPT</td><td class="text-left text-xs">La que se usará más tarde</td><td class="text-xs">Conocer el futuro</td><td>Imposible</td><td class="text-green-700 font-bold">No</td><td><span class="badge badge-green">Óptima</span></td></tr>
                     </tbody>
                 </table>
             </div>
             <div class="highlight mt-6">
-                <p class="text-sm text-slate-700"><strong>En la práctica:</strong> Linux usa una variante de NFU/LRU aproximado con bits de hardware (bit A en x86). Windows usa Working Set + NFU. Los algoritmos puros de LRU son demasiado costosos para implementar a nivel de hardware de paginación, por eso se usan aproximaciones.</p>
+                <p class="text-sm text-slate-700"><strong>Para el certamen:</strong> sólo los algoritmos "de pila" como LRU y OPT garantizan que más frames nunca dan más fallos. FIFO es el ejemplo clásico de la anomalía; la segunda oportunidad hereda el orden de FIFO, por lo que tampoco está garantizado. En la práctica, sin LRU por hardware se usan aproximaciones como FINUFO / segunda oportunidad y Working Set.</p>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="text-center text-xs text-slate-400 pb-10">
-        Universidad Técnica Federico Santa María · Departamento de Informática · Sistemas Operativos
+        Universidad Técnica Federico Santa María · Departamento de Informática · INF-246 Sistemas Operativos · 2026-2
     </footer>
-
 </main>
 
 <script>
@@ -1052,201 +1303,183 @@ function toggle(id) {
     const icon = document.getElementById(id + '-icon');
     const isOpen = el.classList.contains('open');
     el.classList.toggle('open', !isOpen);
-    if(icon) icon.classList.toggle('rotated', !isOpen);
+    if (icon) icon.classList.toggle('rotated', !isOpen);
 }
 
-// =================== SIMULATOR ===================
+// ALGOS START
+function parseSeq(raw) {
+    return raw.split(/[\s,;]+/).map(s => parseInt(s, 10)).filter(n => !isNaN(n));
+}
+
+function runFIFO(seq, n) {
+    const frames = new Array(n).fill(null), queue = [], steps = [];
+    for (const ref of seq) {
+        let slot = frames.indexOf(ref), hit = slot >= 0, victim = null;
+        if (!hit) {
+            slot = frames.indexOf(null);
+            if (slot < 0) { victim = queue.shift(); slot = frames.indexOf(victim); }
+            frames[slot] = ref; queue.push(ref);
+        }
+        steps.push({ ref, frames: [...frames], hit, victim, slot, info: 'Cola: ' + queue.join(', ') });
+    }
+    return steps;
+}
+
+function runLRU(seq, n) {
+    const frames = new Array(n).fill(null), steps = [];
+    let stack = []; // tope = más reciente
+    for (const ref of seq) {
+        let slot = frames.indexOf(ref), hit = slot >= 0, victim = null;
+        if (!hit) {
+            slot = frames.indexOf(null);
+            if (slot < 0) { victim = stack.pop(); slot = frames.indexOf(victim); }
+            frames[slot] = ref;
+        }
+        stack = [ref, ...stack.filter(p => p !== ref)];
+        steps.push({ ref, frames: [...frames], hit, victim, slot, info: 'Pila: ' + stack.join(', ') });
+    }
+    return steps;
+}
+
+function runNFU(seq, n) {
+    const frames = new Array(n).fill(null), U = new Array(n).fill(0), queue = [], steps = [];
+    for (const ref of seq) {
+        let slot = frames.indexOf(ref), hit = slot >= 0, victim = null;
+        const second = [];
+        if (hit) {
+            U[slot] = 1;
+        } else {
+            slot = frames.indexOf(null);
+            if (slot < 0) {
+                while (true) {
+                    const fi = queue.shift();
+                    if (U[fi] === 0) { victim = frames[fi]; slot = fi; break; }
+                    U[fi] = 0; second.push(frames[fi]); queue.push(fi);
+                }
+            }
+            frames[slot] = ref; U[slot] = 1; queue.push(slot);
+        }
+        let info = queue.map(fi => `${frames[fi]}<sup>${U[fi]}</sup>`).join(' ');
+        if (second.length) info += ' · 2ª oport.: ' + second.join(', ');
+        steps.push({ ref, frames: [...frames], hit, victim, slot, info });
+    }
+    return steps;
+}
+
+function runOPT(seq, n) {
+    const frames = new Array(n).fill(null), steps = [];
+    const nextUse = (p, t) => { for (let k = t + 1; k < seq.length; k++) if (seq[k] === p) return k; return Infinity; };
+    seq.forEach((ref, t) => {
+        let slot = frames.indexOf(ref), hit = slot >= 0, victim = null;
+        if (!hit) {
+            slot = frames.indexOf(null);
+            if (slot < 0) {
+                let far = -1;
+                frames.forEach((p, i) => { const nu = nextUse(p, t); if (nu > far) { far = nu; slot = i; } });
+                victim = frames[slot];
+            }
+            frames[slot] = ref;
+        }
+        const info = 'Próx. uso: ' + frames.filter(p => p !== null).map(p => { const nu = nextUse(p, t); return `${p}→${nu === Infinity ? '∞' : 'paso ' + (nu + 1)}`; }).join(', ');
+        steps.push({ ref, frames: [...frames], hit, victim, slot, info });
+    });
+    return steps;
+}
+
+function runWS(seq, dt) {
+    const resident = new Set(), windows = [];
+    let total = 0, maxRes = 0;
+    for (let s = 0; s < seq.length; s += dt) {
+        const refs = seq.slice(s, s + dt), used = new Set(), faults = [];
+        for (const p of refs) {
+            if (!resident.has(p)) { faults.push(p); resident.add(p); }
+            used.add(p);
+        }
+        maxRes = Math.max(maxRes, resident.size);
+        const freed = [...resident].filter(p => !used.has(p));
+        freed.forEach(p => resident.delete(p));
+        total += faults.length;
+        windows.push({ from: s + 1, to: s + refs.length, refs, faults, ws: [...used], freed });
+    }
+    return { windows, total, maxRes };
+}
+
+const ALGOS = { fifo: runFIFO, lru: runLRU, nfu: runNFU, opt: runOPT };
+const ALGO_NAMES = { fifo: 'FIFO', lru: 'LRU', nfu: 'NFU (2ª oportunidad)', opt: 'OPT' };
+// ALGOS END
+
+function readInputs() {
+    const seq = parseSeq(document.getElementById('seq-input').value);
+    const frames = Math.max(1, Math.min(10, parseInt(document.getElementById('frames-input').value, 10) || 3));
+    return { seq, frames };
+}
+
+function badge(text, cls) { return `<span class="badge ${cls}">${text}</span>`; }
+
 function simulate() {
-    const rawSeq = document.getElementById('seq-input').value;
-    const frames = parseInt(document.getElementById('frames-input').value) || 3;
+    const { seq, frames } = readInputs();
+    if (!seq.length) { alert('Ingresa al menos una página'); return; }
     const algo = document.getElementById('algo-select').value;
+    const steps = ALGOS[algo](seq, frames);
+    const faults = steps.filter(s => !s.hit).length, hits = steps.length - faults;
 
-    const seq = rawSeq.split(/[\s,]+/).map(s=>parseInt(s.trim())).filter(n=>!isNaN(n));
-    if(seq.length === 0) { alert('Ingresa al menos una página'); return; }
+    document.getElementById('sim-title').textContent = `${ALGO_NAMES[algo]} · ${frames} frame${frames > 1 ? 's' : ''}`;
+    document.getElementById('sim-stats').innerHTML =
+        badge('Page Faults: ' + faults, 'badge-burgundy') + badge('Hits: ' + hits, 'badge-green') +
+        badge('Tasa de hit: ' + (hits / steps.length * 100).toFixed(1) + '%', 'badge-navy');
 
-    let result;
-    if(algo === 'fifo') result = runFIFO(seq, frames);
-    else if(algo === 'lru') result = runLRU(seq, frames);
-    else result = runNFU(seq, frames);
+    let head = '<th>Paso</th><th>Ref.</th>';
+    for (let f = 0; f < frames; f++) head += `<th>F${f}</th>`;
+    head += '<th>Evento</th><th>Estado</th>';
 
-    renderResult(seq, result, frames, algo);
+    const rows = steps.map((s, i) => {
+        const cells = s.frames.map((p, fi) => {
+            if (p === null) return '<td style="color:#94a3b8">—</td>';
+            let style = '';
+            if (fi === s.slot) style = s.hit ? 'background:#dcfce7;color:#15803d;font-weight:bold;' : 'background:#fee2e2;color:#b91c1c;font-weight:bold;';
+            return `<td style="${style}">${p}</td>`;
+        }).join('');
+        const ev = s.hit
+            ? '<span class="badge badge-green">HIT</span>'
+            : `<span class="badge badge-burgundy">FALLO${s.victim !== null ? ' · víctima ' + s.victim : ''}</span>`;
+        return `<tr><td>${i + 1}</td><td style="font-weight:bold">${s.ref}</td>${cells}<td>${ev}</td><td class="text-left">${s.info}</td></tr>`;
+    }).join('');
+
+    document.getElementById('sim-table').innerHTML = `<thead><tr>${head}</tr></thead><tbody>${rows}</tbody>`;
     document.getElementById('sim-output').classList.remove('hidden');
 }
 
-function runFIFO(seq, nFrames) {
-    let frames = new Array(nFrames).fill(null);
-    let queue = []; // order of arrival
-    let steps = [];
-    for(let ref of seq) {
-        let hit = frames.includes(ref);
-        let victim = null;
-        let victimFrame = -1;
-        if(!hit) {
-            let emptyIdx = frames.indexOf(null);
-            if(emptyIdx >= 0) {
-                frames[emptyIdx] = ref;
-                queue.push({page:ref, frame:emptyIdx});
-            } else {
-                // evict oldest
-                let oldest = queue.shift();
-                victim = oldest.page;
-                victimFrame = oldest.frame;
-                frames[victimFrame] = ref;
-                queue.push({page:ref, frame:victimFrame});
-            }
+function compareAll() {
+    const { seq } = readInputs();
+    if (!seq.length) { alert('Ingresa al menos una página'); return; }
+    const maxF = 7;
+    let head = '<th>Algoritmo</th>';
+    for (let f = 1; f <= maxF; f++) head += `<th>${f}</th>`;
+    const rows = Object.keys(ALGOS).map(a => {
+        let prev = null, cells = '';
+        for (let f = 1; f <= maxF; f++) {
+            const c = ALGOS[a](seq, f).filter(s => !s.hit).length;
+            const bad = prev !== null && c > prev;
+            cells += `<td style="${bad ? 'background:#fee2e2;color:#b91c1c;font-weight:bold;' : ''}">${c}${bad ? ' ↑' : ''}</td>`;
+            prev = c;
         }
-        steps.push({ref, frames:[...frames], hit, victim, victimFrame});
-    }
-    return steps;
+        return `<tr><td class="font-bold">${ALGO_NAMES[a]}</td>${cells}</tr>`;
+    }).join('');
+    document.getElementById('cmp-table').innerHTML = `<thead><tr>${head}</tr><tr><th colspan="${maxF + 1}" style="font-weight:normal;font-size:0.7rem;background:#1e3a5f">columnas = número de frames</th></tr></thead><tbody>${rows}</tbody>`;
+    document.getElementById('cmp-output').classList.remove('hidden');
 }
 
-function runLRU(seq, nFrames) {
-    let frames = new Array(nFrames).fill(null);
-    let accessTime = {}; // page -> last access index
-    let steps = [];
-    for(let t=0; t<seq.length; t++) {
-        let ref = seq[t];
-        let hit = frames.includes(ref);
-        let victim = null;
-        let victimFrame = -1;
-        if(!hit) {
-            let emptyIdx = frames.indexOf(null);
-            if(emptyIdx >= 0) {
-                frames[emptyIdx] = ref;
-            } else {
-                // find LRU: frame whose page has smallest accessTime
-                let lruPage = null, lruTime = Infinity;
-                for(let p of frames) {
-                    if((accessTime[p] ?? -1) < lruTime) {
-                        lruTime = accessTime[p] ?? -1;
-                        lruPage = p;
-                    }
-                }
-                victimFrame = frames.indexOf(lruPage);
-                victim = lruPage;
-                frames[victimFrame] = ref;
-            }
-        }
-        accessTime[ref] = t;
-        steps.push({ref, frames:[...frames], hit, victim, victimFrame});
-    }
-    return steps;
+function simulateWS() {
+    const { seq } = readInputs();
+    if (!seq.length) { alert('Ingresa al menos una página'); return; }
+    const dt = Math.max(1, parseInt(document.getElementById('dt-input').value, 10) || 4);
+    const r = runWS(seq, dt);
+    document.getElementById('ws-stats').innerHTML =
+        badge('Page Faults: ' + r.total, 'badge-burgundy') + badge('Máx. frames usados: ' + r.maxRes, 'badge-navy') + badge('Ventanas: ' + r.windows.length, 'badge-gold');
+    const rows = r.windows.map(w => `<tr><td>t = ${w.from}–${w.to}</td><td>${w.refs.join(', ')}</td><td>${w.faults.length ? w.faults.join(', ') + ' (' + w.faults.length + ')' : '—'}</td><td>{${w.ws.join(', ')}}</td><td>${w.ws.length}</td><td>${w.freed.length ? w.freed.join(', ') : '—'}</td></tr>`).join('');
+    document.getElementById('ws-table').innerHTML = '<thead><tr><th>Ventana</th><th>Referencias</th><th>Page Faults</th><th>WS</th><th>|WS|</th><th>Liberadas</th></tr></thead><tbody>' + rows + '</tbody>';
+    document.getElementById('ws-output').classList.remove('hidden');
 }
-
-function runNFU(seq, nFrames) {
-    // Second Chance
-    let frames = new Array(nFrames).fill(null);
-    let used = new Array(nFrames).fill(false); // bit U per frame
-    let queue = []; // indices of frames in arrival order
-    let steps = [];
-    for(let ref of seq) {
-        let idx = frames.indexOf(ref);
-        let hit = idx >= 0;
-        let victim = null;
-        let victimFrame = -1;
-        if(!hit) {
-            let emptyIdx = frames.indexOf(null);
-            if(emptyIdx >= 0) {
-                frames[emptyIdx] = ref;
-                used[emptyIdx] = true;
-                queue.push(emptyIdx);
-            } else {
-                // Second chance
-                let found = false;
-                for(let attempt=0; attempt<queue.length*2 && !found; attempt++) {
-                    let fi = queue.shift();
-                    if(!used[fi]) {
-                        victim = frames[fi];
-                        victimFrame = fi;
-                        frames[fi] = ref;
-                        used[fi] = true;
-                        queue.push(fi);
-                        found = true;
-                    } else {
-                        used[fi] = false; // second chance
-                        queue.push(fi);
-                    }
-                }
-                if(!found) {
-                    // all had U=0 after reset, evict first
-                    let fi = queue.shift();
-                    victim = frames[fi];
-                    victimFrame = fi;
-                    frames[fi] = ref;
-                    used[fi] = true;
-                    queue.push(fi);
-                }
-            }
-        } else {
-            used[idx] = true; // update U bit
-        }
-        steps.push({ref, frames:[...frames], hit, victim, victimFrame});
-    }
-    return steps;
-}
-
-function renderResult(seq, steps, nFrames, algo) {
-    const table = document.getElementById('sim-table');
-    let totalFaults = steps.filter(s=>!s.hit).length;
-    let totalHits = steps.filter(s=>s.hit).length;
-
-    document.getElementById('sim-stats').innerHTML =
-        `<span class="badge badge-burgundy mr-2">Page Faults: ${totalFaults}</span>` +
-        `<span class="badge badge-green mr-2">Hits: ${totalHits}</span>` +
-        `<span class="badge badge-navy">Tasa Hit: ${(totalHits/steps.length*100).toFixed(1)}%</span>`;
-
-    let headerCells = '<th>Paso</th><th>Ref.</th>';
-    for(let f=0; f<nFrames; f++) headerCells += `<th>Frame ${f}</th>`;
-    headerCells += '<th>Evento</th>';
-
-    let rows = '';
-    steps.forEach((s, i) => {
-        let frameCells = '';
-        s.frames.forEach((p, fi) => {
-            let cls = 'background:#f8fafc;';
-            if(p === null) { cls='background:#f1f5f9;color:#94a3b8;'; frameCells += `<td style="${cls}">—</td>`; return; }
-            if(!s.hit && fi === s.victimFrame && i>0) {
-                // This frame was just replaced
-                cls = 'background:#fee2e2;color:#b91c1c;font-weight:bold;';
-            } else if(!s.hit && p === s.ref && s.victimFrame !== fi && !steps[i]?.hit) {
-                // newly loaded
-                cls = 'background:#fee2e2;color:#b91c1c;font-weight:bold;';
-            } else if(s.hit && p === s.ref) {
-                cls = 'background:#dcfce7;color:#15803d;font-weight:bold;';
-            }
-            frameCells += `<td style="${cls}">${p}</td>`;
-        });
-
-        // Simpler color: if fault, color the frame that has ref
-        frameCells = '';
-        s.frames.forEach((p, fi) => {
-            let style = '';
-            if(p === null) {
-                style = 'color:#94a3b8;';
-                frameCells += `<td style="${style}">—</td>`;
-                return;
-            }
-            if(p === s.ref && !s.hit) {
-                style = 'background:#fee2e2;color:#b91c1c;font-weight:bold;';
-            } else if(p === s.ref && s.hit) {
-                style = 'background:#dcfce7;color:#15803d;font-weight:bold;';
-            }
-            frameCells += `<td style="${style}">${p}</td>`;
-        });
-
-        let event = s.hit
-            ? `<td><span style="background:#dcfce7;color:#15803d;font-weight:bold;padding:2px 8px;border-radius:9999px;font-size:0.72rem;">HIT</span></td>`
-            : `<td><span style="background:#fee2e2;color:#b91c1c;font-weight:bold;padding:2px 8px;border-radius:9999px;font-size:0.72rem;">FALLO${s.victim!==null?' (víctima:'+s.victim+')':''}</span></td>`;
-        rows += `<tr><td>${i+1}</td><td style="font-weight:bold">${s.ref}</td>${frameCells}${event}</tr>`;
-    });
-
-    table.innerHTML = `<thead><tr>${headerCells}</tr></thead><tbody>${rows}</tbody>`;
-}
-
-// Auto-open first exercise on load
-window.addEventListener('DOMContentLoaded', () => {
-    // Small delay for animation
-});
 </script>
 </body>
 </html>

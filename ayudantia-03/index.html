@@ -27,10 +27,7 @@
             min-height: 100vh;
         }
 
-        h1, h2, h3, h4, h5 {
-            font-family: 'Sora', sans-serif;
-            letter-spacing: -0.02em;
-        }
+        h1, h2, h3, h4, h5 { font-family: 'Sora', sans-serif; letter-spacing: -0.02em; }
 
         .topbar {
             background: linear-gradient(90deg, rgba(0, 43, 92, 0.95), rgba(140, 29, 64, 0.92));
@@ -38,115 +35,111 @@
             border-bottom: 2px solid rgba(201, 163, 74, 0.65);
             backdrop-filter: blur(10px);
         }
-
-        .brand-title {
-            color: #ffffff;
-            font-weight: 800;
-        }
-
+        .brand-title { color: #ffffff; font-weight: 800; }
         .nav-link {
-            color: #f1f5f9;
-            padding: 0.45rem 0.85rem;
-            border-radius: 9999px;
-            transition: all 0.25s ease;
-            border: 1px solid transparent;
+            color: #f1f5f9; padding: 0.45rem 0.85rem; border-radius: 9999px;
+            transition: all 0.25s ease; border: 1px solid transparent;
         }
-
-        .nav-link:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(201, 163, 74, 0.55);
-        }
+        .nav-link:hover { color: #fff; background: rgba(255,255,255,0.12); border-color: rgba(201,163,74,0.55); }
 
         .hero-title {
             font-size: clamp(2.3rem, 6vw, 4.2rem);
             background: linear-gradient(135deg, var(--usm-navy), var(--usm-burgundy));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            -webkit-background-clip: text; background-clip: text; color: transparent;
         }
+        .hero-subtitle { color: #334155; font-weight: 500; }
+        .section-title { border-bottom-width: 3px; color: var(--usm-ink); border-color: rgba(0, 43, 92, 0.28); }
 
-        .hero-subtitle {
-            color: #334155;
-            font-weight: 500;
-        }
-
-        .section-title {
-            border-bottom-width: 3px;
-            color: var(--usm-ink);
-            border-color: rgba(0, 43, 92, 0.28);
-        }
-
-        .bg-white.p-8.rounded-xl.shadow-lg, .card-hover {
-            background: rgba(255, 255, 255, 0.9);
+        .card {
+            background: rgba(255, 255, 255, 0.92);
             border: 1px solid rgba(0, 43, 92, 0.09);
             box-shadow: 0 16px 30px rgba(15, 31, 51, 0.1);
+            border-radius: 0.75rem;
+            padding: 2rem;
             transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
-
-        .bg-white.p-8.rounded-xl.shadow-lg:hover, .card-hover:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 22px 36px rgba(15, 31, 51, 0.16);
+        .card:hover { transform: translateY(-3px); box-shadow: 0 22px 36px rgba(15, 31, 51, 0.16); }
+        @media (max-width: 640px) { .card { padding: 1.25rem; } }
+        .card-title {
+            font-size: 1.5rem; font-weight: 700; color: var(--usm-navy);
+            margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #f1f5f9;
+            display: flex; gap: 0.5rem;
         }
 
-        /* Utilidades de Color USM */
         .text-usm-navy { color: var(--usm-navy); }
         .text-usm-burgundy { color: var(--usm-burgundy); }
         .text-usm-gold { color: var(--usm-gold); }
-        
         .bg-usm-navy { background-color: var(--usm-navy); }
         .hover\:bg-usm-navy-dark:hover { background-color: #001a3b; }
-        
         .bg-usm-burgundy { background-color: var(--usm-burgundy); }
         .bg-usm-gold { background-color: var(--usm-gold); }
-
         .border-usm-navy { border-color: var(--usm-navy); }
         .border-usm-burgundy { border-color: var(--usm-burgundy); }
         .border-usm-gold { border-color: var(--usm-gold); }
 
-        .animate-fadeIn { animation: fadeIn 0.4s ease-in-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .accordion-icon { transition: transform 0.3s ease; }
+        .grid > *, .flex > * { min-width: 0; }
 
-        /* Estilos visuales para Memoria */
-        .memory-block {
-            transition: transform 0.2s;
-            border: 1px solid rgba(0,0,0,0.1);
+        .formula {
+            background: #0f172a; color: #e2e8f0;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.8rem; line-height: 1.7;
+            padding: 1rem 1.25rem; border-radius: 0.5rem;
+            overflow-x: auto; white-space: pre;
         }
-        .memory-block:hover {
-            transform: scale(1.02);
-            z-index: 10;
+        @media (max-width: 640px) { .formula { white-space: pre-wrap; word-break: break-word; font-size: 0.74rem; padding: 0.85rem 1rem; } }
+        .formula .h { color: #fcd34d; }
+        .formula .m { color: #94a3b8; }
+
+        .data-table { width: 100%; font-size: 0.85rem; border-collapse: collapse; }
+        .data-table th { background: #f1f5f9; color: var(--usm-navy); text-align: left; padding: 0.5rem 0.75rem; font-weight: 700; }
+        .data-table td { padding: 0.5rem 0.75rem; border-top: 1px solid #e2e8f0; vertical-align: top; }
+
+        .step-num {
+            flex-shrink: 0; width: 1.6rem; height: 1.6rem; border-radius: 9999px;
+            background: var(--usm-navy); color: #fff; font-size: 0.75rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
         }
+
+        /* Bloques de memoria */
+        .blocks { display: flex; gap: 2px; overflow-x: auto; padding-bottom: 2px; }
+        .blk {
+            flex: 1 0 2.6rem; min-width: 2.6rem; text-align: center;
+            font-size: 0.7rem; font-weight: 700; padding: 0.45rem 0.1rem;
+            border: 1px solid rgba(0,0,0,0.12); border-radius: 0.2rem;
+            background: #e2e8f0; color: #475569;
+        }
+        .blk small { display: block; font-weight: 500; font-size: 0.62rem; opacity: 0.85; }
+        .blk.p1 { background: #60a5fa; color: #0b2545; }
+        .blk.p2 { background: #fb923c; color: #431407; }
+        .blk.new { background: #4ade80; color: #052e16; }
+        .blk.frag { background: #fecaca; color: #7f1d1d; }
         .bg-striped-free {
-            background-image: repeating-linear-gradient(
-                45deg,
-                rgba(255, 255, 255, 0.5),
-                rgba(255, 255, 255, 0.5) 10px,
-                transparent 10px,
-                transparent 20px
-            );
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.55), rgba(255,255,255,0.55) 8px, transparent 8px, transparent 16px);
         }
+
+        .ram-stack { border: 1px solid #cbd5e1; border-radius: 0.4rem; overflow: hidden; font-size: 0.75rem; font-weight: 700; text-align: center; }
+        .ram-stack > div { padding: 0.55rem; border-bottom: 1px solid rgba(0,0,0,0.08); }
+
+        .animate-fadeIn { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .accordion-icon { transition: transform 0.3s ease; }
     </style>
 </head>
 <body class="text-slate-800">
 
     <header class="topbar sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+        <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
             <h1 class="text-xl brand-title">Ayudantía</h1>
-            <div class="space-x-2 sm:space-x-4">
-                <a href="#teoria" class="nav-link font-medium transition-colors text-xs sm:text-base">Teoría</a>
-                <a href="#conceptos" class="nav-link font-medium transition-colors text-xs sm:text-base">Conceptos</a>
-                <a href="#practica" class="nav-link font-medium transition-colors text-xs sm:text-base">Práctica</a>
+            <div class="space-x-1 sm:space-x-4">
+                <a href="#teoria" class="nav-link font-medium text-xs sm:text-base">Teoría</a>
+                <a href="#conceptos" class="nav-link font-medium text-xs sm:text-base">Conceptos</a>
+                <a href="#practica" class="nav-link font-medium text-xs sm:text-base">Práctica</a>
             </div>
         </nav>
     </header>
 
-    <main class="container mx-auto px-6 py-12 max-w-5xl">
-        
+    <main class="container mx-auto px-4 sm:px-6 py-12 max-w-5xl">
+
         <section id="intro" class="text-center mb-16">
             <h2 class="hero-title font-bold mb-4">Sistemas Operativos</h2>
             <p class="text-lg hero-subtitle max-w-3xl mx-auto flex items-center justify-center gap-3">
@@ -156,200 +149,422 @@
         </section>
 
         <!-- ========================================== -->
-        <!-- PARTE 1: TEORÍA DETALLADA                  -->
+        <!-- PARTE 1: TEORÍA                            -->
         <!-- ========================================== -->
         <section id="teoria" class="mb-20">
             <h3 class="section-title text-3xl font-bold mb-8 pb-4">Parte 1: Resumen Teórico</h3>
 
             <div class="space-y-10">
 
-                <!-- 0. Conceptos Básicos y MMU -->
-                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
-                    <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
-                        <span class="text-usm-gold">1.</span> Conceptos Básicos y la MMU
-                    </h3>
-                    
-                    <p class="text-slate-700 leading-relaxed mb-6">
-                        Antes de asignar memoria, debemos entender cómo los programas "ven" la memoria. Un proceso no usa direcciones reales de la RAM, usa direcciones simuladas.
-                    </p>
+                <!-- 1. Conceptos básicos -->
+                <div class="card">
+                    <h3 class="card-title"><span class="text-usm-gold">1.</span> Conceptos Básicos</h3>
 
                     <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
-                            <h4 class="font-bold text-usm-navy mb-2">Direcciones Lógicas vs Físicas</h4>
-                            <p class="text-sm text-slate-600 mb-3">La <strong>Dirección Lógica (Virtual)</strong> es la que genera la CPU durante la ejecución del programa. La <strong>Dirección Física</strong> es la ubicación real en la memoria RAM (los chips físicos).</p>
+                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-200 text-sm">
+                            <h4 class="font-bold text-usm-navy mb-2">La memoria y la multiprogramación</h4>
+                            <p class="text-slate-700 mb-2">Un buen uso de la memoria permite la <strong>multiprogramación</strong>: varios procesos ocupan la memoria al mismo tiempo, con accesos concurrentes y necesidades distintas (tamaño del código, peticiones dinámicas de memoria).</p>
+                            <p class="text-slate-700">La memoria es un <strong>arreglo de bytes</strong>, cada uno identificado por su dirección. El chip de RAM solo ve un flujo de referencias a direcciones físicas.</p>
                         </div>
-                        <div class="bg-usm-paper p-5 rounded-lg border-l-4 border-usm-gold shadow-sm">
-                            <h4 class="font-bold text-usm-navy mb-2">Memory Management Unit (MMU)</h4>
-                            <p class="text-sm text-slate-600">Es el dispositivo de <strong>hardware</strong> que mapea (traduce) las direcciones lógicas a direcciones físicas en tiempo de ejecución de forma transparente para el proceso.</p>
-                        </div>
-                    </div>
-
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="p-5 rounded-lg border border-slate-200">
-                            <h4 class="font-bold text-usm-burgundy mb-2">Políticas de Gestión</h4>
-                            <ul class="text-sm text-slate-600 space-y-2 list-disc pl-4">
-                                <li><strong>Ubicación (Placement):</strong> Define <em>dónde</em> cargar un proceso en la RAM (ej. algoritmos First Fit, Best Fit).</li>
-                                <li><strong>Reemplazo (Replacement):</strong> Define a qué proceso sacar de la RAM hacia el disco cuando la memoria está saturada.</li>
+                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-200 text-sm">
+                            <h4 class="font-bold text-usm-navy mb-2">¿Cuándo accede una instrucción a memoria?</h4>
+                            <ul class="space-y-2 text-slate-700">
+                                <li><strong>Búsqueda de la instrucción (Fetch):</strong> siempre.</li>
+                                <li><strong>Búsqueda de operandos (Fetch):</strong> no siempre.</li>
+                                <li><strong>Almacenamiento del resultado (WriteBack):</strong> no siempre.</li>
                             </ul>
                         </div>
-                        <div class="p-5 rounded-lg border border-slate-200">
-                            <h4 class="font-bold text-slate-700 mb-2">Overlays (Superposiciones)</h4>
-                            <p class="text-sm text-slate-600">Técnica antigua que permitía ejecutar programas más grandes que la RAM. El <strong>programador</strong> dividía el código en módulos independientes que se iban sobreescribiendo en la memoria según se necesitaban. Hoy está obsoleto porque era muy complejo de programar.</p>
-                        </div>
                     </div>
-                </div>
 
-                <!-- 1. Introducción a la Memoria Lineal -->
-                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
-                    <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
-                        <span class="text-usm-gold">2.</span> Modelo de Memoria Lineal (Contigua)
-                    </h3>
-                    
-                    <p class="text-slate-700 leading-relaxed mb-6">
-                        En la gestión de memoria lineal, la RAM se visualiza como una secuencia contigua. <strong>El requisito principal y más limitante de este modelo es que un proceso debe cargarse completamente en un solo espacio continuo de memoria</strong> para ejecutarse.
+                    <h4 class="font-bold text-usm-navy mb-3">Modelos de gestión de memoria</h4>
+                    <div class="overflow-x-auto mb-4">
+                        <table class="data-table">
+                            <thead><tr><th>Modelo</th><th>Variantes</th></tr></thead>
+                            <tbody>
+                                <tr><td>1. Memoria física manejada de forma continua</td><td>Con o sin swapping</td></tr>
+                                <tr><td>2. Unidades de asignación fijas</td><td>Particiones fijas o dinámicas; overlays</td></tr>
+                                <tr><td>3. Memoria virtual</td><td>Segmentación, paginación, segmentación paginada</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-slate-700 bg-white p-4 rounded border-l-4 border-usm-navy">
+                        Cualquiera sea el modelo, el sistema necesita mecanismos para manejar la <strong>falta de memoria física</strong> (saturación) y el <strong>swapping</strong> de las tareas y sus datos.
                     </p>
+                </div>
 
-                    <div class="grid md:grid-cols-2 gap-6 mb-4">
-                        <div class="bg-slate-50 p-5 rounded-lg border-l-4 border-usm-burgundy">
-                            <h4 class="font-bold text-usm-navy mb-2">Particiones Fijas</h4>
-                            <p class="text-sm text-slate-600 mb-2">La memoria se divide en bloques de tamaño predeterminado por el SO desde el inicio. Un proceso ocupa una partición entera, sin importar si le sobra espacio.</p>
-                            <p class="text-xs text-usm-burgundy font-bold mt-2">⚠️ Genera Fragmentación Interna.</p>
+                <!-- 2. Direcciones y MMU -->
+                <div class="card">
+                    <h3 class="card-title"><span class="text-usm-gold">2.</span> Direcciones Lógicas, Físicas y la MMU</h3>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-usm-navy mb-2">Dirección Lógica</h4>
+                            <p class="text-sm text-slate-700">Es la dirección que <strong>ve el programa</strong> (proceso) durante su ejecución. Puede ser distinta de la dirección física.</p>
                         </div>
-                        <div class="bg-slate-50 p-5 rounded-lg border-l-4 border-usm-gold">
-                            <h4 class="font-bold text-usm-navy mb-2">Particiones Dinámicas</h4>
-                            <p class="text-sm text-slate-600 mb-2">A los procesos se les asigna exactamente la cantidad de memoria que piden. Los bloques se crean y destruyen dinámicamente.</p>
-                            <p class="text-xs text-usm-gold font-bold mt-2">⚠️ Genera Fragmentación Externa.</p>
+                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-usm-navy mb-2">Dirección Física</h4>
+                            <p class="text-sm text-slate-700">Es la dirección que entra al <strong>chip de memoria</strong>, es decir, la ubicación real en la RAM.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-5 rounded-lg border-l-4 border-usm-gold bg-slate-50 mb-4">
+                        <h4 class="font-bold text-usm-navy mb-2">Memory Management Unit (MMU)</h4>
+                        <p class="text-sm text-slate-700">Es una <strong>unidad de hardware del procesador</strong> que traduce una dirección lógica a una dirección física <strong>en cada acceso a la memoria</strong>. Se ubica dentro de la CPU, entre el núcleo y el bus que lleva a la RAM.</p>
+                    </div>
+                    <p class="text-sm text-slate-700">¿Por qué hardware y no software? Por dos razones: <strong>rendimiento</strong> (la traducción ocurre en cada acceso, debe ser instantánea) y <strong>seguridad</strong> en el acceso a la memoria (un proceso no debe poder leer ni escribir la memoria de otro).</p>
+                </div>
+
+                <!-- 3. Políticas y Overlays -->
+                <div class="card">
+                    <h3 class="card-title"><span class="text-usm-gold">3.</span> Gestión de Memoria: Políticas y Overlays</h3>
+
+                    <p class="text-sm text-slate-700 mb-4">La memoria es un <strong>recurso compartido</strong> del sistema operativo: hay que asignarla a los procesos, protegerla (seguridad e integridad) y optimizar su uso, satisfaciendo las solicitudes de la forma más eficiente posible y manejando la sobrecarga (acceso al disco / swapping). La pregunta central es: <em>¿qué hacer cuando un proceso necesita espacio y la memoria física está completamente ocupada?</em></p>
+
+                    <h4 class="font-bold text-usm-navy mb-3">Las cuatro políticas vistas en clase</h4>
+                    <div class="grid sm:grid-cols-2 gap-4 mb-6 text-sm">
+                        <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                            <p class="font-bold text-usm-burgundy mb-1">1. Estructuración en varios pedazos</p>
+                            <p class="text-slate-700">Dividir el programa en pedazos independientes. Imposible de usar en la práctica.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                            <p class="font-bold text-usm-burgundy mb-1">2. Overlays</p>
+                            <p class="text-slate-700">Algunas partes del código reemplazan a otras cuando hace falta. Solo una parte del programa está en memoria física, lo que permite ejecutar un programa cuyo espacio lógico es mayor que el espacio físico disponible.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                            <p class="font-bold text-usm-burgundy mb-1">3. Gestión lineal</p>
+                            <p class="text-slate-700">Particiones fijas o dinámicas, apoyadas por una MMU simple o una MMU con control. Es el tema de esta ayudantía.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                            <p class="font-bold text-usm-burgundy mb-1">4. Memoria virtual</p>
+                            <p class="text-slate-700">El espacio del proceso se divide en segmentos, páginas o segmentos paginados. Algunas partes se pueden compartir: segmentos para intercambiar datos y bibliotecas (DLL en Windows, .so en UNIX/Linux), que requieren enlace dinámico de direcciones.</p>
+                        </div>
+                    </div>
+
+                    <h4 class="font-bold text-usm-navy mb-3">Cómo funcionan los overlays</h4>
+                    <div class="grid md:grid-cols-[14rem_1fr] gap-6 items-start">
+                        <div class="ram-stack">
+                            <div class="bg-sky-100 text-sky-900">Tabla de símbolos</div>
+                            <div class="bg-lime-200 text-lime-900">Programa principal</div>
+                            <div class="bg-green-200 text-green-900">Datos</div>
+                            <div class="bg-orange-200 text-orange-900">Manejo de overlays</div>
+                            <div class="bg-orange-300 text-orange-950" style="padding:1.6rem 0.5rem">Espacio para overlays<br><span class="font-normal">(Overlay 1, 2 o 3)</span></div>
+                        </div>
+                        <ul class="text-sm text-slate-700 space-y-2 list-disc pl-5">
+                            <li>El proceso ocupa un <strong>espacio físico de tamaño fijo</strong>.</li>
+                            <li>La <strong>tabla de símbolos</strong> indica en qué overlay está cada función que usa el programa principal.</li>
+                            <li>El <strong>código de manejo de overlays</strong>, que forma parte del propio proceso, carga y descarga dinámicamente el overlay necesario en el espacio reservado, reemplazando al anterior.</li>
+                            <li>Es decir, la división en overlays y su gestión las resuelve el programa, no la MMU.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 4. Asignación lineal y MMU -->
+                <div class="card">
+                    <h3 class="card-title"><span class="text-usm-gold">4.</span> Asignación Lineal: MMU Simple y MMU con Control</h3>
+
+                    <p class="text-sm text-slate-700 mb-4">
+                        La asignación contigua consiste en dar a cada proceso <strong>una sola zona de memoria contigua</strong> como espacio de trabajo, para su código y sus variables. Necesita dos mecanismos de hardware:
+                    </p>
+                    <ul class="text-sm text-slate-700 space-y-1 list-disc pl-5 mb-4">
+                        <li>Uno de <strong>traducción</strong> de dirección lógica a física: la <strong>MMU Simple</strong>.</li>
+                        <li>Uno de <strong>control</strong> que evite que un proceso se desborde hacia la memoria de otro: la <strong>MMU con Control</strong>.</li>
+                    </ul>
+                    <p class="text-sm text-slate-700 mb-6">Con este hardware, la gestión de direcciones es rápida y la <strong>reubicación del proceso es fácil</strong> (basta con cambiar el registro BASE), lo que simplifica el Swap-In y el Swap-Out.</p>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-200 text-sm">
+                            <h4 class="font-bold text-usm-burgundy mb-3">MMU Simple</h4>
+                            <ul class="space-y-2 text-slate-700 mb-3">
+                                <li><strong>CPU en modo sistema:</strong> acceso directo, la dirección se usa tal cual (el SO ve la memoria física).</li>
+                                <li><strong>CPU en modo usuario:</strong> la dirección lógica es un <em>offset</em> y la MMU le suma el registro BASE.</li>
+                            </ul>
+                            <div class="formula"><span class="h">Dir. física = BASE + Dir. lógica (offset)</span></div>
+                        </div>
+                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-200 text-sm">
+                            <h4 class="font-bold text-usm-burgundy mb-3">MMU con Control</h4>
+                            <p class="text-slate-700 mb-2"><strong>Objetivo:</strong> controlar que un proceso no salga de su espacio de memoria. Se agrega un registro <strong>LÍMITE</strong>:</p>
+                            <ol class="space-y-2 text-slate-700">
+                                <li class="flex gap-3"><span class="step-num">1</span><span>Si el offset es menor que el límite, se calcula BASE + offset y se accede a la RAM.</span></li>
+                                <li class="flex gap-3"><span class="step-num">2</span><span>Si no, se genera un <strong>TRAP</strong>: el SO toma el control y decide qué acción corresponde (normalmente, un error del proceso).</span></li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="formula mb-6"><span class="m">// Lógica de la MMU con control (modo usuario)</span>
+if (dir_logica &lt; LIMITE)
+    dir_fisica = BASE + dir_logica;   <span class="m">// acceso permitido</span>
+else
+    TRAP();                           <span class="m">// el SO decide: error del proceso</span></div>
+
+                    <h4 class="font-bold text-usm-navy mb-3">Organización de la RAM</h4>
+                    <div class="grid md:grid-cols-[14rem_1fr] gap-6 items-start">
+                        <div class="ram-stack">
+                            <div class="bg-teal-200 text-teal-900">Vectores de interrupción</div>
+                            <div class="bg-amber-200 text-amber-900" style="padding:1.2rem 0.5rem">Sistema Operativo</div>
+                            <div class="bg-sky-300 text-sky-950" style="padding:2.2rem 0.5rem">Memoria libre</div>
+                        </div>
+                        <div class="text-sm text-slate-700 space-y-3">
+                            <p><strong>Vectores de interrupción:</strong> enlaces hacia las rutinas de gestión de interrupciones y llamadas al sistema (System Calls).</p>
+                            <p><strong>Sistema Operativo:</strong> espacio ocupado por el sistema y sus datos.</p>
+                            <p><strong>Memoria libre:</strong> la que se reparte entre los procesos y sus datos.</p>
+                            <p class="bg-slate-50 p-3 rounded border border-slate-200"><strong>Organización física:</strong> la RAM está formada por varios chips, y los bytes consecutivos se reparten entre ellos (byte 0 en el chip 1, byte 1 en el chip 2, etc.), de modo que se leen varios bytes en paralelo: con 4 chips se obtienen 32 bits por acceso. En <strong>dual channel</strong>, dos placas de memoria trabajan en paralelo, cada una con su grupo de bytes.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- 2. Tipos de Fragmentación -->
-                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
-                    <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
-                        <span class="text-usm-gold">3.</span> El Problema de la Fragmentación
-                    </h3>
+                <!-- 5. Particiones fijas y fragmentación -->
+                <div class="card">
+                    <h3 class="card-title"><span class="text-usm-gold">5.</span> Particiones de Tamaño Fijo y Fragmentación</h3>
+
+                    <div class="grid md:grid-cols-[14rem_1fr] gap-6 items-start mb-6">
+                        <div class="ram-stack">
+                            <div class="bg-teal-200 text-teal-900">Vectores de interrupción</div>
+                            <div class="bg-amber-200 text-amber-900">Sistema Operativo</div>
+                            <div class="bg-sky-100 text-sky-900">Partición 8KB</div>
+                            <div class="bg-sky-100 text-sky-900">Partición 8KB</div>
+                            <div class="bg-sky-200 text-sky-900">Partición 16KB</div>
+                            <div class="bg-sky-200 text-sky-900">Partición 32KB</div>
+                            <div class="bg-sky-300 text-sky-950">Partición 128KB</div>
+                            <div class="bg-sky-300 text-sky-950" style="padding:1rem 0.5rem">Partición 512KB</div>
+                        </div>
+                        <div class="text-sm text-slate-700 space-y-3">
+                            <p>La memoria libre se divide de antemano en <strong>varias particiones de distintos tamaños</strong>, pensadas para distintos tipos de procesos. El sistema asigna al proceso una partición donde quepa.</p>
+                            <p class="font-bold text-usm-navy">Evaluación (diapositiva 27):</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>Si el proceso no ocupa toda su partición, se produce <strong>fragmentación interna</strong>.</li>
+                                <li>Si quedan particiones libres donde no cabe ningún proceso, se produce <strong>fragmentación externa</strong>.</li>
+                                <li>La fragmentación hace que la memoria se use de forma poco eficiente.</li>
+                                <li>Es muy difícil para el sistema saber <em>a priori</em> el tamaño de los procesos.</li>
+                            </ul>
+                            <p class="bg-red-50 text-red-900 p-3 rounded border border-red-200"><strong>Ojo:</strong> las particiones fijas producen <strong>ambos</strong> tipos de fragmentación, no solo la interna.</p>
+                        </div>
+                    </div>
 
                     <div class="grid md:grid-cols-2 gap-8">
                         <div>
-                            <h4 class="font-bold text-usm-burgundy mb-3 flex items-center gap-2">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
-                                Fragmentación Interna
-                            </h4>
-                            <p class="text-sm text-slate-600 mb-4">Ocurre cuando el bloque asignado es más grande que el proceso. El espacio sobrante <strong>dentro del bloque</strong> se desperdicia porque no se le puede asignar a nadie más.</p>
-                            <div class="h-8 w-full border border-slate-300 rounded flex overflow-hidden text-xs text-white font-bold text-center">
-                                <div class="bg-usm-navy w-1/2 flex items-center justify-center">Proceso (50KB)</div>
-                                <div class="bg-red-300 w-1/2 flex items-center justify-center text-red-900 bg-striped-free">Espacio desperdiciado (50KB)</div>
+                            <h4 class="font-bold text-usm-burgundy mb-2">Fragmentación Interna</h4>
+                            <p class="text-sm text-slate-700 mb-4">Zona de memoria que el proceso <strong>no usa dentro de su propia partición</strong>. Es memoria perdida para el sistema.</p>
+                            <div class="h-9 w-full border border-slate-300 rounded flex overflow-hidden text-xs font-bold text-center">
+                                <div class="bg-usm-navy text-white w-3/5 flex items-center justify-center">Proceso (20KB)</div>
+                                <div class="bg-red-300 text-red-900 w-2/5 flex items-center justify-center bg-striped-free">Perdido (12KB)</div>
                             </div>
-                            <p class="text-xs text-center text-slate-400 mt-1">Ej: Bloque fijo de 100KB</p>
+                            <p class="text-xs text-center text-slate-500 mt-1">Partición fija de 32KB</p>
                         </div>
-
                         <div>
-                            <h4 class="font-bold text-usm-navy mb-3 flex items-center gap-2">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
-                                Fragmentación Externa
-                            </h4>
-                            <p class="text-sm text-slate-600 mb-4">A medida que los procesos entran y salen de la RAM, van dejando <strong>huecos vacíos esparcidos</strong>. Hay memoria total suficiente, pero no está contigua, impidiendo cargar nuevos procesos.</p>
-                            <div class="h-8 w-full border border-slate-300 rounded flex overflow-hidden text-xs text-white font-bold text-center">
-                                <div class="bg-usm-navy w-1/3 flex items-center justify-center">P1 (30KB)</div>
-                                <div class="bg-slate-200 w-1/6 flex items-center justify-center text-slate-600 bg-striped-free">15KB</div>
-                                <div class="bg-usm-burgundy w-1/3 flex items-center justify-center">P2 (30KB)</div>
-                                <div class="bg-slate-200 w-1/6 flex items-center justify-center text-slate-600 bg-striped-free">15KB</div>
+                            <h4 class="font-bold text-usm-navy mb-2">Fragmentación Externa</h4>
+                            <p class="text-sm text-slate-700 mb-4">Zona de memoria libre <strong>entre procesos</strong> probablemente perdida: es muy poco probable encontrar un proceso que quepa en ella.</p>
+                            <div class="h-9 w-full border border-slate-300 rounded flex overflow-hidden text-xs font-bold text-center">
+                                <div class="bg-usm-navy text-white w-1/3 flex items-center justify-center">P1</div>
+                                <div class="bg-slate-200 text-slate-700 w-1/6 flex items-center justify-center bg-striped-free">15KB</div>
+                                <div class="bg-usm-burgundy text-white w-1/3 flex items-center justify-center">P2</div>
+                                <div class="bg-slate-200 text-slate-700 w-1/6 flex items-center justify-center bg-striped-free">15KB</div>
                             </div>
-                            <p class="text-xs text-center text-slate-400 mt-1">Total libre: 30KB. ¡Pero un proceso de 20KB no cabe!</p>
+                            <p class="text-xs text-center text-slate-500 mt-1">Hay 30KB libres, pero un proceso de 20KB no cabe en ningún hueco.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- 3. Algoritmos de Asignación y Soluciones -->
-                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
-                    <h3 class="text-2xl font-bold text-usm-navy mb-6 flex items-center gap-2 border-b-2 border-slate-100 pb-2">
-                        <span class="text-usm-gold">4.</span> Asignación, Mitigación y Conclusión
-                    </h3>
-                    
-                    <div class="mb-8">
-                        <h4 class="font-bold text-slate-800 mb-3">Políticas de Ubicación (Algoritmos de Asignación)</h4>
-                        <ul class="space-y-3 text-sm text-slate-700 list-disc pl-5">
-                            <li><strong class="text-usm-navy">First Fit (Primer Ajuste):</strong> Busca desde el inicio de la RAM y asigna el <em>primer hueco</em> que sea lo suficientemente grande. Es rápido pero satura y fragmenta el inicio de la memoria.</li>
-                            <li><strong class="text-usm-navy">Best Fit (Mejor Ajuste):</strong> Busca en toda la memoria el hueco <em>más pequeño que sirva</em>. Conserva los bloques grandes para procesos pesados, pero deja "astillas" diminutas e inútiles por todas partes.</li>
-                            <li><strong class="text-usm-navy">Worst Fit (Peor Ajuste):</strong> Busca siempre el hueco <em>más grande disponible</em>. La idea es que el hueco resultante sea suficientemente grande para ser útil, pero agota rápidamente el espacio para procesos grandes.</li>
+                <!-- 6. Particiones dinámicas -->
+                <div class="card">
+                    <h3 class="card-title"><span class="text-usm-gold">6.</span> Particiones Dinámicas</h3>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-6 text-sm">
+                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-usm-burgundy mb-2">Objetivo</h4>
+                            <p class="text-slate-700 mb-2">Minimizar la fragmentación en general:</p>
+                            <ul class="list-disc pl-5 space-y-1 text-slate-700">
+                                <li><strong>Interna:</strong> ajustar la partición al tamaño real del proceso.</li>
+                                <li><strong>Externa:</strong> evitar perder memoria entre los procesos.</li>
+                            </ul>
+                        </div>
+                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-usm-burgundy mb-2">Funcionamiento</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-slate-700">
+                                <li>El sistema mantiene tablas de particiones asignadas y libres.</li>
+                                <li>Las particiones se crean <strong>bajo demanda</strong>: al cargar la tarea, en un Swap-In o cuando el proceso pide más memoria.</li>
+                                <li>Usa el mismo hardware que las particiones fijas: la <strong>MMU con control</strong>.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h4 class="font-bold text-usm-navy mb-2">Memoria dividida en bloques</h4>
+                    <p class="text-sm text-slate-700 mb-3">La memoria se divide en <strong>unidades de asignación de tamaño fijo (bloques</strong>, ej. 4KB). Una partición es un <strong>conjunto de bloques contiguos</strong>.</p>
+                    <div class="blocks mb-1">
+                        <div class="blk">1</div><div class="blk">2</div><div class="blk">3</div>
+                        <div class="blk p1">4</div><div class="blk p1">5</div><div class="blk p1">6</div>
+                        <div class="blk">7</div><div class="blk">8</div>
+                        <div class="blk p2">9</div><div class="blk p2">10</div>
+                        <div class="blk">11</div>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-6"><span class="font-bold text-blue-600">Azul:</span> Partición 1 (bloques 4-6). <span class="font-bold text-orange-600">Naranja:</span> Partición 2 (bloques 9-10). Gris: bloques libres.</p>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-200 text-sm">
+                            <h4 class="font-bold text-usm-burgundy mb-2">Representación 1: arreglo de bits</h4>
+                            <p class="text-slate-700 mb-3">Un bit por bloque: <strong>0 = libre, 1 = ocupado</strong>. Para la memoria de arriba:</p>
+                            <div class="formula mb-3">0 0 0 1 1 1 0 0 1 1 0</div>
+                            <p class="text-slate-700 mb-2"><strong>Problema:</strong> ocupa memoria adicional. Ejemplo de la clase, con 4GB y bloques de 8KB:</p>
+                            <div class="formula">bloques = 4GB / 8KB
+        = 524.288
+m       = 524.288 / 8
+        = 65.536 B = <span class="h">64KB</span></div>
+                            <p class="text-xs text-slate-500 mt-2">Se divide por 8 porque un byte indexa 8 bloques.</p>
+                        </div>
+                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-200 text-sm">
+                            <h4 class="font-bold text-usm-burgundy mb-2">Representación 2: lista en los bloques libres</h4>
+                            <p class="text-slate-700 mb-3">Más eficiente y <strong>sin memoria adicional</strong>: se guarda la información de gestión <strong>dentro de los propios bloques libres</strong>. Un puntero <code>Head</code> apunta a la primera zona libre, y cada zona libre guarda:</p>
+                            <p class="text-slate-700 mb-2"><strong>cantidad de bloques libres consecutivos / próxima zona libre</strong></p>
+                            <div class="formula mb-3">Head -> Bloque 1
+Bloque 1:  3 / 7    <span class="m">// 1-3 libres</span>
+Bloque 7:  2 / 11   <span class="m">// 7-8 libres</span>
+Bloque 11: 1 / fin</div>
+                            <p class="text-slate-700">Al asignar una partición de 1 bloque en el bloque 1, <code>Head</code> pasa al bloque 2, que ahora dice <code>2 / 7</code>.</p>
+                        </div>
+                    </div>
+
+                    <h4 class="font-bold text-usm-navy mb-2">¿Cuántos bloques pide un proceso?</h4>
+                    <p class="text-sm text-slate-700 mb-3">Para una solicitud de K KB con bloques de tamaño <code>blocksize</code>:</p>
+                    <div class="formula mb-3">Si K es múltiplo de blocksize:   b = K / blocksize
+Si no:                           b = floor(K / blocksize) + 1</div>
+                    <p class="text-sm text-slate-700 mb-2">Luego hay que buscar un lugar con <strong>b bloques contiguos libres</strong>. Como la memoria está fragmentada, puede que no exista ningún lugar con suficientes bloques, o que existan varios. Por eso el sistema necesita un <strong>algoritmo de búsqueda</strong> (secuencial sobre la estructura de gestión).</p>
+                    <p class="text-sm text-slate-700 bg-slate-50 p-3 rounded border-l-4 border-usm-navy">Como el último bloque puede quedar a medio usar, las particiones dinámicas <strong>reducen</strong> la fragmentación interna a menos de un bloque, pero no la eliminan.</p>
+                </div>
+
+                <!-- 7. Algoritmos -->
+                <div class="card">
+                    <h3 class="card-title"><span class="text-usm-gold">7.</span> Algoritmos de Asignación: First, Best y Worst Fit</h3>
+                    <p class="text-sm text-slate-700 mb-6">Ejemplo de la clase: hay que asignar una nueva partición sobre la memoria anterior (libres: bloques 1-3, 7-8 y 11).</p>
+
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-bold text-usm-navy mb-1">First Fit</h4>
+                            <p class="text-sm text-slate-700 mb-3">Busca el <strong>primer lugar</strong> con al menos b bloques libres consecutivos. Es el más rápido, porque no recorre toda la memoria. Con b = 2:</p>
+                            <div class="blocks mb-1">
+                                <div class="blk new">1</div><div class="blk new">2</div><div class="blk frag">3</div>
+                                <div class="blk p1">4</div><div class="blk p1">5</div><div class="blk p1">6</div>
+                                <div class="blk">7</div><div class="blk">8</div>
+                                <div class="blk p2">9</div><div class="blk p2">10</div>
+                                <div class="blk">11</div>
+                            </div>
+                            <p class="text-xs text-slate-500">Usa los bloques 1-2 y deja el bloque 3 aislado: <span class="text-red-700 font-bold">fragmentación externa</span>, una zona difícil de asignar.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-usm-navy mb-1">Best Fit</h4>
+                            <p class="text-sm text-slate-700 mb-3">Busca el lugar donde cabe la partición dejando el <strong>remanente más pequeño posible</strong>. Debe recorrer toda la lista. Con b = 2:</p>
+                            <div class="blocks mb-1">
+                                <div class="blk">1</div><div class="blk">2</div><div class="blk">3</div>
+                                <div class="blk p1">4</div><div class="blk p1">5</div><div class="blk p1">6</div>
+                                <div class="blk new">7</div><div class="blk new">8</div>
+                                <div class="blk p2">9</div><div class="blk p2">10</div>
+                                <div class="blk">11</div>
+                            </div>
+                            <p class="text-xs text-slate-500">Usa los bloques 7-8 (remanente 0) y conserva la zona de 3 bloques. Aun así, <span class="text-red-700 font-bold">en general Best Fit también produce fragmentación externa</span>: deja muchos remanentes pequeños.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-usm-navy mb-1">Worst Fit</h4>
+                            <p class="text-sm text-slate-700 mb-3">Busca el lugar que deja el <strong>remanente más grande posible</strong>, con la idea de que lo que sobra siga siendo útil. Con b = 1:</p>
+                            <div class="blocks mb-1">
+                                <div class="blk new">1</div><div class="blk frag">2</div><div class="blk frag">3</div>
+                                <div class="blk p1">4</div><div class="blk p1">5</div><div class="blk p1">6</div>
+                                <div class="blk">7</div><div class="blk">8</div>
+                                <div class="blk p2">9</div><div class="blk p2">10</div>
+                                <div class="blk">11</div>
+                            </div>
+                            <p class="text-xs text-slate-500">Usa el bloque 1 dentro de la zona más grande (1-3). Los bloques 2-3 quedan como <span class="text-red-700 font-bold">fragmentación externa</span>, y las zonas grandes se van agotando para los procesos que las necesitan.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. Compactación y Swapping -->
+                <div class="card">
+                    <h3 class="card-title"><span class="text-usm-gold">8.</span> Soluciones a la Fragmentación: Compactación y Swapping</h3>
+
+                    <p class="text-sm text-slate-700 mb-6">La fragmentación es un problema importante: <strong>una asignación puede fallar aunque físicamente exista el espacio</strong>, porque no hay una zona contigua que pueda contener la partición.</p>
+
+                    <h4 class="font-bold text-usm-navy mb-2">Compactar la memoria</h4>
+                    <p class="text-sm text-slate-700 mb-3">Mover las particiones hacia un extremo para juntar todo el espacio libre en una sola zona:</p>
+                    <div class="blocks mb-1">
+                        <div class="blk new">1</div><div class="blk p1">2</div><div class="blk p1">3</div><div class="blk p1">4</div>
+                        <div class="blk p2">5</div><div class="blk p2">6</div>
+                        <div class="blk">7</div><div class="blk">8</div><div class="blk">9</div><div class="blk">10</div><div class="blk">11</div>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-4">Después de compactar (el bloque 1 lo ocupa la partición nueva del ejemplo de Worst Fit): la Partición 1 pasa de 4-6 a 2-4, la Partición 2 de 9-10 a 5-6, y quedan libres los bloques 7-11 contiguos.</p>
+
+                    <div class="p-5 bg-slate-50 rounded-lg border border-slate-200 text-sm mb-8">
+                        <p class="font-bold text-usm-burgundy mb-2">Problemas de compactar</p>
+                        <ul class="list-disc pl-5 space-y-2 text-slate-700 mb-3">
+                            <li>Hay que <strong>modificar el registro BASE</strong> de cada proceso que se mueve.</li>
+                            <li><strong>Mover los bloques tiene un costo</strong> y necesita un mecanismo de hardware: el <strong>DMA</strong> (Direct Memory Access).</li>
+                            <li>Si la memoria está sobrecargada, la <strong>fragmentación reaparece rápidamente</strong>.</li>
                         </ul>
+                        <p class="text-slate-700 mb-2">Cálculo de la clase, con un costo de acceso a memoria de 50ns. Cada byte requiere una lectura y una escritura, de ahí el factor 2:</p>
+                        <div class="formula">t(1MB) = 2 x 50ns x 1024^2 = 104.857.600 ns  ~ <span class="h">105 ms</span>
+t(1GB) = 105 ms x 1024                      ~ <span class="h">107 s ~ 1 min 48 s</span></div>
                     </div>
 
-                    <div class="bg-slate-900 p-6 rounded-xl shadow-inner mb-6 border border-slate-700">
-                        <h4 class="font-bold text-usm-gold text-lg mb-3">Soluciones a la Fragmentación Externa</h4>
-                        
-                        <p class="text-sm text-slate-100 mb-3">
-                            <strong class="text-white">Compactación:</strong> Consiste en mover todos los procesos activos hacia un extremo de la memoria, empujando todos los huecos libres para formar un solo gran bloque continuo. 
-                        </p>
-                        <p class="text-sm text-slate-100 border-l-2 border-usm-burgundy pl-3 mb-5">
-                            <em>Por qué es mala idea:</em> Es computacionalmente excesivamente costosa. Requiere detener el sistema por completo (alto overhead) para copiar megabytes de información, y exige hardware complejo para recalcular (relocalizar) las direcciones de memoria de todos los programas al vuelo.
-                        </p>
-                        
-                        <p class="text-sm text-slate-100 mb-3">
-                            <strong class="text-white">Swapping (Intercambio):</strong> Si la memoria está llena, el SO expulsa temporalmente procesos inactivos o bloqueados al disco duro (swap file).
-                        </p>
-                        <p class="text-sm text-slate-100 border-l-2 border-usm-burgundy pl-3">
-                            <em>Por qué es problemático:</em> El disco duro es extremadamente lento en comparación a la RAM, desplomando el rendimiento del sistema. Además, al traer el proceso de vuelta, es muy difícil ubicarlo en la <em>misma</em> dirección física, lo que requiere relocalización dinámica.
-                        </p>
+                    <h4 class="font-bold text-usm-navy mb-2">Swapping</h4>
+                    <div class="grid md:grid-cols-2 gap-6 mb-4 text-sm">
+                        <div class="p-4 rounded-lg border border-slate-200">
+                            <p class="font-bold text-usm-burgundy mb-1">Swap-Out</p>
+                            <p class="text-slate-700">Descargar desde la memoria central hacia una memoria secundaria persistente todo o parte del espacio de trabajo de un proceso, normalmente a una zona especial del disco (<strong>zona de swap</strong>).</p>
+                        </div>
+                        <div class="p-4 rounded-lg border border-slate-200">
+                            <p class="font-bold text-usm-burgundy mb-1">Swap-In</p>
+                            <p class="text-slate-700">Cargar desde la zona de swap hacia la memoria central la parte, o las partes, de un proceso que se había descargado.</p>
+                        </div>
                     </div>
 
-                    <div class="bg-usm-burgundy text-white p-6 rounded-xl shadow-lg text-center">
-                        <h4 class="font-bold text-xl mb-2 flex justify-center items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                            Conclusión: El fin de la Memoria Lineal
-                        </h4>
-                        <p class="text-sm text-slate-100 leading-relaxed">
-                            Debido a la ineficiencia crónica de la fragmentación, lo costoso de la compactación y el impacto negativo del swapping en el rendimiento, la gestión de memoria lineal contigua <strong>está obsoleta</strong> para sistemas multiprogramados. Esta problemática dio paso al desarrollo de la <strong>Memoria Virtual (Paginación y Segmentación)</strong>, un modelo moderno que rompe la regla de la contigüidad, permitiendo dividir los procesos en pequeños pedazos dispersos por toda la RAM física, resolviendo definitivamente la fragmentación externa.
-                        </p>
+                    <div class="grid md:grid-cols-2 gap-6 text-sm">
+                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-200">
+                            <p class="font-bold text-usm-burgundy mb-2">Problemas del swapping</p>
+                            <ul class="list-disc pl-5 space-y-2 text-slate-700">
+                                <li>Cargar y descargar es caro: un disco duro es <strong>un millón de veces más lento</strong> que la RAM, y un swap completo (Out + In) es muy costoso.</li>
+                                <li>Requiere <strong>DMA</strong> para paralelizar la transferencia con la CPU.</li>
+                                <li>Solo conviene si hay <strong>al menos otro proceso en memoria listo para ejecutarse</strong> mientras se hace el swap.</li>
+                                <li>Solo es útil si el proceso puede volver a <strong>otra zona de memoria</strong>, lo que exige traducir las direcciones del programa (instrucciones, punteros...): un <strong>Dynamic Linker</strong>.</li>
+                            </ul>
+                        </div>
+                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-200">
+                            <p class="font-bold text-usm-burgundy mb-2">¿Qué proceso se descarga?</p>
+                            <ul class="list-disc pl-5 space-y-2 text-slate-700">
+                                <li>Se necesita un <strong>algoritmo de elección</strong>, con criterios como ocupación de memoria, prioridades o tiempo de ejecución.</li>
+                                <li>Se pueden usar algoritmos parecidos a los de planificación de procesos (Round Robin, etc.).</li>
+                                <li>No es una decisión fácil: si el sistema tiene que volver a cargar un proceso que acaba de descargar, pierde mucho tiempo y eficiencia.</li>
+                            </ul>
+                        </div>
                     </div>
+                </div>
+
+                <!-- 9. Conclusión -->
+                <div class="bg-usm-burgundy text-white p-6 sm:p-8 rounded-xl shadow-lg">
+                    <h4 class="font-bold text-xl mb-3 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                        Conclusión: los límites de la memoria lineal
+                    </h4>
+                    <div class="grid sm:grid-cols-2 gap-4 text-sm text-slate-100 mb-4">
+                        <div>
+                            <p class="font-bold text-white mb-1">Es una tarea difícil</p>
+                            <p>Fragmentación, algoritmos de asignación y compactación de la memoria.</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-white mb-1">No es muy eficiente</p>
+                            <p>Costo de compactar, costo del swapping y costo del linker dinámico, que puede ser importante si los programas se reubican con frecuencia.</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-100 leading-relaxed">Por eso se usa otro tipo de gestión: la <strong class="text-white">Memoria Virtual</strong> (segmentación y paginación), que elimina la exigencia de que el proceso ocupe una sola zona contigua.</p>
                 </div>
 
             </div>
         </section>
 
         <!-- ========================================== -->
-        <!-- PARTE 2: PREGUNTAS DE AYUDANTÍA (ACORDEONES)-->
+        <!-- PARTE 2: PREGUNTAS CONCEPTUALES            -->
         <!-- ========================================== -->
         <section id="conceptos" class="mb-20">
             <h3 class="section-title text-3xl font-bold mb-8 pb-4">Parte 2: Análisis de Conceptos Clave</h3>
-            
-            <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
-                <p class="text-slate-600 mb-6 text-sm">Preguntas teóricas típicas sobre la gestión de memoria lineal y sus mitigaciones. Haz clic en cada pregunta para revelar el análisis detallado.</p>
-
-                <div class="space-y-4">
-                    <!-- Q1 -->
-                    <div class="border border-slate-200 rounded-xl overflow-hidden transition-all duration-300 shadow-sm">
-                        <button onclick="toggleAccordion('q1', this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 font-bold text-usm-navy flex justify-between items-center transition-colors">
-                            <span>1. ¿Por qué la compactación no se realiza constantemente si resuelve la fragmentación externa?</span>
-                            <svg class="w-5 h-5 text-slate-400 accordion-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
-                        </button>
-                        <div id="q1" class="hidden px-6 py-5 bg-white border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
-                            <p>Porque <strong>es una operación extremadamente costosa (Overhead muy alto)</strong>. Para compactar, el Sistema Operativo debe copiar y mover físicamente megabytes o gigabytes de datos de un lado a otro en la RAM. Durante este proceso, los programas de usuario no pueden ejecutarse. Además, requiere hardware avanzado (registros de relocalización en la MMU) para recalcular las direcciones de memoria de los programas sobre la marcha.</p>
-                        </div>
-                    </div>
-
-                    <!-- Q2 -->
-                    <div class="border border-slate-200 rounded-xl overflow-hidden transition-all duration-300 shadow-sm">
-                        <button onclick="toggleAccordion('q2', this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 font-bold text-usm-navy flex justify-between items-center transition-colors">
-                            <span>2. ¿Qué problemas genera el "Swapping" (Intercambio) sobre las instrucciones de los procesos?</span>
-                            <svg class="w-5 h-5 text-slate-400 accordion-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
-                        </button>
-                        <div id="q2" class="hidden px-6 py-5 bg-white border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
-                            <p>Cuando un proceso es enviado al disco y luego traído de vuelta a la RAM, <strong>es muy probable que no pueda volver a cargarse en la misma dirección física</strong> que ocupaba antes (porque ese espacio ya podría estar ocupado por otro proceso). Si el código compilado utilizaba direcciones físicas rígidas (ej. punteros a variables absolutas), el programa fallará al volver del Swap. Esto exige que el código deba ser reubicable dinámicamente.</p>
-                        </div>
-                    </div>
-
-                    <!-- Q3 -->
-                    <div class="border border-slate-200 rounded-xl overflow-hidden transition-all duration-300 shadow-sm">
-                        <button onclick="toggleAccordion('q3', this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 font-bold text-usm-navy flex justify-between items-center transition-colors">
-                            <span>3. ¿Es el programador responsable de gestionar la MMU (Memory Management Unit)?</span>
-                            <svg class="w-5 h-5 text-slate-400 accordion-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
-                        </button>
-                        <div id="q3" class="hidden px-6 py-5 bg-white border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
-                            <p><strong>No.</strong> A diferencia de las antiguas técnicas de <em>Overlays</em> (donde el programador debía dividir su código manualmente para que cupiera en RAM), la MMU es un componente de hardware administrado íntegramente por el <strong>Sistema Operativo</strong>. El programador solo trabaja con <em>direcciones lógicas</em> (el código asume que tiene toda la memoria para él), y la MMU se encarga de la traducción a las direcciones físicas reales de manera totalmente transparente e invisible para la aplicación.</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="card">
+                <p class="text-slate-600 mb-6 text-sm">Haz clic en cada pregunta para revelar el análisis.</p>
+                <div class="space-y-4" id="accordion-list"></div>
             </div>
         </section>
 
@@ -357,128 +572,171 @@
         <!-- PARTE 3: EJERCITACIÓN PRÁCTICA             -->
         <!-- ========================================== -->
         <section id="practica" class="mb-20">
-            <h3 class="section-title text-3xl font-bold mb-8 pb-4">Parte 3: Ejercitación Práctica (Ayudantía 4)</h3>
-            <p class="text-slate-600 mb-8 max-w-3xl">Ponte a prueba resolviendo el ejercicio central de algoritmos de memoria. Haz clic en "Mostrar Resolución" para ver el análisis de cada algoritmo paso a paso.</p>
+            <h3 class="section-title text-3xl font-bold mb-8 pb-4">Parte 3: Ejercitación Práctica</h3>
+            <p class="text-slate-600 mb-8 max-w-3xl">Ponte a prueba resolviendo estos ejercicios. Haz clic en "Mostrar Desarrollo" para ver la solución paso a paso.</p>
 
             <div class="space-y-10">
-                
-                <div class="bg-white p-8 rounded-xl shadow-lg card-hover border border-slate-200">
-                    <span class="inline-block bg-slate-100 text-usm-navy border border-usm-navy text-xs font-bold px-3 py-1 rounded-full mb-4">Ejercicio Central</span>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">Asignación de Memoria Lineal</h3>
-                    
-                    <p class="text-slate-700 text-sm mb-4">
-                        Suponga que al instante t quedan los siguientes bloques libres en la memoria física (en este orden exacto):
-                    </p>
-                    
+
+                <!-- Ejercicio 1: First / Best / Worst -->
+                <div class="card">
+                    <span class="inline-block bg-slate-100 text-usm-navy border border-usm-navy text-xs font-bold px-3 py-1 rounded-full mb-4">Ejercicio 1: Algoritmos de Asignación</span>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">First Fit, Best Fit y Worst Fit</h3>
+                    <p class="text-slate-700 text-sm mb-4">En el instante t quedan los siguientes bloques libres en memoria física, en este orden:</p>
                     <div class="flex flex-wrap gap-2 mb-6">
-                        <div class="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-center shadow-sm">
-                            <div class="text-xs text-slate-500">Bloque 1</div>
-                            <div class="font-bold text-usm-navy">100 KB</div>
-                        </div>
-                        <div class="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-center shadow-sm">
-                            <div class="text-xs text-slate-500">Bloque 2</div>
-                            <div class="font-bold text-usm-navy">500 KB</div>
-                        </div>
-                        <div class="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-center shadow-sm">
-                            <div class="text-xs text-slate-500">Bloque 3</div>
-                            <div class="font-bold text-usm-navy">200 KB</div>
-                        </div>
-                        <div class="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-center shadow-sm">
-                            <div class="text-xs text-slate-500">Bloque 4</div>
-                            <div class="font-bold text-usm-navy">300 KB</div>
-                        </div>
-                        <div class="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-center shadow-sm">
-                            <div class="text-xs text-slate-500">Bloque 5</div>
-                            <div class="font-bold text-usm-navy">600 KB</div>
-                        </div>
+                        <div class="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-center shadow-sm"><div class="text-xs text-slate-500">Bloque 1</div><div class="font-bold text-usm-navy">100 KB</div></div>
+                        <div class="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-center shadow-sm"><div class="text-xs text-slate-500">Bloque 2</div><div class="font-bold text-usm-navy">500 KB</div></div>
+                        <div class="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-center shadow-sm"><div class="text-xs text-slate-500">Bloque 3</div><div class="font-bold text-usm-navy">200 KB</div></div>
+                        <div class="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-center shadow-sm"><div class="text-xs text-slate-500">Bloque 4</div><div class="font-bold text-usm-navy">300 KB</div></div>
+                        <div class="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-center shadow-sm"><div class="text-xs text-slate-500">Bloque 5</div><div class="font-bold text-usm-navy">600 KB</div></div>
                     </div>
-
-                    <p class="text-slate-700 text-sm mb-4">
-                        Llegan 4 procesos en el siguiente orden (P1, P2, P3, P4) con los siguientes requerimientos de memoria:
-                    </p>
-
-                    <table class="w-full max-w-sm text-sm text-left border-collapse border border-slate-200 bg-white mb-6 shadow-sm">
-                        <thead class="bg-slate-50 text-usm-navy">
-                            <tr>
-                                <th class="border border-slate-200 px-4 py-2">Proceso</th>
-                                <th class="border border-slate-200 px-4 py-2 text-center">Memoria Requerida</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td class="border border-slate-200 px-4 py-2 font-bold text-usm-burgundy">P1</td><td class="border border-slate-200 px-4 py-2 text-center font-mono">212 KB</td></tr>
-                            <tr><td class="border border-slate-200 px-4 py-2 font-bold text-usm-burgundy">P2</td><td class="border border-slate-200 px-4 py-2 text-center font-mono">417 KB</td></tr>
-                            <tr><td class="border border-slate-200 px-4 py-2 font-bold text-usm-burgundy">P3</td><td class="border border-slate-200 px-4 py-2 text-center font-mono">112 KB</td></tr>
-                            <tr><td class="border border-slate-200 px-4 py-2 font-bold text-usm-burgundy">P4</td><td class="border border-slate-200 px-4 py-2 text-center font-mono">426 KB</td></tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1 mb-6">
-                        Pregunta: Muestre paso a paso dónde será cargado cada proceso utilizando las estrategias de First Fit (Primer Ajuste), Best Fit (Mejor Ajuste) y Worst Fit (Peor Ajuste). ¿Logran cargar a P4 todos los algoritmos?
-                    </p>
-
+                    <p class="text-slate-700 text-sm mb-4">Llegan 4 procesos en orden (P1, P2, P3, P4):</p>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="data-table max-w-sm border border-slate-200">
+                            <thead><tr><th>Proceso</th><th>Memoria requerida</th></tr></thead>
+                            <tbody>
+                                <tr><td class="font-bold text-usm-burgundy">P1</td><td class="font-mono">212 KB</td></tr>
+                                <tr><td class="font-bold text-usm-burgundy">P2</td><td class="font-mono">417 KB</td></tr>
+                                <tr><td class="font-bold text-usm-burgundy">P3</td><td class="font-mono">112 KB</td></tr>
+                                <tr><td class="font-bold text-usm-burgundy">P4</td><td class="font-mono">426 KB</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1 mb-6">Pregunta: Muestre paso a paso dónde se carga cada proceso con First Fit, Best Fit y Worst Fit. ¿Todos los algoritmos logran cargar a P4?</p>
                     <div class="flex justify-end border-t border-slate-100 pt-4">
-                        <button onclick="toggleAnswer('prac1', this)" class="bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> 
-                            <span>Mostrar Desarrollo Completo</span>
-                        </button>
+                        <button onclick="toggleAnswer('prac1', this)" class="answer-btn bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md"></button>
                     </div>
-
-                    <div id="prac1" class="hidden mt-6 p-6 md:p-8 bg-slate-50 border border-slate-200 rounded-lg animate-fadeIn">
-                        
-                        <!-- 1. FIRST FIT -->
-                        <div class="mb-10">
-                            <h4 class="font-bold text-usm-navy mb-4 border-b border-slate-200 pb-2 flex items-center gap-2">
-                                <span class="bg-usm-navy text-white px-2 py-0.5 rounded text-xs">1</span>
-                                First Fit (Primer Ajuste)
-                            </h4>
-                            <p class="text-sm text-slate-700 mb-3">Busca desde el inicio de la lista y asigna el primer bloque libre que tenga tamaño suficiente para el proceso.</p>
-                            
-                            <ul class="text-sm text-slate-700 space-y-2 font-mono bg-white p-4 rounded border border-slate-200 shadow-sm mb-4">
-                                <li>- <strong class="text-usm-burgundy">P1 (212K)</strong> entra en el <strong>Bloque 2 (500K)</strong>. Sobran 288K en B2.</li>
-                                <li>- <strong class="text-usm-burgundy">P2 (417K)</strong> entra en el <strong>Bloque 5 (600K)</strong>. Sobran 183K en B5.</li>
-                                <li>- <strong class="text-usm-burgundy">P3 (112K)</strong> entra en lo que sobró del <strong>Bloque 2 (288K)</strong>. Quedan 176K en B2.</li>
-                                <li class="text-red-600 font-bold">- P4 (426K) NO ENTRA. Revisa: B1(100), B2(176), B3(200), B4(300), B5(183). Ningún bloque continuo alcanza 426K. Falla.</li>
+                    <div id="prac1" class="hidden mt-6 p-5 md:p-8 bg-slate-50 border border-slate-200 rounded-lg animate-fadeIn">
+                        <div class="mb-8">
+                            <h4 class="font-bold text-usm-navy mb-3 border-b border-slate-200 pb-2">1. First Fit</h4>
+                            <ul class="text-sm text-slate-700 space-y-2 font-mono bg-white p-4 rounded border border-slate-200">
+                                <li>- <strong class="text-usm-burgundy">P1 (212K)</strong> → Bloque 2 (500K). Quedan 288K en B2.</li>
+                                <li>- <strong class="text-usm-burgundy">P2 (417K)</strong> → Bloque 5 (600K). Quedan 183K en B5.</li>
+                                <li>- <strong class="text-usm-burgundy">P3 (112K)</strong> → resto del Bloque 2 (288K). Quedan 176K en B2.</li>
+                                <li class="text-red-700 font-bold">- P4 (426K) NO ENTRA. Libres: B1(100), B2(176), B3(200), B4(300), B5(183).</li>
                             </ul>
                         </div>
-
-                        <!-- 2. BEST FIT -->
-                        <div class="mb-10">
-                            <h4 class="font-bold text-usm-navy mb-4 border-b border-slate-200 pb-2 flex items-center gap-2">
-                                <span class="bg-usm-navy text-white px-2 py-0.5 rounded text-xs">2</span>
-                                Best Fit (Mejor Ajuste)
-                            </h4>
-                            <p class="text-sm text-slate-700 mb-3">Busca en toda la memoria el bloque libre más pequeño que sea igual o mayor al tamaño requerido, para dejar la menor "astilla" posible.</p>
-                            
-                            <ul class="text-sm text-slate-700 space-y-2 font-mono bg-white p-4 rounded border border-slate-200 shadow-sm mb-4">
-                                <li>- <strong class="text-usm-burgundy">P1 (212K)</strong> busca. Le sirven: 500, 300, 600. El mejor es el <strong>Bloque 4 (300K)</strong>. Sobran 88K en B4.</li>
-                                <li>- <strong class="text-usm-burgundy">P2 (417K)</strong> busca. Le sirven: 500, 600. El mejor es el <strong>Bloque 2 (500K)</strong>. Sobran 83K en B2.</li>
-                                <li>- <strong class="text-usm-burgundy">P3 (112K)</strong> busca. Le sirven: 200, 600. El mejor es el <strong>Bloque 3 (200K)</strong>. Sobran 88K en B3.</li>
-                                <li>- <strong class="text-usm-burgundy">P4 (426K)</strong> busca. Le sirve el <strong>Bloque 5 (600K)</strong>. Entra ahí y sobran 174K.</li>
+                        <div class="mb-8">
+                            <h4 class="font-bold text-usm-navy mb-3 border-b border-slate-200 pb-2">2. Best Fit</h4>
+                            <ul class="text-sm text-slate-700 space-y-2 font-mono bg-white p-4 rounded border border-slate-200">
+                                <li>- <strong class="text-usm-burgundy">P1 (212K)</strong>: sirven 500, 300 y 600. El menor es B4 (300K). Quedan 88K.</li>
+                                <li>- <strong class="text-usm-burgundy">P2 (417K)</strong>: sirven 500 y 600. El menor es B2 (500K). Quedan 83K.</li>
+                                <li>- <strong class="text-usm-burgundy">P3 (112K)</strong>: sirven 200 y 600. El menor es B3 (200K). Quedan 88K.</li>
+                                <li>- <strong class="text-usm-burgundy">P4 (426K)</strong>: solo sirve B5 (600K). Quedan 174K.</li>
                             </ul>
-                            <p class="text-sm font-bold text-green-700">✓ Con Best Fit, ¡TODOS los procesos logran ser cargados!</p>
+                            <p class="text-sm font-bold text-green-800 mt-3">Con Best Fit se cargan todos los procesos.</p>
                         </div>
-
-                        <!-- 3. WORST FIT -->
                         <div>
-                            <h4 class="font-bold text-usm-navy mb-4 border-b border-slate-200 pb-2 flex items-center gap-2">
-                                <span class="bg-usm-navy text-white px-2 py-0.5 rounded text-xs">3</span>
-                                Worst Fit (Peor Ajuste)
-                            </h4>
-                            <p class="text-sm text-slate-700 mb-3">Busca siempre el bloque más grande disponible en toda la memoria, para que el hueco resultante siga siendo útil para otros procesos grandes.</p>
-                            
-                            <ul class="text-sm text-slate-700 space-y-2 font-mono bg-white p-4 rounded border border-slate-200 shadow-sm mb-4">
-                                <li>- <strong class="text-usm-burgundy">P1 (212K)</strong> busca. El bloque más grande es el <strong>Bloque 5 (600K)</strong>. Entra. Sobran 388K en B5.</li>
-                                <li>- <strong class="text-usm-burgundy">P2 (417K)</strong> busca. El bloque más grande disponible es el <strong>Bloque 2 (500K)</strong>. Entra. Sobran 83K en B2.</li>
-                                <li>- <strong class="text-usm-burgundy">P3 (112K)</strong> busca. El bloque más grande ahora es el resto del <strong>Bloque 5 (388K)</strong>. Entra. Quedan 276K en B5.</li>
-                                <li class="text-red-600 font-bold">- P4 (426K) NO ENTRA. Revisa: B1(100), B2(83), B3(200), B4(300), B5(276). Ninguno alcanza. Falla.</li>
+                            <h4 class="font-bold text-usm-navy mb-3 border-b border-slate-200 pb-2">3. Worst Fit</h4>
+                            <ul class="text-sm text-slate-700 space-y-2 font-mono bg-white p-4 rounded border border-slate-200">
+                                <li>- <strong class="text-usm-burgundy">P1 (212K)</strong> → el mayor es B5 (600K). Quedan 388K.</li>
+                                <li>- <strong class="text-usm-burgundy">P2 (417K)</strong> → el mayor es B2 (500K). Quedan 83K.</li>
+                                <li>- <strong class="text-usm-burgundy">P3 (112K)</strong> → el mayor es el resto de B5 (388K). Quedan 276K.</li>
+                                <li class="text-red-700 font-bold">- P4 (426K) NO ENTRA. Libres: B1(100), B2(83), B3(200), B4(300), B5(276).</li>
                             </ul>
-                            
                             <div class="border-l-4 border-usm-gold pl-4 py-2 bg-slate-100 mt-6">
-                                <p class="font-bold text-slate-800 mb-1">Conclusión del Ejercicio:</p>
-                                <p class="text-sm text-slate-700">En este escenario específico, <strong>Best Fit fue el único capaz de cargar todos los procesos</strong>, ya que protegió celosamente los bloques más grandes (dejándolos para los procesos pesados P2 y P4) al ubicar a P1 y P3 en bloques que les quedaban mucho más ajustados.</p>
+                                <p class="font-bold text-slate-800 mb-1">Conclusión:</p>
+                                <p class="text-sm text-slate-700">En este caso, <strong>solo Best Fit carga los 4 procesos</strong>, porque reserva los bloques grandes para P2 y P4 y ubica a P1 y P3 en los bloques más ajustados. En First Fit y Worst Fit, los procesos pequeños parten los bloques grandes. Notar que en First Fit quedan 959K libres en total y aun así P4 (426K) no cabe: es <strong>fragmentación externa</strong>.</p>
                             </div>
                         </div>
+                    </div>
+                </div>
 
+                <!-- Ejercicio 2: MMU con control -->
+                <div class="card">
+                    <span class="inline-block bg-slate-100 text-usm-navy border border-usm-navy text-xs font-bold px-3 py-1 rounded-full mb-4">Ejercicio 2: MMU con Control</span>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Traducción de direcciones</h3>
+                    <p class="text-slate-700 text-sm mb-4">Un proceso en modo usuario tiene cargados <code>BASE = 30.000</code> y <code>LÍMITE = 12.000</code>. El proceso genera estas direcciones lógicas: <strong>(a) 0</strong>, <strong>(b) 4.500</strong>, <strong>(c) 11.999</strong>, <strong>(d) 12.000</strong>.</p>
+                    <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1 mb-6">Pregunta: ¿Qué dirección física se accede en cada caso, o qué ocurre? ¿Qué cambia si el sistema operativo mueve este proceso a la dirección 50.000?</p>
+                    <div class="flex justify-end border-t border-slate-100 pt-4">
+                        <button onclick="toggleAnswer('prac2', this)" class="answer-btn bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md"></button>
+                    </div>
+                    <div id="prac2" class="hidden mt-6 p-5 md:p-8 bg-slate-50 border border-slate-200 rounded-lg animate-fadeIn">
+                        <div class="overflow-x-auto mb-4">
+                            <table class="data-table bg-white border border-slate-200">
+                                <thead><tr><th>Dir. lógica</th><th>¿&lt; LÍMITE?</th><th>Resultado</th></tr></thead>
+                                <tbody>
+                                    <tr><td>(a) 0</td><td>Sí</td><td>30.000 + 0 = <strong>30.000</strong> (primer byte del proceso)</td></tr>
+                                    <tr><td>(b) 4.500</td><td>Sí</td><td>30.000 + 4.500 = <strong>34.500</strong></td></tr>
+                                    <tr><td>(c) 11.999</td><td>Sí</td><td>30.000 + 11.999 = <strong>41.999</strong> (último byte válido)</td></tr>
+                                    <tr><td>(d) 12.000</td><td>No</td><td class="text-red-700 font-bold">TRAP: el SO toma el control y el proceso termina con error</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-sm text-slate-700 mb-3">Las direcciones válidas son de 0 a LÍMITE - 1. La dirección 12.000 caería en 42.000, fuera del espacio del proceso (posiblemente en la memoria de otro), y la MMU con control lo impide.</p>
+                        <p class="text-sm text-slate-700"><strong>Reubicación:</strong> si el SO mueve el proceso a la dirección 50.000 (por compactación o por Swap-In), solo tiene que cargar <code>BASE = 50.000</code>. Las direcciones lógicas del programa no cambian: (b) pasaría a la dirección física 54.500. Por eso la clase dice que la MMU permite una <strong>reubicación fácil</strong>.</p>
+                    </div>
+                </div>
+
+                <!-- Ejercicio 3: Bloques y fragmentación interna -->
+                <div class="card">
+                    <span class="inline-block bg-slate-100 text-usm-navy border border-usm-navy text-xs font-bold px-3 py-1 rounded-full mb-4">Ejercicio 3: Bloques y Fragmentación Interna</span>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">¿Cuántos bloques pide cada proceso?</h3>
+                    <p class="text-slate-700 text-sm mb-4">Un sistema con particiones dinámicas usa bloques de <strong>4KB</strong>. Llegan tres solicitudes: <strong>PA = 16KB</strong>, <strong>PB = 10KB</strong> y <strong>PC = 1KB</strong>.</p>
+                    <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1 mb-6">Pregunta: Calcule el número de bloques b de cada proceso y la fragmentación interna que genera. ¿Se puede eliminar la fragmentación interna con este esquema?</p>
+                    <div class="flex justify-end border-t border-slate-100 pt-4">
+                        <button onclick="toggleAnswer('prac3', this)" class="answer-btn bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md"></button>
+                    </div>
+                    <div id="prac3" class="hidden mt-6 p-5 md:p-8 bg-slate-50 border border-slate-200 rounded-lg animate-fadeIn">
+                        <div class="overflow-x-auto mb-4">
+                            <table class="data-table bg-white border border-slate-200">
+                                <thead><tr><th>Proceso</th><th>Cálculo</th><th>b</th><th>Asignado</th><th>Frag. interna</th></tr></thead>
+                                <tbody>
+                                    <tr><td>PA = 16KB</td><td>múltiplo: 16 / 4</td><td>4</td><td>16KB</td><td>0KB</td></tr>
+                                    <tr><td>PB = 10KB</td><td>floor(10 / 4) + 1 = 2 + 1</td><td>3</td><td>12KB</td><td>2KB</td></tr>
+                                    <tr><td>PC = 1KB</td><td>floor(1 / 4) + 1 = 0 + 1</td><td>1</td><td>4KB</td><td>3KB</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-sm text-slate-700">No se puede eliminar del todo: la fragmentación interna queda acotada a <strong>menos de un bloque por proceso</strong> (máximo 4KB - 1 byte). Bloques más pequeños la reducen, pero hacen crecer la estructura de gestión, por ejemplo el arreglo de bits (ver Ejercicio 4).</p>
+                    </div>
+                </div>
+
+                <!-- Ejercicio 4: Arreglo de bits y lista -->
+                <div class="card">
+                    <span class="inline-block bg-slate-100 text-usm-navy border border-usm-navy text-xs font-bold px-3 py-1 rounded-full mb-4">Ejercicio 4: Estructuras de Gestión</span>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Arreglo de bits vs lista de bloques libres</h3>
+                    <p class="text-slate-700 text-sm mb-4">(a) Una máquina tiene <strong>8GB de RAM</strong> y bloques de <strong>4KB</strong>. ¿Cuánta memoria ocupa el arreglo de bits?</p>
+                    <p class="text-slate-700 text-sm mb-4">(b) Una memoria de 12 bloques tiene este arreglo de bits (bloque 1 a la izquierda):</p>
+                    <div class="formula mb-4">1 0 0 1 1 0 0 0 1 0 1 1</div>
+                    <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1 mb-6">Pregunta: Responda (a). Para (b), construya la lista de zonas libres en formato <code>cantidad / próxima zona</code>, indique a qué bloque apunta Head y dónde se ubicaría una partición de 2 bloques con First Fit y con Best Fit.</p>
+                    <div class="flex justify-end border-t border-slate-100 pt-4">
+                        <button onclick="toggleAnswer('prac4', this)" class="answer-btn bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md"></button>
+                    </div>
+                    <div id="prac4" class="hidden mt-6 p-5 md:p-8 bg-slate-50 border border-slate-200 rounded-lg animate-fadeIn">
+                        <p class="font-bold text-usm-navy mb-2">(a) Tamaño del arreglo de bits</p>
+                        <div class="formula mb-6">bloques = (8 x 1024^3) / (4 x 1024) = 2^33 / 2^12 = 2^21 = 2.097.152
+m       = 2.097.152 / 8 = 262.144 B = <span class="h">256KB</span></div>
+                        <p class="font-bold text-usm-navy mb-2">(b) Lista de zonas libres</p>
+                        <p class="text-sm text-slate-700 mb-3">Los ceros marcan bloques libres. Zonas libres: bloques 2-3, bloques 6-8 y bloque 10. <code>Head</code> apunta al bloque 2.</p>
+                        <div class="formula mb-4">Head -> Bloque 2
+
+Bloque 2:   2 / 6     <span class="m">// 2 libres (2-3), sigue en el 6</span>
+Bloque 6:   3 / 10    <span class="m">// 3 libres (6-8), sigue en el 10</span>
+Bloque 10:  1 / fin   <span class="m">// 1 libre</span></div>
+                        <p class="text-sm text-slate-700 mb-2"><strong>First Fit (b = 2):</strong> la primera zona con al menos 2 bloques es la del bloque 2. Ocupa los bloques 2-3, que es una zona exacta, y Head pasa al bloque 6.</p>
+                        <p class="text-sm text-slate-700 mb-2"><strong>Best Fit (b = 2):</strong> recorre todas las zonas (2, 3 y 1 bloques). Las que sirven tienen remanentes de 0 (bloques 2-3) y 1 (bloques 6-8). Elige los bloques 2-3, con remanente 0.</p>
+                        <p class="text-sm text-slate-700">Aquí ambos algoritmos coinciden. La ventaja de la lista es que <strong>no usa memoria adicional</strong>: la información se guarda en los propios bloques libres, mientras que el arreglo de bits de (a) ocupa 256KB.</p>
+                    </div>
+                </div>
+
+                <!-- Ejercicio 5: Costo de compactar y swapping -->
+                <div class="card">
+                    <span class="inline-block bg-slate-100 text-usm-navy border border-usm-navy text-xs font-bold px-3 py-1 rounded-full mb-4">Ejercicio 5: Compactación vs Swapping</span>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">¿Vale la pena compactar?</h3>
+                    <p class="text-slate-700 text-sm mb-4">Un servidor con particiones dinámicas no logra cargar un proceso nuevo, aunque la suma de sus huecos libres es suficiente. Para compactar habría que mover <strong>512MB</strong> de procesos. El costo de acceso a memoria es de <strong>50ns</strong>.</p>
+                    <p class="text-slate-800 text-sm font-semibold border-l-4 border-usm-navy pl-3 py-1 mb-6">Pregunta: (a) ¿Cuánto tarda la compactación? (b) ¿Qué debe hacer el SO con los registros de cada proceso movido? (c) ¿Por qué el swapping tampoco es una solución gratuita?</p>
+                    <div class="flex justify-end border-t border-slate-100 pt-4">
+                        <button onclick="toggleAnswer('prac5', this)" class="answer-btn bg-usm-navy hover:bg-usm-navy-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md"></button>
+                    </div>
+                    <div id="prac5" class="hidden mt-6 p-5 md:p-8 bg-slate-50 border border-slate-200 rounded-lg animate-fadeIn">
+                        <p class="font-bold text-usm-navy mb-2">(a) Tiempo de compactación</p>
+                        <div class="formula mb-4">t(1MB)   = 2 x 50ns x 1024^2 ~ 104,86 ms   <span class="m">// leer + escribir cada byte</span>
+t(512MB) = 104,86 ms x 512   ~ <span class="h">53,7 s</span></div>
+                        <p class="text-sm text-slate-700 mb-4">Casi un minuto moviendo memoria. Además, si la memoria está sobrecargada, la fragmentación reaparecerá rápidamente.</p>
+                        <p class="font-bold text-usm-navy mb-2">(b) Registros</p>
+                        <p class="text-sm text-slate-700 mb-4">Debe actualizar el <strong>registro BASE</strong> de cada proceso movido con su nueva dirección de inicio. El LÍMITE no cambia, porque el proceso conserva su tamaño. La copia se hace con <strong>DMA</strong>.</p>
+                        <p class="font-bold text-usm-navy mb-2">(c) Swapping</p>
+                        <p class="text-sm text-slate-700">El disco es alrededor de <strong>un millón de veces más lento</strong> que la RAM, y un swap completo (Out + In) es muy caro. Solo compensa si hay otro proceso listo para ejecutarse mientras el DMA hace la transferencia. Además, el proceso que vuelve probablemente quedará en otra zona, lo que exige traducir sus direcciones, y elegir mal la víctima (por ejemplo, un proceso que se vuelve a necesitar enseguida) desperdicia todo el esfuerzo.</p>
                     </div>
                 </div>
 
@@ -488,26 +746,102 @@
 
     <footer class="mt-10" style="background: linear-gradient(120deg, #0f1f33 0%, #002b5c 55%, #8c1d40 100%); color: #e2e8f0; border-top: 2px solid rgba(201,163,74,0.6);">
         <div class="container mx-auto px-6 py-8 text-center text-sm font-medium">
-            <p>&copy; 2026 Ayudantía USM - Sistemas Operativos. Material de estudio - Gestión de Memoria.</p>
+            <p>&copy; 2026 Ayudantía USM - Sistemas Operativos. Material de estudio - Gestión de Memoria Lineal.</p>
         </div>
     </footer>
 
     <script>
+        const preguntas = [
+            {
+                q: "¿Qué diferencia hay entre una dirección lógica y una física?",
+                a: "La <strong>dirección lógica</strong> es la que ve el programa durante su ejecución. La <strong>dirección física</strong> es la que entra al chip de memoria. Pueden ser distintas: en modo usuario, la MMU convierte la lógica (un offset) en física sumándole el registro BASE."
+            },
+            {
+                q: "¿Por qué la traducción de direcciones la hace un hardware (MMU) y no el sistema operativo?",
+                a: "Porque ocurre en <strong>cada acceso a memoria</strong>, incluida la búsqueda de cada instrucción. Hacerla por software sería demasiado lento. Además, el hardware garantiza la <strong>seguridad</strong>: un proceso no puede saltarse la traducción ni el control de límite para acceder a la memoria de otro."
+            },
+            {
+                q: "¿Qué diferencia hay entre una MMU simple y una MMU con control?",
+                a: "La <strong>MMU simple</strong> solo traduce: física = BASE + offset (en modo usuario; en modo sistema el acceso es directo). La <strong>MMU con control</strong> además compara el offset con un registro LÍMITE: si lo excede, genera un <strong>TRAP</strong> y el SO decide qué hacer, normalmente terminar el proceso con error. Así un proceso no se desborda hacia otro."
+            },
+            {
+                q: "¿Es el programador responsable de gestionar la MMU?",
+                a: "<strong>No.</strong> El SO carga los registros BASE y LÍMITE de cada proceso, y la MMU traduce de forma transparente. El programador trabaja con direcciones lógicas. En cambio, en los <strong>overlays</strong> la carga de cada parte del código la hace un código de manejo de overlays que forma parte del propio programa."
+            },
+            {
+                q: "¿Qué son los overlays y qué problema resuelven?",
+                a: "Es una técnica en la que algunas partes del código reemplazan a otras en un espacio reservado cuando hacen falta. Una tabla de símbolos indica en qué overlay está cada función, y un código de manejo de overlays las carga dinámicamente. Permiten ejecutar un programa cuyo espacio lógico es <strong>mayor que la memoria física</strong> disponible."
+            },
+            {
+                q: "¿Qué tipos de fragmentación producen las particiones fijas?",
+                a: "<strong>Ambos.</strong> Hay <strong>fragmentación interna</strong> cuando el proceso no ocupa toda su partición, y <strong>fragmentación externa</strong> cuando quedan particiones libres donde no cabe ningún proceso. Además, es muy difícil saber de antemano el tamaño de los procesos para diseñar las particiones."
+            },
+            {
+                q: "Define fragmentación interna y externa según la clase.",
+                a: "<strong>Interna:</strong> zona de memoria que el proceso no usa dentro de su partición; es memoria perdida para el sistema. <strong>Externa:</strong> zona de memoria (partición o hueco) probablemente perdida por el sistema, porque es muy poco probable encontrar un proceso que quepa en ella."
+            },
+            {
+                q: "¿Las particiones dinámicas eliminan la fragmentación interna?",
+                a: "No del todo. La memoria se asigna en <strong>bloques de tamaño fijo</strong> y el proceso recibe b = floor(K / blocksize) + 1 bloques cuando su tamaño no es múltiplo del bloque, así que el último bloque puede quedar parcialmente vacío. La fragmentación interna queda acotada a menos de un bloque por proceso. Lo que sí aparece con fuerza es la <strong>fragmentación externa</strong> entre particiones."
+            },
+            {
+                q: "¿Por qué la lista de bloques libres es mejor que el arreglo de bits?",
+                a: "El arreglo de bits ocupa <strong>memoria adicional</strong> (64KB para 4GB con bloques de 8KB). La lista guarda la información (cantidad de bloques libres consecutivos / próxima zona libre) <strong>dentro de los propios bloques libres</strong>, que de todas formas no se están usando, así que no consume memoria extra. Además, recorre zonas en vez de bit por bit."
+            },
+            {
+                q: "Compara First Fit, Best Fit y Worst Fit.",
+                a: "<strong>First Fit:</strong> toma la primera zona donde cabe; es el más rápido, pero va fragmentando el inicio de la memoria. <strong>Best Fit:</strong> toma la zona que deja el remanente más pequeño; conserva las zonas grandes, pero deja remanentes diminutos (en general también produce fragmentación externa). <strong>Worst Fit:</strong> toma la zona que deja el remanente más grande, para que lo que sobra siga siendo útil, pero agota las zonas grandes. Best Fit y Worst Fit deben recorrer toda la lista."
+            },
+            {
+                q: "¿Por qué la compactación no se realiza constantemente si resuelve la fragmentación externa?",
+                a: "Porque es <strong>muy costosa</strong>. Hay que mover los bloques (con DMA) y modificar el registro BASE de cada proceso movido. Con un acceso a memoria de 50ns, mover 1MB tarda unos 105ms y mover 1GB, cerca de 1 min 48 s. Además, si la memoria está sobrecargada, la fragmentación reaparece rápidamente."
+            },
+            {
+                q: "¿Qué son el Swap-Out y el Swap-In?",
+                a: "<strong>Swap-Out:</strong> descargar todo o parte del espacio de trabajo de un proceso desde la memoria central hacia una memoria secundaria persistente (la zona de swap del disco). <strong>Swap-In:</strong> cargar de vuelta a la memoria central, desde la zona de swap, la o las partes de un proceso que se habían descargado."
+            },
+            {
+                q: "¿Qué condiciones deben cumplirse para que el swapping sea útil?",
+                a: "(1) Debe haber <strong>DMA</strong> para paralelizar la transferencia, porque el disco es un millón de veces más lento que la RAM. (2) Debe haber <strong>al menos otro proceso listo</strong> para ejecutarse mientras tanto. (3) El proceso debe poder <strong>volver a otra zona de memoria</strong>, lo que exige traducir sus direcciones (registro BASE o Dynamic Linker). Además, hay que elegir bien qué proceso descargar."
+            },
+            {
+                q: "¿Qué problema genera el swapping sobre las direcciones de un proceso?",
+                a: "Al volver del disco, es muy probable que el proceso <strong>no pueda ocupar la misma zona física</strong>, porque otro proceso la está usando. Si el programa tuviera direcciones físicas fijas (instrucciones, punteros), fallaría. Por eso se necesita un mecanismo de traducción: el registro BASE de la MMU o un <strong>Dynamic Linker</strong> que ajuste las direcciones, que tiene su propio costo si la reubicación es frecuente."
+            },
+            {
+                q: "¿Por qué la gestión lineal fue reemplazada por la memoria virtual?",
+                a: "Porque es <strong>difícil</strong> (fragmentación, algoritmos de asignación, compactación) y <strong>poco eficiente</strong> (costo de compactar, costo del swapping y del linker dinámico). La memoria virtual (segmentación y paginación) elimina la exigencia de que el proceso ocupe una sola zona contigua."
+            }
+        ];
+
+        const chevron = '<svg class="w-5 h-5 text-slate-400 accordion-icon flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>';
+        const list = document.getElementById('accordion-list');
+        preguntas.forEach((item, i) => {
+            const wrap = document.createElement('div');
+            wrap.className = 'border border-slate-200 rounded-xl overflow-hidden shadow-sm';
+            wrap.innerHTML =
+                '<button onclick="toggleAccordion(\'q' + i + '\', this)" class="w-full bg-slate-50 hover:bg-slate-100 text-left px-6 py-4 font-bold text-usm-navy flex justify-between items-center gap-4 transition-colors">' +
+                    '<span>' + (i + 1) + '. ' + item.q + '</span>' + chevron +
+                '</button>' +
+                '<div id="q' + i + '" class="hidden px-6 py-5 bg-white border-t border-slate-200 text-slate-700 text-sm leading-relaxed"><p>' + item.a + '</p></div>';
+            list.appendChild(wrap);
+        });
+
+        const iconShow = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+        const iconHide = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m2 2 20 20"></path><path d="M6.71 6.71A10.61 10.61 0 0 0 2 12a10.54 10.54 0 0 0 11.29 8.05"></path><path d="M11 17a5 5 0 0 1-5-5"></path><path d="M14 14a5 5 0 0 1-5-5"></path><path d="M17.3 17.3A10.56 10.56 0 0 0 22 12a10.58 10.58 0 0 0-11-7.05"></path></svg>';
+        document.querySelectorAll('.answer-btn').forEach(b => { b.innerHTML = iconShow + ' <span>Mostrar Desarrollo</span>'; });
+
         function toggleAnswer(id, btn) {
             const el = document.getElementById(id);
-            const isHidden = el.classList.contains('hidden');
-            const iconShow = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
-            const iconHide = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m2 2 20 20"></path><path d="M6.71 6.71A10.61 10.61 0 0 0 2 12a10.54 10.54 0 0 0 11.29 8.05"></path><path d="M11 17a5 5 0 0 1-5-5"></path><path d="M14 14a5 5 0 0 1-5-5"></path><path d="M17.3 17.3A10.56 10.56 0 0 0 22 12a10.58 10.58 0 0 0-11-7.05"></path></svg>`;
-            
-            if (isHidden) {
+            if (el.classList.contains('hidden')) {
                 el.classList.remove('hidden');
-                btn.innerHTML = iconHide + ` <span>Ocultar Desarrollo</span>`;
+                btn.innerHTML = iconHide + ' <span>Ocultar Desarrollo</span>';
                 btn.classList.replace('bg-usm-navy', 'bg-slate-200');
                 btn.classList.replace('hover:bg-usm-navy-dark', 'hover:bg-slate-300');
                 btn.classList.replace('text-white', 'text-slate-700');
             } else {
                 el.classList.add('hidden');
-                btn.innerHTML = iconShow + ` <span>Mostrar Desarrollo Completo</span>`;
+                btn.innerHTML = iconShow + ' <span>Mostrar Desarrollo</span>';
                 btn.classList.replace('bg-slate-200', 'bg-usm-navy');
                 btn.classList.replace('hover:bg-slate-300', 'hover:bg-usm-navy-dark');
                 btn.classList.replace('text-slate-700', 'text-white');
@@ -516,10 +850,8 @@
 
         function toggleAccordion(id, btn) {
             const el = document.getElementById(id);
-            const isHidden = el.classList.contains('hidden');
             const icon = btn.querySelector('svg.accordion-icon');
-            
-            if (isHidden) {
+            if (el.classList.contains('hidden')) {
                 el.classList.remove('hidden');
                 btn.classList.add('bg-slate-100');
                 btn.classList.replace('text-usm-navy', 'text-usm-burgundy');
